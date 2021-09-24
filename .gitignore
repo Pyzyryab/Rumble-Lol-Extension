@@ -3,3 +3,5 @@
 *.sln
 .idea/
 x64/
+.vscode/
+.vs/

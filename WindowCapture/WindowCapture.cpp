@@ -11,7 +11,7 @@ WindowCapture::WindowCapture(std::string window_name)
 	std::cout << window_name << std::endl;
 }
 
-// Methods impl pending
+// TODO Methods impl pending
 
 int WindowCapture::get_screenshot()
 {

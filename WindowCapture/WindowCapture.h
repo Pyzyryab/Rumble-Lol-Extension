@@ -1,12 +1,16 @@
 #pragma once
 
 #include <string>
+#include <windows.h>
 
 using namespace std;
 
 class WindowCapture
 {
 private:
+	int width;
+	int height;
+	HWND hwnd;
 	string window_name;
 
 public:
