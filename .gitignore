@@ -1,0 +1,5 @@
+*.vcxproj
+*vcxproj.*
+*.sln
+.idea/
+x64/
