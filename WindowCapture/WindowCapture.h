@@ -8,16 +8,17 @@ using namespace std;
 class WindowCapture
 {
 private:
-	int width;
-	int height;
 	HWND hwnd;
 	string window_name;
 
 public:
-	// Class constructor
+	// Default constructor
+	WindowCapture();
+
 	WindowCapture(string window_name);
 
-	//// Methods
+
+	// Methods
 	int get_screenshot();
 	void list_window_names();
 	int get_screen_position(int pos);
