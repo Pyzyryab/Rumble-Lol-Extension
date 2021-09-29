@@ -1,8 +1,12 @@
 #include <iostream>
 #include <string>
+#include <opencv2/opencv.hpp>
 
 #include "WindowCapture.h"
 #include "../Helpers/StrHelper.cpp"
+
+using namespace std;
+using namespace cv;
 
 /*
 	Find the handle for the window we want to capture.
@@ -37,9 +41,50 @@ WindowCapture::WindowCapture(std::string window_name)
 
 
 // TODO Methods impl pending
-int WindowCapture::get_screenshot()
+Mat hwnd2mat(HWND hwnd)
 {
-	return 0;
+    HDC deviceContext = GetDC(hwnd);
+    HDC memoryDeviceContext = CreateCompatibleDC(deviceContext);
+
+    RECT windowRect;
+    GetClientRect(hwnd, &windowRect);
+
+    int height = windowRect.bottom;
+    int width = windowRect.right;
+
+    HBITMAP bitmap = CreateCompatibleBitmap(deviceContext, width, height);
+
+    SelectObject(memoryDeviceContext, bitmap);
+
+    // Copy data into bitmap
+    BitBlt(memoryDeviceContext, 0, 0, width, height, deviceContext, 0, 0, SRCCOPY);
+
+
+    // Specify format by using bitmapinfoheader!
+    BITMAPINFOHEADER bi;
+    bi.biSize = sizeof(BITMAPINFOHEADER);
+    bi.biWidth = width;
+    bi.biHeight = -height;
+    bi.biPlanes = 1;
+    bi.biBitCount = 32;
+    bi.biCompression = BI_RGB;
+    bi.biSizeImage = 0;  // because no compression
+    bi.biXPelsPerMeter = 0; 
+    bi.biYPelsPerMeter = 0; 
+    bi.biClrUsed = 0; 
+    bi.biClrImportant = 0;
+
+    cv::Mat mat = cv::Mat(height, width, CV_8UC4); // 8 bit unsigned ints 4 Channels -> RGBA
+
+    // transform data and store into mat.data
+    GetDIBits(memoryDeviceContext, bitmap, 0, height, mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+
+    // Clean up!
+    DeleteObject(bitmap);
+    DeleteDC(memoryDeviceContext);  // Delete, not release!
+    ReleaseDC(hwnd, deviceContext);
+
+    return mat;
 }
 
 void WindowCapture::list_window_names()
