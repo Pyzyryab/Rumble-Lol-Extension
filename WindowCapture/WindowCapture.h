@@ -2,25 +2,25 @@
 
 #include <string>
 #include <windows.h>
+#include <opencv2/opencv.hpp>
 
 using namespace std;
+using namespace cv;
 
 class WindowCapture
 {
-private:
-	HWND hwnd;
-	string window_name;
+	private:
+		HWND hwnd;
+		string window_name;
 
-public:
-	// Default constructor
-	WindowCapture();
+		Mat hwnd2mat();
+		void setup_bitmap(BITMAPINFOHEADER *bi, int width, int height);
 
-	WindowCapture(string window_name);
+		// TODO Future impl as a helper to retrieve available windows names
+		void list_window_names();
 
-
-	// Methods
-	int get_screenshot();
-	void list_window_names();
-	int get_screen_position(int pos);
+	public:
+		WindowCapture();
+		WindowCapture(string window_name);
 
 };

@@ -30,7 +30,7 @@ WindowCapture::WindowCapture(std::string window_name)
 {
 	// TODO Handle the exception if no window it's founded
 	this->window_name = window_name;
-	wchar_t const *desired_window { StrHelper::to_wstring(this->window_name).c_str() };  // TODO Pending to debug the posible dangling pointer?
+	wchar_t const *desired_window { StrHelper::to_wstring(this->window_name).c_str() }; 
 	this->hwnd = FindWindowW(
 		NULL,
 		desired_window
@@ -41,13 +41,16 @@ WindowCapture::WindowCapture(std::string window_name)
 
 
 // TODO Methods impl pending
-Mat hwnd2mat(HWND hwnd)
+
+/// Creates a cv:Mat object from a Windows window handler
+Mat WindowCapture::hwnd2mat()
 {
-    HDC deviceContext = GetDC(hwnd);
+    HDC deviceContext = GetDC(this->hwnd);
     HDC memoryDeviceContext = CreateCompatibleDC(deviceContext);
+    SetStretchBltMode(memoryDeviceContext, COLORONCOLOR);
 
     RECT windowRect;
-    GetClientRect(hwnd, &windowRect);
+    GetClientRect(this->hwnd, &windowRect);
 
     int height = windowRect.bottom;
     int width = windowRect.right;
@@ -62,22 +65,14 @@ Mat hwnd2mat(HWND hwnd)
 
     // Specify format by using bitmapinfoheader!
     BITMAPINFOHEADER bi;
-    bi.biSize = sizeof(BITMAPINFOHEADER);
-    bi.biWidth = width;
-    bi.biHeight = -height;
-    bi.biPlanes = 1;
-    bi.biBitCount = 32;
-    bi.biCompression = BI_RGB;
-    bi.biSizeImage = 0;  // because no compression
-    bi.biXPelsPerMeter = 0; 
-    bi.biYPelsPerMeter = 0; 
-    bi.biClrUsed = 0; 
-    bi.biClrImportant = 0;
+    BITMAPINFOHEADER *bi_ptr = &bi;
+    this->setup_bitmap(bi_ptr, width, height);
 
-    cv::Mat mat = cv::Mat(height, width, CV_8UC4); // 8 bit unsigned ints 4 Channels -> RGBA
+    // Creates a new matrix to store the final result of 8 bit unsigned ints 4 Channels -> RGBA
+    cv::Mat mat = cv::Mat(height, width, CV_8UC4); 
 
-    // transform data and store into mat.data
-    GetDIBits(memoryDeviceContext, bitmap, 0, height, mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+    // Transform data and store into mat.data
+    GetDIBits(memoryDeviceContext, bitmap, 0, height, mat.data, (BITMAPINFO*) bi_ptr, DIB_RGB_COLORS);
 
     // Clean up!
     DeleteObject(bitmap);
@@ -87,12 +82,26 @@ Mat hwnd2mat(HWND hwnd)
     return mat;
 }
 
+
+/// Sets up the info of the newly bitmap
+void setup_bitmap(BITMAPINFOHEADER *bi, int width, int height)
+{
+    (*bi).biSize = sizeof(BITMAPINFOHEADER);
+    (*bi).biWidth = width;
+    (*bi).biHeight = -height;
+    (*bi).biPlanes = 1;
+    (*bi).biBitCount = 32;
+    (*bi).biCompression = BI_RGB;
+    (*bi).biSizeImage = 0;  // Because no compression
+    (*bi).biXPelsPerMeter = 0; 
+    (*bi).biYPelsPerMeter = 0; 
+    (*bi).biClrUsed = 0; 
+    (*bi).biClrImportant = 0;
+}
+
+
+// TODO As a helper?
 void WindowCapture::list_window_names()
 {
 	// Pending
-}
-
-int WindowCapture::get_screen_position(int pos)
-{
-	return 0;
 }
