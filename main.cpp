@@ -45,14 +45,14 @@ int main() {
 		Mat video_source = windowCapture.get_video_source();
 		Mat* video_source_ptr = &video_source;
 	
-	    // Img finder. Matches the video source and the needle image and returns the point where the needle image is found inside the video source.
-	    Point m_loc = rumbleLeagueVision.find(video_source_ptr, img_to_find_as_real_4channels);
-	    std::cout << "MATCH LOCATION -> " << m_loc << std::endl;
+		// Img finder. Matches the video source and the needle image and returns the point where the needle image is found inside the video source.
+		Point m_loc = rumbleLeagueVision.find(video_source_ptr, img_to_find_as_real_4channels);
+		std::cout << "MATCH LOCATION -> " << m_loc << std::endl;
 	
 		// If match location
-	    // If statement for debug purposes. This one should be replaced for a method call that parses the input query from the user voice
+		// If statement for debug purposes. This one should be replaced for a method call that parses the input query from the user voice
 		// and decides what event should run
-	    if (m_loc.x != 0 && m_loc.y != 0 && moved_once == false) // Moved once just acts as a control flag to only run this one time, or 
+		if (m_loc.x != 0 && m_loc.y != 0 && moved_once == false) // Moved once just acts as a control flag to only run this one time, or 
 		// the mouse will be perma moving towards the match coordinates
 		{
 			RumbleMotion* rumble_motion = new RumbleMotion();
@@ -63,7 +63,6 @@ int main() {
 	
 		imshow(window_name, *video_source_ptr);
 		key = waitKey(60); // you can change wait time
-		
 	}
 		
 	// Prevents to leak memory and clean up resources
