@@ -1,0 +1,11 @@
+*.vcxproj
+*vcxproj.*
+*.sln
+.idea/
+x64/
+.vscode/
+.vs/
+*.exe
+Debug/
+*.jpg
+*.png
