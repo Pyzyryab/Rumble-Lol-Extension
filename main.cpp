@@ -54,13 +54,12 @@ int main() {
 		// and decides what event should run
 	    if (m_loc.x != 0 && m_loc.y != 0 && moved_once == false) // Moved once just acts as a control flag to only run this one time, or 
 		// the mouse will be perma moving towards the match coordinates
-	    {
+		{
 			RumbleMotion* rumble_motion = new RumbleMotion();
-	        //MouseMove(m_loc.x, m_loc.y, hwndDesktop, mouse_click_point_ptr);
 			rumble_motion->move_mouse_and_left_click(m_loc.x, m_loc.y);
-	        moved_once = true;
+			moved_once = true;
 			delete rumble_motion;
-	    }
+		}
 	
 		imshow(window_name, *video_source_ptr);
 		key = waitKey(60); // you can change wait time
