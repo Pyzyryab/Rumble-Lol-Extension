@@ -1,8 +1,8 @@
 #include <iostream>
 
 #include "WindowCapture/WindowCapture.h"
-#include "RumbleVision/RumbleVision.h"
-#include "RumbleMotion/RumbleMotion.hpp"
+#include "RumbleLeagueVision/RumbleVision.h"
+#include "RumbleLeagueMotion/RumbleMotion.hpp"
 
 using namespace std;
 using namespace cv;
@@ -34,7 +34,7 @@ int main() {
 	
 	// TEMPLATE MATCHING
 	// TODO Make the 
-	cv::Mat img_to_find = cv::imread("encontrar_partida.jpg", COLOR_BGR2BGRA);
+	cv::Mat img_to_find = cv::imread("Assets/SP/encontrar_partida.jpg", COLOR_BGR2BGRA);
 	Mat img_to_find_as_real_4channels;
 	cvtColor(img_to_find, img_to_find_as_real_4channels, COLOR_BGR2BGRA); // TODO Explanation
 
