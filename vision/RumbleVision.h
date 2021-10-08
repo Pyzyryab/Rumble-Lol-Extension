@@ -2,7 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 
-using namespace cv;
+//using namespace cv;
 
 class RumbleLeagueVision
 {
@@ -10,7 +10,6 @@ class RumbleLeagueVision
 		// pass
 
 	public:
-
 		/// <summary>
 		///  Finds (if exists) an image inside another parent image.
 		/// The method's job it's to find an image inside a VideoStream, directly taken from the Windows API
@@ -21,5 +20,5 @@ class RumbleLeagueVision
 		/// <param name="threshold"></param>
 		/// <param name="debug_mode"></param>
 		/// <returns></returns>
-		Point find(Mat* video_src, Mat templ, double threshold = 0.95, bool debug_mode = false);
+		cv::Point find(cv::Mat* video_src, cv::Mat templ, double threshold = 0.05, bool debug_mode = false);
 };

@@ -1,12 +1,6 @@
-#include <iostream>
-#include <string>
-#include <opencv2/opencv.hpp>
-
 #include "WindowCapture.h"
-#include "../Helpers/StringHelper.cpp"
+#include "../helpers/StringHelper.cpp"
 
-
-using namespace std;
 using namespace cv;
 
 /*
