@@ -1,12 +1,21 @@
 #include "../motion/RumbleMotion.hpp"
 #include "../vision/RumbleVision.h"
 #include "../window_capture/WindowCapture.h"
+#include "league_client/LeagueClientScreen.hpp"
 
 class RumbleLeague
 {
 private:
 	// The title of the opencv generated window that shows the matching results if it's active (debug mode)
-	static constexpr const char* window_name = "C++ Rumble AI League of Legends Extension";
+	static constexpr const char* titlebar_window_name = "C++ Rumble AI League of Legends Extension";
+
+	// The keywords that represents an action. We actually create an array of string literals by creating an array of pointers.
+	static constexpr const char* english_keywords { "main screen" }; // etc... 
+	static constexpr const char* spanish_keywords[10] { 
+		"inicio", "pantalla principal", "inicio", "tft", "clash", "perfil", "collección", "botín", "tu tienda", "tienda" // Pantalla principal
+
+	}; // etc... 
+
 
 	// The current Rumble AI user selected language. This extension uses the same criteria as the parent app for
 	// recognize and work with a language. It's used receive a value throught a constructor parameter and
@@ -18,17 +27,6 @@ private:
 	// and acts as a flag for some common tree decision actions based on what the user it's quering.
 	Language language;
 
-	
-	// TODO Refactor this as a whole new class??
-	// TODO Should be two classes, one for the client and one for the in game actions? (This is a different window)
-	// The League of Legends client screen on which the user it's currently located
-	enum class LeagueClientScreen { MainScreen, ChooseGame, FindGame, AcceptDecline, ChampSelect };  // TODO Complete or refactor
-	LeagueClientScreen current_league_client_screen;
-
-
-	/// BIG THING
-
-	
 
 	// Declares our helper to get the video source
 	// BIG TODO -> On the named constructor, should implement a way to converse coordinates from a captured window,
@@ -43,6 +41,9 @@ private:
 	// that will match the image that we need to perform an action
 	RumbleLeagueVision* rumble_vision;
 
+	// The League of Legends client screen on which the user it's currently located
+	LeagueClientScreen* current_league_client_screen;
+
 
 	/// Private methods. Should act as a helper for parse info or performs internal operations
 
@@ -56,6 +57,9 @@ private:
 
 		// Main action ??
 		void league_client_action(const std::string& user_input);
+
+		// Parses the user query
+		//void detect_desired_action
 
 
 		void play_game();

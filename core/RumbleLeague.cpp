@@ -27,18 +27,20 @@ using namespace cv;
 RumbleLeague::RumbleLeague(const int language_id)
 	: window_capture{ new WindowCapture },
 	rumble_vision{ new RumbleLeagueVision },
-	current_league_client_screen{ LeagueClientScreen::MainScreen }
+	current_league_client_screen{ new LeagueClientScreen(LeagueClientScreenIdentifier::MainScreen) }
 { 
 	this->set_cpp_language(language_id);
 }
 
 RumbleLeague::RumbleLeague()
-	: RumbleLeague{ 1 }
+	: RumbleLeague{ 1 }  // 1 it's the ID for the default
 {
 	this->window_capture = new WindowCapture();
 	this->rumble_vision = new RumbleLeagueVision();
-	this->current_league_client_screen = LeagueClientScreen::MainScreen;
-	this->set_cpp_language(language_id);
+	this->current_league_client_screen = new LeagueClientScreen(LeagueClientScreenIdentifier::MainScreen);
+	
+	this->set_cpp_language(language_id); // This call it's duplicating the code, so should be removed
+	// Guess that I only should pass it as a consttructor arg in initialization
 }
 
 
@@ -50,11 +52,23 @@ RumbleLeague::RumbleLeague()
 /// if something goes wrong, of if the user tries to be smarter that Rumble ;)
 void RumbleLeague::league_client_action(const std::string& user_input)
 {
-	if (this->language == Language::English) {}
-		// TODO Pending implementation, because hoxe sábado vou comer Raxo a Muros.
-		// Son as 14:20, fai un sol que nin Dios e non me apetece estar na casa.
-		// Saludos, picadores!
+	// First things first. We are receiving the user desired action, so we need to match it in order to choose the correct action 
+	void detect_desired_action();
+	if (this->language == Language::English) 
+	{
+		
+	}
+	else if (this->language == Language::Spanish)
+	{
+		//void
+	}
+		
 }
+
+//void RumbleLeague::detect_desired_action()
+//{
+//
+//}
 
 //void do_things() {
 // 
