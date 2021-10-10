@@ -9,14 +9,6 @@ private:
 	// The title of the opencv generated window that shows the matching results if it's active (debug mode)
 	static constexpr const char* titlebar_window_name = "C++ Rumble AI League of Legends Extension";
 
-	// The keywords that represents an action. We actually create an array of string literals by creating an array of pointers.
-	static constexpr const char* english_keywords { "main screen" }; // etc... 
-	static constexpr const char* spanish_keywords[10] { 
-		"inicio", "pantalla principal", "inicio", "tft", "clash", "perfil", "collección", "botín", "tu tienda", "tienda" // Pantalla principal
-
-	}; // etc... 
-
-
 	// The current Rumble AI user selected language. This extension uses the same criteria as the parent app for
 	// recognize and work with a language. It's used receive a value throught a constructor parameter and
 	// transform it into a C++ enum variant
@@ -47,8 +39,9 @@ private:
 
 	/// Private methods. Should act as a helper for parse info or performs internal operations
 
-	// Sets the C++ language by taking the id of the language provided via constructor from Rumble AI, and converting it to the Language type.
-	void set_cpp_language(const int language_id);
+	// Sets the language on this C++ library by taking the id of the language (provided via constructor from Rumble AI),
+	// and converting it into an variant of the Language (enum) type in the implementation of this method
+	void set_cpp_language();
 
 
 	public:

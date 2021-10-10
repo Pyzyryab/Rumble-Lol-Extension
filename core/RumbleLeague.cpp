@@ -27,20 +27,19 @@ using namespace cv;
 RumbleLeague::RumbleLeague(const int language_id)
 	: window_capture{ new WindowCapture },
 	rumble_vision{ new RumbleLeagueVision },
-	current_league_client_screen{ new LeagueClientScreen(LeagueClientScreenIdentifier::MainScreen) }
+	current_league_client_screen{ LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen) }
 { 
-	this->set_cpp_language(language_id);
+	this->set_cpp_language();
 }
 
 RumbleLeague::RumbleLeague()
-	: RumbleLeague{ 1 }  // 1 it's the ID for the default
+	: RumbleLeague{ 1 }  // 1 it's the ID for the default language (English)
 {
 	this->window_capture = new WindowCapture();
 	this->rumble_vision = new RumbleLeagueVision();
-	this->current_league_client_screen = new LeagueClientScreen(LeagueClientScreenIdentifier::MainScreen);
+	this->current_league_client_screen = LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen);
 	
-	this->set_cpp_language(language_id); // This call it's duplicating the code, so should be removed
-	// Guess that I only should pass it as a consttructor arg in initialization
+	this->set_cpp_language();
 }
 
 
@@ -48,27 +47,15 @@ RumbleLeague::RumbleLeague()
 /// It's receives the query that the user entered, parse it again and decides what type
 /// of action should be performed
 /// 
-/// TODO insted of void, should return something meaninful to Python, in order to talk with the user
+/// TODO insted of void, should return something meaninful to the Python API, in order to talk with the user
 /// if something goes wrong, of if the user tries to be smarter that Rumble ;)
 void RumbleLeague::league_client_action(const std::string& user_input)
 {
-	// First things first. We are receiving the user desired action, so we need to match it in order to choose the correct action 
-	void detect_desired_action();
-	if (this->language == Language::English) 
-	{
-		
-	}
-	else if (this->language == Language::Spanish)
-	{
-		//void
-	}
+	this->current_league_client_screen->matched_keywords(user_input);
+	for (int i = 0; sizeof(this->current_league_client_screen); i++)
+		std::cout << "Keyword: " << this->current_league_client_screen->get_spanish_keywords()[i] << std::endl;
 		
 }
-
-//void RumbleLeague::detect_desired_action()
-//{
-//
-//}
 
 //void do_things() {
 // 
@@ -125,7 +112,7 @@ void RumbleLeague::play_game()
 * Helpers private methods
 */
 
-void RumbleLeague::set_cpp_language(const int language_id)
+void RumbleLeague::set_cpp_language()
 {
 	// Switch statement prefered here 'cause potentially the API could be translated to more languages.
 	// Obviously, the default case always should be setted to a default language (English in this case),
