@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 
 #include "../../helpers/StringHelper.cpp"
 
@@ -23,9 +24,13 @@ class LeagueClientScreen
 		// Stores the window's name as an enum variant
 		LeagueClientScreenIdentifier identifier;
 
+		// The constants for defining the primitives arrays capacity
+		static const size_t english_array_size = 1;
+		static const size_t spanish_array_size = 1;
+
 		// Identifier per language
-		static constexpr const char* english_keywords[1] {};
-		static constexpr const char* spanish_keywords[1] {};
+		static constexpr const char* english_keywords[english_array_size] {};
+		static constexpr const char* spanish_keywords[spanish_array_size] {};
 
 	public:
 		// Factory static method 
@@ -35,25 +40,32 @@ class LeagueClientScreen
 		LeagueClientScreen();
 		LeagueClientScreen(LeagueClientScreenIdentifier identifier);
 		
-		// Methods
+		// Getters and Setters
 		virtual LeagueClientScreenIdentifier get_identifier();
 		virtual void set_identifier(const LeagueClientScreenIdentifier& identifier);
-		virtual std::vector<std::string> matched_keywords(const std::string& user_input);
 
-		// Getters for the keywords
 		virtual const char* const* get_english_keywords();
 		virtual const char* const* get_spanish_keywords();
+
+		virtual const size_t get_english_array_size();
+		virtual const size_t get_spanish_array_size();
+
+		// Methods
+		virtual std::vector<std::string> matched_keywords(const std::string& user_input);
 		
 };
 
 class MainScreen : public LeagueClientScreen
 {
 	private:
-		static constexpr const char* english_keywords[10]{
-			// Main screen
+		static const size_t english_array_size = 10;
+		static const size_t spanish_array_size = 9;
+
+		static constexpr const char* english_keywords[english_array_size]{
+			// Main screen, etc.
 		};
 
-		static constexpr const char* spanish_keywords[9]{
+		static constexpr const char* spanish_keywords[spanish_array_size] {
 			"inicio", "pantalla principal", "tft", "clash", "perfil", "collección", "botín", "tu tienda", "tienda" // Pantalla principal
 		};
 	
@@ -62,5 +74,8 @@ class MainScreen : public LeagueClientScreen
 
 		const char* const* get_english_keywords();
 		const char* const* get_spanish_keywords();
+
+		const size_t get_english_array_size();
+		const size_t get_spanish_array_size();
 
 };

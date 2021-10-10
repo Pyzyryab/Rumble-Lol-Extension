@@ -38,24 +38,36 @@ void LeagueClientScreen::set_identifier(const LeagueClientScreenIdentifier& iden
 /// <returns></returns>
 std::vector<std::string> LeagueClientScreen::matched_keywords(const std::string& user_input)
 {
-	std::vector<std::string> matched_keywords{};
-	std::vector<std::string> splitted_input = StringHelper::split_by_delimiter(user_input, ' ', matched_keywords);
+	std::vector<std::string> matched_keywords {};
+	
+	std::vector<std::string> splitted_input;
+	splitted_input = StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
-	for (const auto word : splitted_input)
-	{
-		// TODO pending to decide if member methods should be std::vector<string> or remains as const char*
-		//if (std::binary_search(this->spanish_keywords.begin(), this->spanish_keywords.end(), word))
-		for (int i = 0; i < sizeof(this->spanish_keywords); i++)
-			if (word.data() == this->spanish_keywords[i])
-				matched_keywords.push_back(word);
-		std::cout << "Matched keywords: " << word << std::endl;
+	for (int i = 0; i < splitted_input.size(); i++)
+		std::cout << "Splitted input at index " << i << ": " << splitted_input[i] << std::endl;
 
-		return matched_keywords;
+	const char* const* keywords = this->get_spanish_keywords();
+
+	std::cout << "" << std::endl;
+	for (const auto word : splitted_input) {
+		std::cout << "" << std::endl;
+		std::cout << "Comparing: " << word << std::endl;
+		for (int i = 0; i < 7; i++) {
+			std::cout << " with: " << keywords[i] << std::endl;
+			if ( strcmp(keywords[i], word.c_str()) == 0 ) {
+				std::cout << "\t Match founded!" << std::endl;
+				matched_keywords.push_back(keywords[i]);
+			}
+		}
 	}
 
 	return matched_keywords;
 }
 
+
+/**
+* Getters for the keyword identifiers
+*/
 const char* const* LeagueClientScreen::get_english_keywords()
 {
 	return english_keywords;
@@ -75,6 +87,32 @@ const char* const* MainScreen::get_spanish_keywords()
 {
 	return spanish_keywords;
 }
+
+
+
+/**
+* Getters for the size of the arrays that contains the keyword identifiers
+*/
+const size_t LeagueClientScreen::get_english_array_size()
+{
+	return english_array_size;
+}
+
+const size_t LeagueClientScreen::get_spanish_array_size()
+{
+	return spanish_array_size;
+}
+
+const size_t MainScreen::get_english_array_size()
+{
+	return english_array_size;
+}
+
+const size_t MainScreen::get_spanish_array_size()
+{
+	return spanish_array_size;
+}
+
 
 /**
 * Default constructors

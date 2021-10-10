@@ -36,7 +36,7 @@ namespace StringHelper
     /// Splits an stardand C++ string object into a std::vec<string>, receiving a reference to the string,
     /// a character as a delimitter and an std::vector<string> as an output container.
     /// </summary>
-    std::vector<std::string> &split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
+    std::vector<std::string>& split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
     {
         // construct a stream from the string 
         std::stringstream ss(input);

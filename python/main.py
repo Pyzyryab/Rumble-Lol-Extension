@@ -10,4 +10,4 @@ rle = rle.RumbleLeague(1)
 print(rle)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour
 
 # For now, the unique method availiable it's the one shown below.
-rle.league_client_action('Rumble, quiero jugar una ranked')
+rle.league_client_action('Rumble, quiero jugar una ranked inicio perfil')

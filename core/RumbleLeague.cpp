@@ -51,9 +51,19 @@ RumbleLeague::RumbleLeague()
 /// if something goes wrong, of if the user tries to be smarter that Rumble ;)
 void RumbleLeague::league_client_action(const std::string& user_input)
 {
-	this->current_league_client_screen->matched_keywords(user_input);
-	for (int i = 0; sizeof(this->current_league_client_screen); i++)
-		std::cout << "Keyword: " << this->current_league_client_screen->get_spanish_keywords()[i] << std::endl;
+	// TODO Change the implementor's method name
+	// Get a list with the user words that have relationship with the CURRENT active League of Legends client window
+	auto matched_keywords = this->current_league_client_screen->matched_keywords(user_input);
+	
+	// TODO Design a logical patter for when the matched keywords it's bigger than one...
+	// Should just take the first? Make a NLP processing? Just returning an string with a voice error message
+	// indicating that two petitions can't be processed at the same time?
+
+
+	// Debug
+	std::cout << "\n *************************" << endl;
+	for (auto word : matched_keywords)
+		std::cout << "Matched keyword: " << word << endl;
 		
 }
 
