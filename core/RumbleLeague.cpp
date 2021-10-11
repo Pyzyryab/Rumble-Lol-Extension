@@ -52,24 +52,108 @@ RumbleLeague::RumbleLeague()
 void RumbleLeague::league_client_action(const std::string& user_input)
 {
 	// TODO Change the implementor's method name
-	// Get a list with the user words that have relationship with the CURRENT active League of Legends client window
+	// 1ºst -> Get a list with the user words that have relationship with the CURRENT active League of Legends client window
 	auto matched_keywords = this->current_league_client_screen->matched_keywords(user_input);
 	
-	// TODO Design a logical patter for when the matched keywords it's bigger than one...
-	// Should just take the first? Make a NLP processing? Just returning an string with a voice error message
-	// indicating that two petitions can't be processed at the same time?
+	/* 2 ->
+		TODO Design a logical patter for when the matched keywords it's bigger than one...
+		Should just take the first? Make a NLP processing? Just returning an string with a voice error message
+		indicating that two petitions can't be processed at the same time?
 
+		Maybe just the more coincident? 80% coincident?
+	*/
 
 	// Debug
 	std::cout << "\n *************************" << endl;
 	for (auto word : matched_keywords)
 		std::cout << "Matched keyword: " << word << endl;
+
+	/** 3->Detect the desired client action ?
+		A way of avoid using another switch?
+		Probably a map to store a method call?
+		Maybe the method internally should have a switch with the correct image to load?
+
+		Or just one only method that gets the next window? ie. the matching word should have a LeagueClientScreenIdentifier associated
+		This leads to probably better returning a LeagueClientScreenIdentifier, that will indicates the desired action and the next screen
+
+		11/Oct/2021 1st idea. I'm tired of the job. Tomorrow I will travel from the north of Spain to the south of Portugal. 
+		Just wanna try at least, one of the three ways that I thought about.
+
+		The decision tree design will follow two branches.  
+			**Direct decision** -> Like for example: 
+				- I want to play an Aram, so from the Main Screen of the client the rle will auto
+				make all the necessary steps to perform an action.
+				- I want to play a ranked as a jungler and midlaner, so the same but it will auto-select the summoner position
+			**Simple decision** -> Every screen contains identifiers that will match all the posible movements from this screen to the next,
+				so the example above will be:
+				1º Wanna play / play
+				2º Ranked solo / duo
+				3º midlaner, jungler
+				4º Here will be the find match
+				5º Autoaccept game (automatic)
+				6º Choose me "Zed"
+				7º Ban "Vex, it's `fuc****` broken
+				8º Change nº of rune pages? (Complicated, implies slide)
+				9º Change summoners
+				10º Select skin (by name, or move right left)
+
+		So, with this design patters, let's go ahead and implement a very basic approach to this task.
+
+		WARNING! -> I can ensure that will be a lot of refactor of this first things, always found a better way of design a solution to a problem
+		but, first make it work, then make it beautiful, then make it fast.
+
+		Note: This formulation of this statement has been attributed to KentBeck; it has existed as part of the UnixWay for a long time.
+
 		
+		So, to acomplish this difficult task, several things have to happen.
+
+		1º Something as to received the coincident match and find in some data structure, the coordinates in the screen and select the appropiated
+		needle image to find those coordinates.
+
+		Assuming that for example, let's try to just move to the match type select screen from the main screen.
+		We will need to parse the input, (assuming that we will receive "play" as command),
+		the method that parse it will return something that identifies that we need the image under the "../{language}/{image_name}.jpg" folder.
+		Then, we will found that image on the screen, return the coordinates, and click on the image. Simple, right?
+
+		Very important thing, when we move from one screen to another, we should manually manage to delete the instance of the current screen 
+		identifier (remember that we only have a pointer to the instance, not an identifier, so it's a crucial thing), and manage to instanciate
+		a new one and set it as the new current_league_client_screen.
+
+		To start, then, we need a method that takes a string, and call the factory static methods that creates the correct instance based on 
+		a LeagueClientScreenIdentifier. So it's really easy, after too much text, the first thing that we need it's just a method that 
+		matches a string
+
+
+		¡¡¡ LAST HOUR NOTE !!! Should, using a map, just use the LeagueClientScreen as the unique class? Avoiding have to right
+		a lot of individual child classes?
+
+		The options are, write child classes (inherited from LeagueClientScreen), with the basic data handcoded inside
+		(the keywords, the variant of the LeagueClientScreenIdentifier...), or store that data on a map (or a switch statement)
+		and recover it by it's identifier?
+
+	*/
+}
+
+void change_screen(const std::string& match)
+{
+	// This map will be stored in another place, and called here, but for now...
+	// Thinking about the map's signature, it can contains an <char*, LeagueClientScreen>
+	const std::map<const char*, LeagueClientScreenIdentifier> screen_options{
+		std::make_pair("play", LeagueClientScreenIdentifier::MainScreen)
+	};
+
+	// So, the first thing that the method will do, should be get the value from the unique key
+
+	
+	// Second should be call the factory method and create a new instance
+
+	// Third will be reasing the memory where it's pointing the current_league_client_screen variable
+	// to the new created object
 }
 
 //void do_things() {
 // 
-//	// 1º Select what it's the needle image based on the input
+//	// TODO Select what it's the needle image based on the input
 //	// 
 //	// TEMPLATE MATCHING
 //	cv::Mat img_to_find = cv::imread("../assets/SP/boton_jugar.jpg", COLOR_BGR2BGRA);
