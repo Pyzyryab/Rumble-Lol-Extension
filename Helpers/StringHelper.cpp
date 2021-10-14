@@ -48,4 +48,18 @@ namespace StringHelper
 
         return output;
     }
+
+    /// <summary>
+    /// Created to be able to compare char* on std data structures. In detail, to allow the .find() method of the std::map DS to match
+    /// keys with the type const char*.
+    /// A char* it's just a pointer to a C-String style, which are just contiguous characters on a chuck of memory, that's why the find method
+    /// fails trying to find a char* key against a passed in char*, because it's comparing memory addreses, not string values.
+    /// </summary>
+    struct cmp_str
+    {
+        bool operator()(char const* a, char const* b) const
+        {
+            return std::strcmp(a, b) < 0;
+        }
+    };
 }

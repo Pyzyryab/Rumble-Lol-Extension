@@ -12,6 +12,9 @@ LeagueClientScreen* LeagueClientScreen::factory_screen(const LeagueClientScreenI
 		case LeagueClientScreenIdentifier::MainScreen:
 			return new MainScreen;
 			break;
+		case LeagueClientScreenIdentifier::ChooseGame:
+			return new ChooseGame;
+			break;
 		// TODO Implement the other methods
 	}
 
@@ -31,12 +34,23 @@ void LeagueClientScreen::set_identifier(const LeagueClientScreenIdentifier& iden
 	this->identifier = identifier;
 }
 
+LeagueClientScreenIdentifier MainScreen::get_identifier()
+{
+	return league_client_screen_identifier;
+}
+
+LeagueClientScreenIdentifier ChooseGame::get_identifier()
+{
+	return league_client_screen_identifier;
+}
+
+
 /// <summary>
 /// Matches an object instance keywords property (keywords are what identifies the actions available 
 /// for a concrete LeagueClientScreen child type), returning the coincident ones
 /// </summary>
 /// <returns></returns>
-std::vector<std::string> LeagueClientScreen::matched_keywords(const std::string& user_input)
+std::vector<std::string> LeagueClientScreen::match_keywords(const std::string& user_input)
 {
 	std::vector<std::string> matched_keywords {};
 	
@@ -78,6 +92,12 @@ const char* const* MainScreen::get_english_keywords()
 	return english_keywords;
 }
 
+const char* const* ChooseGame::get_english_keywords()
+{
+	return english_keywords;
+}
+
+
 const char* const* LeagueClientScreen::get_spanish_keywords()
 {
 	return spanish_keywords;
@@ -87,6 +107,12 @@ const char* const* MainScreen::get_spanish_keywords()
 {
 	return spanish_keywords;
 }
+
+const char* const* ChooseGame::get_spanish_keywords()
+{
+	return spanish_keywords;
+}
+
 
 
 
@@ -113,9 +139,23 @@ const size_t MainScreen::get_spanish_array_size()
 	return spanish_array_size;
 }
 
+const size_t ChooseGame::get_english_array_size()
+{
+	return english_array_size;
+}
+
+const size_t ChooseGame::get_spanish_array_size()
+{
+	return spanish_array_size;
+}
+
 
 /**
 * Default constructors
 */
 LeagueClientScreen::LeagueClientScreen() : identifier{ LeagueClientScreenIdentifier::MainScreen } {}
+
 MainScreen::MainScreen() {}
+
+ChooseGame::ChooseGame() {}
+

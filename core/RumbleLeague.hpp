@@ -51,6 +51,8 @@ private:
 		// Main action ??
 		void league_client_action(const std::string& user_input);
 
+		void change_screen(const std::string& matched_keyword);
+
 		// Parses the user query
 		//void detect_desired_action
 

@@ -53,7 +53,7 @@ void RumbleLeague::league_client_action(const std::string& user_input)
 {
 	// TODO Change the implementor's method name
 	// 1ºst -> Get a list with the user words that have relationship with the CURRENT active League of Legends client window
-	auto matched_keywords = this->current_league_client_screen->matched_keywords(user_input);
+	auto matched_keywords = this->current_league_client_screen->match_keywords(user_input);
 	
 	/* 2 ->
 		TODO Design a logical patter for when the matched keywords it's bigger than one...
@@ -130,25 +130,54 @@ void RumbleLeague::league_client_action(const std::string& user_input)
 		The options are, write child classes (inherited from LeagueClientScreen), with the basic data handcoded inside
 		(the keywords, the variant of the LeagueClientScreenIdentifier...), or store that data on a map (or a switch statement)
 		and recover it by it's identifier?
-
 	*/
+
+	this->change_screen(matched_keywords[0]);
+
+	// 
 }
 
-void change_screen(const std::string& match)
+/// <summary>
+/// Changes the pointer value what points to instance of the LeagueClientScreen for the new one after matching a user input
+/// </summary>
+/// <param name="matched_keyword"></param>
+void RumbleLeague::change_screen(const std::string& matched_keyword)
 {
-	// This map will be stored in another place, and called here, but for now...
-	// Thinking about the map's signature, it can contains an <char*, LeagueClientScreen>
-	const std::map<const char*, LeagueClientScreenIdentifier> screen_options{
-		std::make_pair("play", LeagueClientScreenIdentifier::MainScreen)
+	// This map will be stored in another place, but for now...
+	// Think about the map's signature, it can contains an <const char*, LeagueClientScreenIdentifier>
+	const std::map<const char*, LeagueClientScreenIdentifier, StringHelper::cmp_str> available_league_client_screens {
+		std::make_pair("inicio", LeagueClientScreenIdentifier::MainScreen),
+		std::make_pair("jugar", LeagueClientScreenIdentifier::ChooseGame)
 	};
 
 	// So, the first thing that the method will do, should be get the value from the unique key
 
+	// Declaring an iterator to retrieve the address of the desired key
+	map<const char*, LeagueClientScreenIdentifier>::const_iterator it;
 	
-	// Second should be call the factory method and create a new instance
+	// Using find() to search for the desired key found
+	const char* const desired_keyword = matched_keyword.c_str();
+	it = available_league_client_screens.find(desired_keyword);
 
-	// Third will be reasing the memory where it's pointing the current_league_client_screen variable
-	// to the new created object
+	if (it == available_league_client_screens.end()) 
+	{
+		cout << "Key-value pair not present in map" << endl;
+		// TODO Throw exception, really create a LeagueClientScreenIdentifier that represents the NO founded value
+	}
+	else 
+	{
+		cout << "\nKey: " << it->first << " Value: " << it->second << endl;
+		
+		cout << "Current league screen: " << this->current_league_client_screen->get_identifier() << endl;
+		cout << "Current league address: " << this->current_league_client_screen << endl;
+		
+		// Second (inside the else block) should be call the factory method and create a new instance
+		this->current_league_client_screen = this->current_league_client_screen->factory_screen(it->second);
+
+		cout << "NEW current league screen: " << this->current_league_client_screen->get_identifier() << endl;
+		cout << "NEW current league screen address: " << this->current_league_client_screen << endl;
+	}
+
 }
 
 //void do_things() {
