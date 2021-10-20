@@ -6,11 +6,6 @@ x64/
 .vscode/
 .vs/
 *.exe
-*.pyd
-*.pyc
 Debug/
-*.jpg
-*.png
-*/env39/
 */env/
 */__pycache__/

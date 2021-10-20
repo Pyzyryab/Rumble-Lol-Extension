@@ -1,3 +1,14 @@
+import os
+
+# Since Python 3.8, DLL's from installed libs should be manually pointed, as a safe-directory check.
+initial_dir = os.getcwd()
+
+os.chdir('../x64/Release')
+
+dll_dir = os.getcwd()
+os.add_dll_directory(dll_dir)
+os.chdir(initial_dir)
+
 import rle
 
 # Instanciate a new RumbleLeague object
@@ -10,4 +21,4 @@ rle = rle.RumbleLeague(1)
 print(rle)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour
 
 # For now, the unique method availiable it's the one shown below.
-rle.league_client_action('Rumble, jugar')
+rle.play('Rumble, home')

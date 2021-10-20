@@ -4,19 +4,21 @@
 #include <vector>
 #include <array>
 
-#include "../../helpers/StringHelper.cpp"
+#include "LeagueClientButton.cpp"
+//#include "../../helpers/StringHelper.cpp"
 
 /// <summary>
 /// The enum representation of the name of a League of Legends client. This is a convenient way of avoid
 /// the use of raw char* or std::strings to match a property.
 /// </summary>
 enum class LeagueClientScreenIdentifier {
-	MainScreen, ChooseGame, AcceptDecline, ChampSelect
-};  // TODO Complete. Should be on the global namespace?
+	Base, MainScreen, ChooseGame, AcceptDecline, ChampSelect
+};  // TODO Complete it.
 
 /// Overload the output stream operator for the LeagueClientScreenIdentifier custom type
 inline std::ostream& operator<<(std::ostream& Str, LeagueClientScreenIdentifier lcsi) {
 	switch (lcsi) {
+		case LeagueClientScreenIdentifier::Base: return Str << "Base"; break;
 		case LeagueClientScreenIdentifier::MainScreen: return Str << "Main screen"; break;
 		case LeagueClientScreenIdentifier::ChooseGame: return Str << "Game selection"; break;
 		case LeagueClientScreenIdentifier::AcceptDecline: return Str << "Accept / decline"; break;
@@ -32,15 +34,14 @@ class LeagueClientScreen
 {
 	private:
 		// Stores the window's name as an enum variant
-		LeagueClientScreenIdentifier identifier;
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::Base;
 
 		// The constants for defining the primitives arrays capacity
-		static const size_t english_array_size = 1;
-		static const size_t spanish_array_size = 1;
+		static const size_t buttons_array_size = 1;
 
 		// Identifier per language
-		static constexpr const char* english_keywords[english_array_size] {};
-		static constexpr const char* spanish_keywords[spanish_array_size] {};
+		std::vector<ClientButton*> english_client_buttons { new ClientButton("no virtual", "base class") };
+		std::vector<ClientButton*> spanish_client_buttons { new ClientButton("no virtual", "base class") };
 
 	public:
 		// Factory static method 
@@ -48,38 +49,47 @@ class LeagueClientScreen
 
 		// Constructors
 		LeagueClientScreen();
-		LeagueClientScreen(LeagueClientScreenIdentifier identifier);
+		//LeagueClientScreen(LeagueClientScreenIdentifier identifier);
 		
 		// Getters and Setters
 		virtual LeagueClientScreenIdentifier get_identifier();
-		virtual void set_identifier(const LeagueClientScreenIdentifier& identifier);
+		/*No setter needed nowadays!
+			virtual void set_identifier(const LeagueClientScreenIdentifier& identifier);
+		*/
 
-		virtual const char* const* get_english_keywords();
-		virtual const char* const* get_spanish_keywords();
+		virtual std::vector<ClientButton*> get_english_client_buttons();
+		virtual std::vector<ClientButton*> get_spanish_client_buttons();
 
-		virtual const size_t get_english_array_size();
-		virtual const size_t get_spanish_array_size();
+		virtual const size_t get_buttons_array_size();
 
 		// Methods
-		virtual std::vector<std::string> match_keywords(const std::string& user_input);
+		std::vector<ClientButton*> find_client_button(const std::string& user_input);
 		
 };
 
 class MainScreen : public LeagueClientScreen
 {
 	private:
-		static const LeagueClientScreenIdentifier league_client_screen_identifier =
-			LeagueClientScreenIdentifier::MainScreen;
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::MainScreen;
 
-		static const size_t english_array_size = 10;
-		static const size_t spanish_array_size = 10;
+		static const size_t buttons_array_size = 10;
 
-		static constexpr const char* english_keywords[english_array_size]{
-			// Main screen, etc.
+		std::vector<ClientButton*> english_client_buttons {
+			new ClientButton("play", "play_button"),
+			new ClientButton("home", "home_button"),
+			new ClientButton("tft", "tft_button"),
+			new ClientButton("clash", "clash_button"),
+			new ClientButton("profile", "profile_button"),
+			new ClientButton("collection", "collection_button"),
+			new ClientButton("loot", "loot_button"),
+			new ClientButton("your_shop", "your_shop_button"),
+			new ClientButton("shop", "shop_button")
+
 		};
 
-		static constexpr const char* spanish_keywords[spanish_array_size] {
-			"inicio", "jugar", "tft", "clash", "perfil", "collección", "botín", "tu tienda", "tienda" // Pantalla principal
+		std::vector<ClientButton*> spanish_client_buttons {
+			new ClientButton("jugar", "boton_jugar"),
+			new ClientButton("clash", "boton_clash")
 		};
 	
 	public:
@@ -87,11 +97,10 @@ class MainScreen : public LeagueClientScreen
 
 		LeagueClientScreenIdentifier get_identifier();
 
-		const char* const* get_english_keywords();
-		const char* const* get_spanish_keywords();
+		std::vector<ClientButton*> get_english_client_buttons() override;
+		std::vector<ClientButton*> get_spanish_client_buttons() override;
 
-		const size_t get_english_array_size();
-		const size_t get_spanish_array_size();
+		const size_t get_buttons_array_size();
 
 };
 
@@ -99,18 +108,17 @@ class MainScreen : public LeagueClientScreen
 class ChooseGame : public LeagueClientScreen
 {
 	private:
-		static const LeagueClientScreenIdentifier league_client_screen_identifier =
-			LeagueClientScreenIdentifier::ChooseGame;
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::ChooseGame;
 
-		static const size_t english_array_size = 10;
-		static const size_t spanish_array_size = 10;
+		static const size_t buttons_array_size = 10;
 
-		static constexpr const char* english_keywords[english_array_size]{
-			// Main screen, etc.
+		std::vector<ClientButton*> english_client_buttons {
+			new ClientButton("normal", "normal")
 		};
 
-		static constexpr const char* spanish_keywords[spanish_array_size]{
-			"normal", "ranked", "aram", // Modos de partidas
+		std::vector<ClientButton*> spanish_client_buttons {
+			new ClientButton("normal", "normal"),
+			new ClientButton("ranked", "ranked")
 		};
 
 	public:
@@ -118,10 +126,9 @@ class ChooseGame : public LeagueClientScreen
 
 		LeagueClientScreenIdentifier get_identifier();
 
-		const char* const* get_english_keywords();
-		const char* const* get_spanish_keywords();
+		std::vector<ClientButton*> get_english_client_buttons() override;
+		std::vector<ClientButton*> get_spanish_client_buttons() override;
 
-		const size_t get_english_array_size();
-		const size_t get_spanish_array_size();
+		const size_t get_buttons_array_size();
 
 };

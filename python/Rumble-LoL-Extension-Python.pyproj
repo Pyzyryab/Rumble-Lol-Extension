@@ -36,13 +36,6 @@
       <Architecture>X64</Architecture>
     </Interpreter>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Rumble LoL Extension.vcxproj">
-      <Name>Rumble LoL Extension</Name>
-      <Project>{5638f70f-52c5-4f00-b9e7-547c6fd42f8b}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
        Visual Studio and specify your pre- and post-build commands in

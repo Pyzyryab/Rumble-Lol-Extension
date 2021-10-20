@@ -13,8 +13,8 @@ void RumbleMotion::move_mouse_and_left_click(int x, int y)
     // TODO Aplicate padding in another method, in the way that it's needed to click on the certain League Client button// TODO Make corrections based on options, ie. click find match or back home
 
     // So x -> 100 and y -> 25 it's the offset to ensure that it's clicking the find match button
-    x = x + 100;
-    y = y + 25;
+   /* x = x + 100;
+    y = y + 25;*/
 
     SetCursorPos(x, y);
     // TODO Three of match decision 
