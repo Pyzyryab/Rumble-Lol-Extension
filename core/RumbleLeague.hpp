@@ -11,14 +11,8 @@
 #include "../gision/RumbleVision.h"
 #include "../window_capture/WindowCapture.h"
 #include "league_client/LeagueClientScreen.hpp"
+#include "../helpers/StringHelper.cpp"
 
-struct cmp_str
-{
-	bool operator()(char const* a, char const* b) const
-	{
-		return std::strcmp(a, b) < 0;
-	}
-};
 
 class RumbleLeague
 {
@@ -63,7 +57,7 @@ class RumbleLeague
 		// Note that also the map needs a custom comparator to find a value by the key with the .find() method, because the key type it's
 		// const char*, or simply an array of pointers to inmutable strings, so if we use the .find() method with some string value, it will just
 		// compare memory locations, no string values.
-		const std::map<const char*, LeagueClientScreen*, cmp_str> available_league_client_screens {
+		const std::map<const char*, LeagueClientScreen*, StringHelper::cmp_str> available_league_client_screens {
 			std::make_pair("start", new MainScreen), // TODO SPLIT BY LANGUAGE THE MAP
 			std::make_pair("inicio", new MainScreen),
 			std::make_pair("jugar", new ChooseGame),
@@ -79,8 +73,10 @@ class RumbleLeague
 
 
 	public:
+		// Constructors
 		RumbleLeague();
 		RumbleLeague(const int language_id);
+		// TODO Implement the copy and the move constructors
 
 		// The entry point for the Python API
 		void play(const std::string& user_input);

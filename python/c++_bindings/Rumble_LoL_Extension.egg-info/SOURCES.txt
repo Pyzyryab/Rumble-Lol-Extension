@@ -4,6 +4,7 @@ D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/core/RumbleLeague.cpp
 D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/core/league_client/LeagueClientButton.cpp
 D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/core/league_client/LeagueClientScreen.cpp
 D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/gision/RumbleVision.cpp
+D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/helpers/StringHelper.cpp
 D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/motion/RumbleMotion.cpp
 D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/python/c++_bindings/python_linker.cpp
 D:/MSi 2020-2021/Code/C++/Rumble LoL Extension/window_capture/WindowCapture.cpp

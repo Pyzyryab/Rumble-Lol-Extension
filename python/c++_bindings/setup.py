@@ -28,6 +28,8 @@ sfc_module = Extension(
         'D:\MSi 2020-2021\Code\C++\Rumble LoL Extension\gision\RumbleVision.cpp',
         # Window Capture
         'D:\MSi 2020-2021\Code\C++\Rumble LoL Extension\window_capture\WindowCapture.cpp',
+        # Window Capture
+        'D:\MSi 2020-2021\Code\C++\Rumble LoL Extension\helpers\StringHelper.cpp',
     ],
     include_dirs=[pybind11.get_include()],
     language='c++',
