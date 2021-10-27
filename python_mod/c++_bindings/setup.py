@@ -1,5 +1,5 @@
-# Gets an absolute path to this file, and delete the characters on the str that represents the 
-# inner paths of the root path ( 'rumble_league_extension_plugin' )
+# Creates a relative path to this source file location on the filesystem, and then removes the last 64 characters of the str
+# that are the ones after the root of the project's path ( '\\rumble_league_extension_plugin' )
 from pathlib import Path
 rel_path = str(Path(__file__).absolute())[ : -64 ]
 
@@ -8,7 +8,7 @@ import pybind11
 
 cpp_args = [
     "-IC:\\vcpkg\\installed\\x64-windows\\include",
-    f"-I{rel_path}\\rumble_league_extension_plugin\RUMBLE LOL EXTENSION\X64\RELEASE",
+    f"-I{rel_path}\\rumble_league_extension_plugin\X64\RELEASE",
     "/link",
     "/LIBPATH:C:\\vcpkg\\installed\\x64-windows\\lib",
     "/LIBPATH:C:\\vcpkg\\installed\\x64-windows\\bin",
@@ -33,7 +33,7 @@ sfc_module = Extension(
         f'{rel_path}\\rumble_league_extension_plugin\gision\RumbleVision.cpp',
         # Window Capture
         f'{rel_path}\\rumble_league_extension_plugin\window_capture\WindowCapture.cpp',
-        # Helpers
+        # Window Capture
         f'{rel_path}\\rumble_league_extension_plugin\helpers\StringHelper.cpp',
     ],
     include_dirs=[pybind11.get_include()],
@@ -43,8 +43,7 @@ sfc_module = Extension(
 
 setup(
     name='Rumble LoL Extension',
-    version='1.0.0',
-    description='''Extension to Rumble-AI that manages to control the League of Legends client by voice. 
-    Also performs several other tasks, included in-game ones''',
+    version='1.0',
+    description='Python package that extends the Rumble-AI project with this module',
     ext_modules=[sfc_module],
 )

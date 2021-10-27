@@ -5,7 +5,8 @@
     <ProjectGuid>fe94d973-75a6-4aea-8d5e-e50f53d8a2ee</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>main.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,9 +23,6 @@
     <DebugSymbols>true</DebugSymbols>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="main.py" />
-  </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
       <Id>env</Id>
