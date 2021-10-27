@@ -1,8 +1,5 @@
 from src.core.skill import Skill
 
-
-
-
 name: list[str] = ['Rumble League Extension', 'Rumble League Extension']
 description: str = 'The extension for voice control, analitics and game tracking for Rumble-AI'
 tags: dict = {
@@ -13,8 +10,6 @@ tags: dict = {
 }
 
 # This file it's the real entry point from the program when it's runned as a Rumble-AI plugin
-
-
 import os
 from .python_mod import setup_rle
 import rle

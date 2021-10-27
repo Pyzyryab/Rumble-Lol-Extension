@@ -1,7 +1,7 @@
 import os
 
 '''
-    1º -  Detect if the **rle** it's been running as a standalone or as an installed plugin of Rumble-AI.
+    1º -  Detects if the **rle** it's been running as a standalone or as an installed plugin of Rumble-AI.
     If the base path contains the Rumble-AI folder, it should be as plugin, else, as standalone.
     Also, if this script it's running as __main__, the base path should be a dir above this one, needing to 
     strip the /python_mod from the base path to set it to the root dir of the project.
@@ -50,12 +50,12 @@ exec(compile(open(activate_this_file, "rb").read(), activate_this_file, 'exec'),
 os.chdir('./python_mod')
 
 if as_standalone:
-import rle
+    import rle
 
-rumble_league = rle.RumbleLeague(1)  
+    rumble_league = rle.RumbleLeague(1)  
 
-# Print it's memory address to ckeck if it's working correctly
-print(rumble_league)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour
+    # Print it's memory address to ckeck if it's working correctly
+    print(rumble_league)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour
 
-# For now, the unique method availiable it's the one shown below.
-rumble_league.play('Rumble, play')
+    # For now, the unique method availiable it's the one shown below.
+    rumble_league.play('Rumble, play')
