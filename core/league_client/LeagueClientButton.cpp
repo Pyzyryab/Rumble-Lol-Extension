@@ -34,7 +34,5 @@ struct ClientButton
 		concated_path.append(image_path).append(image_extension);
 
 		this->image_path = concated_path;
-
-		std::cout << "PATH: " << this->image_path;
 	};
 };

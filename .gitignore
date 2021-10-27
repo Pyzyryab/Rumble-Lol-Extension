@@ -9,3 +9,7 @@ x64/
 Debug/
 */env/
 */__pycache__/
+
+
+# Concrete files
+setup_rle_old.py

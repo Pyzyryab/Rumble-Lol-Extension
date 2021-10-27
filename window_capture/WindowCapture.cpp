@@ -1,5 +1,5 @@
 #include "WindowCapture.h"
-#include "../helpers/StringHelper.cpp"
+#include "../helpers/StringHelper.hpp"
 
 using namespace cv;
 

@@ -11,7 +11,7 @@
 #include "../gision/RumbleVision.h"
 #include "../window_capture/WindowCapture.h"
 #include "league_client/LeagueClientScreen.hpp"
-#include "../helpers/StringHelper.cpp"
+#include "../helpers/StringHelper.hpp"
 
 
 class RumbleLeague

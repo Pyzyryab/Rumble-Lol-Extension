@@ -5,7 +5,6 @@
 #include <array>
 
 #include "LeagueClientButton.cpp"
-//#include "../../helpers/StringHelper.cpp"
 
 /// <summary>
 /// The enum representation of the name of a League of Legends client. This is a convenient way of avoid
@@ -23,6 +22,7 @@ inline std::ostream& operator<<(std::ostream& Str, LeagueClientScreenIdentifier 
 		case LeagueClientScreenIdentifier::ChooseGame: return Str << "Game selection"; break;
 		case LeagueClientScreenIdentifier::AcceptDecline: return Str << "Accept / decline"; break;
 		case LeagueClientScreenIdentifier::ChampSelect: return Str << "Champ select"; break;
+		default: return Str << "No coincident one"; break;
 	};
 }
 

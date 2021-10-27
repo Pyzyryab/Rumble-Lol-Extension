@@ -4,20 +4,19 @@
 #include <codecvt>
 #include <locale>
 
+#include "StringHelper.hpp"
 
 // Convenient namespace simplifications
 using convert_t = std::codecvt_utf8<wchar_t>;
 std::wstring_convert<convert_t, wchar_t> strconverter;
 
 
-namespace StringHelper
-{
     /// <summary>
     /// Converts a wstring into a C++ string object
     /// </summary>
     /// <param name="wstr"></param>
     /// <returns></returns>
-    std::string to_string(std::wstring wstr)
+    std::string StringHelper::to_string(std::wstring wstr)
     {
         return strconverter.to_bytes(wstr);
     }
@@ -27,7 +26,7 @@ namespace StringHelper
     /// </summary>
     /// <param name="str"></param>
     /// <returns></returns>
-    std::wstring to_wstring(std::string str)
+    std::wstring StringHelper::to_wstring(std::string str)
     {
         return strconverter.from_bytes(str);
     }
@@ -36,7 +35,7 @@ namespace StringHelper
     /// Splits an stardand C++ string object into a std::vec<string>, receiving a reference to the string,
     /// a character as a delimitter and an std::vector<string> as an output container.
     /// </summary>
-    std::vector<std::string>& split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
+    std::vector<std::string>& StringHelper::split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
     {
         // construct a stream from the string 
         std::stringstream ss(input);
@@ -55,11 +54,9 @@ namespace StringHelper
     /// A char* it's just a pointer to a C-String style, which are just contiguous characters on a chuck of memory, that's why the find method
     /// fails trying to find a char* key against a passed in char*, because it's comparing memory addreses, not string values.
     /// </summary>
-    struct cmp_str
+    bool StringHelper::cmp_str::operator()(char const* a, char const* b) const
     {
-        bool operator()(char const* a, char const* b) const
-        {
-            return std::strcmp(a, b) < 0;
-        }
-    };
-}
+        return std::strcmp(a, b) < 0;
+    }
+
+

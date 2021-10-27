@@ -2,9 +2,8 @@
 #from src.core.skill import Skill
 
 import os
-initial_dir = os.getcwd()
 
-from python import main
+from python import setup_rle
 
 name: list[str] = ['Rumble League Extension', 'Rumble League Extension']
 description: str = 'The extension for voice control, analitics and game tracking for Rumble-AI'
