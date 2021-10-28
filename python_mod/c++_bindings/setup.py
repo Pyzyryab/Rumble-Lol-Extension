@@ -43,7 +43,7 @@ sfc_module = Extension(
 
 setup(
     name='Rumble LoL Extension',
-    version='1.0',
+    version='1.0.0',
     description='Python package that extends the Rumble-AI project with this module',
     ext_modules=[sfc_module],
 )
