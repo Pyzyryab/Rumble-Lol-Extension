@@ -36,12 +36,9 @@ class LeagueClientScreen
 		// Stores the window's name as an enum variant
 		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::Base;
 
-		// The constants for defining the primitives arrays capacity
-		static const size_t buttons_array_size = 1;
-
 		// Identifier per language
-		std::vector<ClientButton*> english_client_buttons { new ClientButton("no virtual", "base class") };
-		std::vector<ClientButton*> spanish_client_buttons { new ClientButton("no virtual", "base class") };
+		std::vector<ClientButton*> english_client_buttons { };
+		std::vector<ClientButton*> spanish_client_buttons { };
 
 	public:
 		// Factory static method 
@@ -49,18 +46,15 @@ class LeagueClientScreen
 
 		// Constructors
 		LeagueClientScreen();
-		//LeagueClientScreen(LeagueClientScreenIdentifier identifier);
+
+		// Destructor
+		virtual ~LeagueClientScreen();
 		
-		// Getters and Setters
+		// Getters
 		virtual LeagueClientScreenIdentifier get_identifier();
-		/*No setter needed nowadays!
-			virtual void set_identifier(const LeagueClientScreenIdentifier& identifier);
-		*/
 
 		virtual std::vector<ClientButton*> get_english_client_buttons();
 		virtual std::vector<ClientButton*> get_spanish_client_buttons();
-
-		virtual const size_t get_buttons_array_size();
 
 		// Methods
 		std::vector<ClientButton*> find_client_button(const std::string& user_input);
@@ -71,8 +65,6 @@ class MainScreen : public LeagueClientScreen
 {
 	private:
 		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::MainScreen;
-
-		static const size_t buttons_array_size = 10;
 
 		std::vector<ClientButton*> english_client_buttons {
 			new ClientButton("play", "play_button"),
@@ -100,8 +92,6 @@ class MainScreen : public LeagueClientScreen
 		std::vector<ClientButton*> get_english_client_buttons() override;
 		std::vector<ClientButton*> get_spanish_client_buttons() override;
 
-		const size_t get_buttons_array_size();
-
 };
 
 
@@ -109,8 +99,6 @@ class ChooseGame : public LeagueClientScreen
 {
 	private:
 		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::ChooseGame;
-
-		static const size_t buttons_array_size = 10;
 
 		std::vector<ClientButton*> english_client_buttons {
 			new ClientButton("normal", "normal")
@@ -128,7 +116,5 @@ class ChooseGame : public LeagueClientScreen
 
 		std::vector<ClientButton*> get_english_client_buttons() override;
 		std::vector<ClientButton*> get_spanish_client_buttons() override;
-
-		const size_t get_buttons_array_size();
 
 };

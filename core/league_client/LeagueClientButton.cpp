@@ -1,6 +1,7 @@
 #include <string.h>
 #include <ostream>
 #include <iostream>
+ 
 
 struct ClientButton
 {
@@ -15,10 +16,12 @@ struct ClientButton
 		// TODO Take the language id from a configuration struct or class or whatever...
 		int current_language_id = 1;
 
-		//const char* base_path[14]{} { nullptr };
+		
 		std::string base_path {};
 		std::string image_extension { ".jpg" };
 
+
+		// TODO This switch SHOULD not be here, cause it's creating for both EN and SP all of the same category
 		switch (current_language_id)
 		{
 			case 1:

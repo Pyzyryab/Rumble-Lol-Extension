@@ -78,6 +78,8 @@ class RumbleLeague
 		RumbleLeague(const int language_id);
 		// TODO Implement the copy and the move constructors
 
+		// TODO Implement the destructor, and log some useful details that will help to decide an option about concurrent tasks on Python's side
+
 		// The entry point for the Python API
 		void play(const std::string& user_input);
 

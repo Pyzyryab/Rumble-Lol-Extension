@@ -15,9 +15,21 @@ MainScreen::MainScreen() {}
 
 ChooseGame::ChooseGame() {}
 
+/**
+* Virtual destructor for the base class.
+* 
+* This destructor allows to fully safe delete all resources allocated via dynamic dispatch.
+* 
+* If a given class instanciate a child of the LeagueClientScreen via pointer reference (polymorphsm) 
+* the virtual destructor deletes the resources associated with the child class, not with the base (or parent) class.
+*/
+LeagueClientScreen::~LeagueClientScreen()
+{
+	std::cout << "Virtual destructor called for the child of LeagueClientScreen: " << this->get_identifier() << std::endl;
+}
 
-// !WARNING -> DEPRECATED. Constructor injection implemented instead
-// 
+
+
 // This factory method is a static method of a class that returns an object of that class' type. 
 // But unlike a constructor, the actual object it returns might be an instance of a subclass. 
 // Another advantage of a factory method is that it can return existing instances multiple times.
@@ -145,25 +157,4 @@ std::vector<ClientButton*> ChooseGame::get_spanish_client_buttons()
 {
 	return this->spanish_client_buttons;
 }
-
-
-
-/**
-* Getters for the size of the arrays that contains the keyword identifiers
-*/
-const size_t LeagueClientScreen::get_buttons_array_size()
-{
-	return buttons_array_size;
-}
-
-const size_t MainScreen::get_buttons_array_size()
-{
-	return buttons_array_size;
-}
-
-const size_t ChooseGame::get_buttons_array_size()
-{
-	return buttons_array_size;
-}
-
 

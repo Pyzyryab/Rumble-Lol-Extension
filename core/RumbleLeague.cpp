@@ -3,6 +3,27 @@
 using namespace std;
 using namespace cv;
 
+/** TODO -> Design path
+
+	The decision tree design will follow two branches.
+		**Direct decision** -> Like for example:
+			- I want to play an Aram, so from the Main Screen of the client the rle will auto
+			make all the necessary steps to perform an action.
+			- I want to play a ranked as a jungler and midlaner, so the same but it will auto-select the summoner position
+		**Simple decision** -> Every screen contains identifiers that will match all the posible movements from this screen to the next,
+			so the example above will be:
+			1ï¿½ Wanna play / play
+			2ï¿½ Ranked solo / duo
+			3ï¿½ midlaner, jungler
+			4ï¿½ Here will be the find match
+			5ï¿½ Autoaccept game (automatic)
+			6ï¿½ Choose me "Zed"
+			7ï¿½ Ban "Vex, it's `fuc****` broken
+			8ï¿½ Change nï¿½ of rune pages? (Complicated, implies slide)
+			9ï¿½ Change summoners
+			10ï¿½ Select skin (by name, or move right left)
+*/
+
 /// <summary>
 /// 
 /// Constructors more critical part it's to create the internal user defined C++ objects
@@ -12,11 +33,11 @@ using namespace cv;
 /// Be careful that if we lose those pointers, we will be leaking memory.
 /// 
 /// Constructors implementation: 
-/// 1º -> The overloaded constructor are initializating the member variables through the C++ feature
+/// 1ï¿½ -> The overloaded constructor are initializating the member variables through the C++ feature
 /// "constructor initialization list", which it's the real way of **initializate** any object property.
 /// This is because the compiler knows that at creation time, properties have to be initialized to the passed values.
 /// 
-/// 2º -> The default constructor, or better, the no args constructor in this case, it's initializing the member
+/// 2ï¿½ -> The default constructor, or better, the no args constructor in this case, it's initializing the member
 /// variables shown below, and **assign** the window_capture and rumble_vision members to a new object of it's type.
 /// In this way, objects are not properly initialized, because when the compiler reaches the body of a constructor, the object itself
 /// it's already initialized and already exists in memory, so there what it's really going on it's just an assingment to new values.
@@ -48,11 +69,11 @@ RumbleLeague::RumbleLeague()
 /// of action should be performed
 /// 
 /// TODO insted of void, should return something meaninful to the Python API, in order to talk with the user
-/// if something goes wrong, of if the user tries to be smarter that Rumble ;)
+/// if something goes wrong, or provide some kind of response, in case of be necessary.
 void RumbleLeague::play(const std::string& user_input)
 {
 	// TODO Change the implementor's method name
-	// 1ºst -> Get a list with the posible client buttons that could possible be the desired user action
+	// 1ï¿½st -> Get a list with the posible client buttons that could possible be the desired user action
 	auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
 
 	
@@ -68,37 +89,17 @@ void RumbleLeague::play(const std::string& user_input)
 		Perform an action against the League Client
 	*/
 
-	std::cout << "\n *************************" << endl;
+	cout << "\n *************************" << endl;
 	for (auto button : matched_client_buttons) {
-		std::cout << "Founded a button candidate: " << button->identifier << endl;
-		std::cout << "Path of the button candidate: " << button->image_path << endl;
+		cout << "Founded a button candidate: " << button->identifier << endl;
 	}
 
 	const ClientButton* const& button = matched_client_buttons[0];
-	cout << "Image path when button is retrieved: " << button->image_path << endl;
+	cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
+		"This is because there is not NLP implemented yet." << endl;
+
+	// Calls the member method to perform a desired action based on the matched button.
 	this->league_client_action(button);
-
-
-	/** TODO -> Design path
-
-		The decision tree design will follow two branches.  
-			**Direct decision** -> Like for example: 
-				- I want to play an Aram, so from the Main Screen of the client the rle will auto
-				make all the necessary steps to perform an action.
-				- I want to play a ranked as a jungler and midlaner, so the same but it will auto-select the summoner position
-			**Simple decision** -> Every screen contains identifiers that will match all the posible movements from this screen to the next,
-				so the example above will be:
-				1º Wanna play / play
-				2º Ranked solo / duo
-				3º midlaner, jungler
-				4º Here will be the find match
-				5º Autoaccept game (automatic)
-				6º Choose me "Zed"
-				7º Ban "Vex, it's `fuc****` broken
-				8º Change nº of rune pages? (Complicated, implies slide)
-				9º Change summoners
-				10º Select skin (by name, or move right left)
-	*/
 }
 
 /// <summary>
@@ -127,19 +128,17 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 	else 
 	{
 		cout << "\nKey: " << it->first << " Value: " << it->second->get_identifier() << endl;
-		
 		cout << "Current league screen: " << this->current_league_client_screen->get_identifier() << endl;
 		
 		// Second (inside the else block) should be modify the state of the attribute with the correct instance
 		this->current_league_client_screen = it->second;
-
 		cout << "NEW current league screen: " << this->current_league_client_screen->get_identifier() << endl;
 	}
 
 	// Sets the needle image for what we are looking for
 	Mat needle_image;
-	//const auto& needle_image_ref { &needle_image };
 	this->set_needle_image(client_button, needle_image);
+
 
 	/** 
 		Finally, we can call the method that will perform the image matching and the mouse click event.
@@ -157,9 +156,6 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 		enemies on the minimap, or track the neutral and enemy jungle camps... etc.
 
 	*/
-
-
-
 	bool moved_once = false;
 	int key = 0;
 	while (key != 27) // 'ESC' key
@@ -167,29 +163,27 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 		Mat video_source = this->window_capture->get_video_source();
 		Mat* video_source_ptr = &video_source;
 
-		//// Img finder. Matches the video source and the needle image and returns the point where the needle image is found inside the video source.
+		// Img finder. Matches the video source and the needle image and returns the point where the needle image is found inside the video source.
 		Point m_loc = this->rumble_vision->find(video_source_ptr, needle_image);
-		std::cout << "MATCH LOCATION -> " << m_loc << std::endl;
-
-		// If match location
+		
 		// If statement for debug purposes. This one should be replaced for a method call that parses the input query from the user voice
 		// and decides what event should run
 		if (m_loc.x != 0 && m_loc.y != 0 && moved_once == false) // Moved once just acts as a control flag to only run this one time, or 
 		// the mouse will be perma moving towards the match coordinates
 		{
+			std::cout << "MATCH LOCATION -> " << m_loc << std::endl;
+
 			RumbleMotion* rumble_motion = new RumbleMotion();
 			rumble_motion->move_mouse_and_left_click(m_loc.x, m_loc.y);
 			moved_once = true;
 			delete rumble_motion;
 		}
 
-		//cv::imshow(window_name, *video_source_ptr);
-		key = waitKey(60); // you can change wait time
+		key = waitKey(60); // you can change wait time. Need a large value when the find game it's detected?
 	}
 
 	// Prevents to leak memory and clean up resources
 	cv::destroyAllWindows();
-
 }
 
 
@@ -202,7 +196,6 @@ void RumbleLeague::set_needle_image(const ClientButton* const& client_button, Ma
 	cout << "Image path: " << client_button->image_path << endl;
 	cv::Mat img_to_find = cv::imread(client_button->image_path, cv::IMREAD_COLOR);
 	cvtColor(img_to_find, needle_image, COLOR_BGR2BGRA);
-	// For some reason, when cv::imread loads the image as BGR
 }
 
 void RumbleLeague::set_cpp_language()
