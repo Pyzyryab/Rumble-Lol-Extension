@@ -1,14 +1,32 @@
-*.vcxproj
-*vcxproj.*
+# Several build files are included in order to make it available to anyone that wants to build the project
+
+
+# ------ MSVC files -------
+
+# *.vcxproj    <---- Any vcxproj are included 
+# *vcxproj.*
 *.sln
+
+# ------ IDE config folders files -------
 .idea/
-x64/
 .vscode/
 .vs/
+
+# ------ Exe -------
 *.exe
+
+# ------ Debug and Release build folders -------
 Debug/
-*/env/
+# x64  <------ Included
+
+# ------ Python -------
+# */env/    <---------- Included
 */__pycache__/
+/__pycache__/
+__pycache__/
+/build/
+/Rumble_LoL_Extension.egg-info/
+
 
 
 # Concrete files
