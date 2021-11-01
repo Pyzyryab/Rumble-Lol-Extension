@@ -1,19 +1,56 @@
-#include "LeagueClientScreen.hpp"
 #include <algorithm>
 #include <iostream>
-#include <string> 
-#include <vector> 
+#include <string>
 #include <sstream>
+#include <vector>
+#include <tuple>
+
+
+#include "LeagueClientScreen.hpp"
+#include "../../helpers/EnumTypes.hpp"
+#include "../../data/API_buttons.hpp"
+
+using namespace std;
 
 
 /**
-* Default constructors
+* Main constructor of the base class
 */
-LeagueClientScreen::LeagueClientScreen() {}
+LeagueClientScreen::LeagueClientScreen(const Language& selected_language)
+	: selected_language{ selected_language } {}
 
-MainScreen::MainScreen() {}
+MainScreen::MainScreen(const Language& selected_language)
+	: selected_language{ selected_language } {}
 
-ChooseGame::ChooseGame() {}
+ChooseGame::ChooseGame(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
+
+/**
+* Default constructors.
+* 
+* The default constructor of the base class initializes the member reference variable to Language::English
+* as a default value through the default constructor invokation.
+*/
+LeagueClientScreen::LeagueClientScreen()
+	: LeagueClientScreen{ Language::English } 
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+MainScreen::MainScreen() 
+	: MainScreen{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons( this->get_selected_language() );
+}
+
+ChooseGame::ChooseGame() 
+	: ChooseGame{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+
 
 /**
 * Virtual destructor for the base class.
@@ -37,15 +74,14 @@ LeagueClientScreen* LeagueClientScreen::factory_screen(const LeagueClientScreenI
 {
 	switch (screen_identifier)
 	{
-	case LeagueClientScreenIdentifier::MainScreen:
-		return new MainScreen;
-		break;
-	case LeagueClientScreenIdentifier::ChooseGame:
-		return new ChooseGame;
-		break;
-		// TODO Implement the other methods
+		case LeagueClientScreenIdentifier::MainScreen:
+			return new MainScreen;
+			break;
+		case LeagueClientScreenIdentifier::ChooseGame:
+			return new ChooseGame;
+			break;
+			// TODO Implement the other client screen identifiers
 	}
-
 }
 
 std::vector<std::string>& split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
@@ -83,15 +119,20 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 
 	std::cout << "\nGetting data from: " << this->get_identifier() << std::endl;
 	
-	// TODO Get the correct language to get the correct array from the config struct
-	std::vector<ClientButton*> buttons = this->get_english_client_buttons();
+	// Calls the method on the child that recovers the client buttons pointers
+	std::vector<ClientButton*> buttons = this->get_client_buttons();
 
 	for (const auto word : splitted_input) {
+		
 		std::cout << "" << std::endl;
 		std::cout << "Comparing: " << word << std::endl;
+		
 		for (int i = 0; i < buttons.size(); i++) {
+			
 			std::cout << " with: " << buttons[i]->identifier << std::endl;
-			if ( strcmp(buttons[i]->identifier, word.c_str()) == 0 ) {
+			
+			if ( strcmp(buttons[i]->identifier, word.c_str()) == 0 ) 
+			{
 				std::cout << "\t Match founded!" << std::endl;
 				matched_buttons.push_back(buttons[i]);
 			}
@@ -101,9 +142,9 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 			}
 		}
 	}
-
 	return matched_buttons;
 }
+
 
 /**
 * Getters for the LeagueClientScreenIdentifier identifiers
@@ -127,34 +168,36 @@ LeagueClientScreenIdentifier ChooseGame::get_identifier()
 /**
 * Getters for the keyword identifiers
 */
-std::vector<ClientButton*> LeagueClientScreen::get_english_client_buttons()
+std::vector<ClientButton*> LeagueClientScreen::get_client_buttons()
 {
-	return this->english_client_buttons;
+	return this->client_buttons;
 }
 
-std::vector<ClientButton*> MainScreen::get_english_client_buttons()
+std::vector<ClientButton*> MainScreen::get_client_buttons()
 {
-	return this->english_client_buttons;
+	return this->client_buttons;
 }
 
-std::vector<ClientButton*> ChooseGame::get_english_client_buttons()
+std::vector<ClientButton*> ChooseGame::get_client_buttons()
 {
-	return this->english_client_buttons;
+	return this->client_buttons;
 }
 
-
-std::vector<ClientButton*> LeagueClientScreen::get_spanish_client_buttons()
+/**
+* Getter for the current language selected on the API
+*/
+const Language& LeagueClientScreen::get_selected_language()
 {
-	return this->spanish_client_buttons;
+	return this->selected_language;
 }
 
-std::vector<ClientButton*> MainScreen::get_spanish_client_buttons()
+const Language& MainScreen::get_selected_language()
 {
-	return this->spanish_client_buttons;
+	return this->selected_language;
 }
 
-std::vector<ClientButton*> ChooseGame::get_spanish_client_buttons()
+const Language& ChooseGame::get_selected_language()
 {
-	return this->spanish_client_buttons;
+	return this->selected_language;
 }
 

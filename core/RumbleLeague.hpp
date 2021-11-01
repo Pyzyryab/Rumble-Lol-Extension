@@ -12,6 +12,7 @@
 #include "../window_capture/WindowCapture.h"
 #include "league_client/LeagueClientScreen.hpp"
 #include "../helpers/StringHelper.hpp"
+#include "../helpers/EnumTypes.hpp"
 
 
 class RumbleLeague
@@ -24,8 +25,7 @@ class RumbleLeague
 		// recognize and work with a language. It's used receive a value throught a constructor parameter and
 		// transform it into a C++ enum variant
 		int language_id;
-		// The availiable languages as an enum type
-		enum class Language { English, Spanish };
+
 		// The current selected language, as a C++ enum variant. This tracks the language that the main API it's using,
 		// and acts as a flag for some common tree decision actions based on what the user it's quering.
 		Language language;

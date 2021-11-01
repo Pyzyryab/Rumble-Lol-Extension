@@ -162,8 +162,11 @@
     <ClCompile Include="window_capture\WindowCapture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="core\league_client\LeagueClientButton.hpp" />
     <ClInclude Include="core\league_client\LeagueClientScreen.hpp" />
     <ClInclude Include="core\RumbleLeague.hpp" />
+    <ClInclude Include="data\API_buttons.hpp" />
+    <ClInclude Include="helpers\EnumTypes.hpp" />
     <ClInclude Include="helpers\StringHelper.hpp" />
     <ClInclude Include="motion\RumbleMotion.hpp" />
     <ClInclude Include="python\env\Lib\site-packages\pybind11\include\pybind11\attr.h" />

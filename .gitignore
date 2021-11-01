@@ -12,8 +12,10 @@
 .vscode/
 .vs/
 
-# ------ Exe -------
+# ------ Files and binaries -------
 *.exe
+*.tlog
+
 
 # ------ Debug and Release build folders -------
 Debug/
@@ -28,6 +30,5 @@ __pycache__/
 /Rumble_LoL_Extension.egg-info/
 
 
-
-# Concrete files
+# ------ Concrete files -------
 setup_rle_old.py

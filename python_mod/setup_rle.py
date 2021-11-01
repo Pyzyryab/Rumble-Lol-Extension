@@ -49,7 +49,7 @@ exec(compile(open(activate_this_file, "rb").read(), activate_this_file, 'exec'),
 
 os.chdir('./python_mod')
 
-if True:
+if as_standalone:
     import rle
 
     rumble_league = rle.RumbleLeague(1)  

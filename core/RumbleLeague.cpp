@@ -51,19 +51,16 @@ RumbleLeague::RumbleLeague(const int language_id)
 	current_league_client_screen{ LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen) }
 { 
 	this->set_cpp_language();
+	this->current_league_client_screen = LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen);
 }
 
 RumbleLeague::RumbleLeague()
 	: RumbleLeague{ 1 }  // 1 it's the ID for the default language (English)
-{
-	this->window_capture = new WindowCapture();
-	this->rumble_vision = new RumbleLeagueVision();
-	this->current_league_client_screen = LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen);
-	
+{	
 	this->set_cpp_language();
 }
 
-
+ 
 /// The main interface method exposed to the Python API.
 /// It's receives the query that the user entered, parse it again and decides what type
 /// of action should be performed
@@ -111,29 +108,11 @@ void RumbleLeague::play(const std::string& user_input)
 void RumbleLeague::league_client_action(const ClientButton* const& client_button)
 {
 	cout << "Image path on league_client_action: " << client_button->image_path << endl;
-	// So, the first thing that the method will do, should be get the value from an unique key
-
-	// Declaring an iterator to retrieve the address of the desired key
-	map<const char*, LeagueClientScreen*>::const_iterator it;
 	
-	// Using find() to search for the desired key found
-	const char* button_identifier = client_button->identifier;
-	it = this->available_league_client_screens.find(button_identifier);
-
-	if (it == this->available_league_client_screens.end()) 
-	{
-		cout << "No action available for that input" << endl;
-		// TODO Throw exception, really create a LeagueClientScreenIdentifier that represents the NO founded value
-	}
-	else 
-	{
-		cout << "\nKey: " << it->first << " Value: " << it->second->get_identifier() << endl;
-		cout << "Current league screen: " << this->current_league_client_screen->get_identifier() << endl;
-		
-		// Second (inside the else block) should be modify the state of the attribute with the correct instance
-		this->current_league_client_screen = it->second;
-		cout << "NEW current league screen: " << this->current_league_client_screen->get_identifier() << endl;
-	}
+	// Updates the pointer to the screen with the enum value that identifies what screen comes
+	// next after pressing the button
+	this->current_league_client_screen = this->current_league_client_screen->
+		factory_screen( client_button->next_screen );
 
 	// Sets the needle image for what we are looking for
 	Mat needle_image;
@@ -177,6 +156,7 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 			rumble_motion->move_mouse_and_left_click(m_loc.x, m_loc.y);
 			moved_once = true;
 			delete rumble_motion;
+			break;
 		}
 
 		key = waitKey(60); // you can change wait time. Need a large value when the find game it's detected?
