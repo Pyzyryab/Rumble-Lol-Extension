@@ -9,6 +9,7 @@
 #include "LeagueClientScreen.hpp"
 #include "../../helpers/EnumTypes.hpp"
 #include "../../data/API_buttons.hpp"
+#include "../../helpers/StringHelper.hpp"
 
 using namespace std;
 
@@ -25,6 +26,27 @@ MainScreen::MainScreen(const Language& selected_language)
 ChooseGame::ChooseGame(const Language& selected_language)
 	: selected_language{ selected_language } {}
 
+TFT::TFT(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
+Clash::Clash(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
+Profile::Profile(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
+Collection::Collection(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
+Loot::Loot(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
+YourShop::YourShop(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
+Store::Store(const Language& selected_language)
+	: selected_language{ selected_language } {}
+
 
 /**
 * Default constructors.
@@ -35,7 +57,7 @@ ChooseGame::ChooseGame(const Language& selected_language)
 LeagueClientScreen::LeagueClientScreen()
 	: LeagueClientScreen{ Language::English } 
 {
-	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+	this->client_buttons = RLE_data::get_buttons( this->get_selected_language() );
 }
 
 MainScreen::MainScreen() 
@@ -46,6 +68,48 @@ MainScreen::MainScreen()
 
 ChooseGame::ChooseGame() 
 	: ChooseGame{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons( this->get_selected_language() );
+}
+
+TFT::TFT()
+	: TFT{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+Clash::Clash()
+	: Clash{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+Profile::Profile()
+	: Profile{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+Collection::Collection()
+	: Collection{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+Loot::Loot()
+	: Loot{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+YourShop::YourShop()
+	: YourShop{ Language::English }
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+
+Store::Store()
+	: Store{ Language::English }
 {
 	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
 }
@@ -67,7 +131,7 @@ LeagueClientScreen::~LeagueClientScreen()
 
 
 
-// This factory method is a static method of a class that returns an object of that class' type. 
+// This factory is a static method of a class that returns an object of that class type. 
 // But unlike a constructor, the actual object it returns might be an instance of a subclass. 
 // Another advantage of a factory method is that it can return existing instances multiple times.
 LeagueClientScreen* LeagueClientScreen::factory_screen(const LeagueClientScreenIdentifier& screen_identifier)
@@ -80,21 +144,29 @@ LeagueClientScreen* LeagueClientScreen::factory_screen(const LeagueClientScreenI
 		case LeagueClientScreenIdentifier::ChooseGame:
 			return new ChooseGame;
 			break;
+		case LeagueClientScreenIdentifier::TFT:
+			return new TFT;
+			break;
+		case LeagueClientScreenIdentifier::Clash:
+			return new Clash;
+			break;
+		case LeagueClientScreenIdentifier::Profile:
+			return new Profile;
+			break;
+		case LeagueClientScreenIdentifier::Collection:
+			return new Collection;
+			break;
+		case LeagueClientScreenIdentifier::Loot:
+			return new Loot;
+			break;
+		case LeagueClientScreenIdentifier::YourShop:
+			return new YourShop;
+			break;
+		case LeagueClientScreenIdentifier::Store:
+			return new Store;
+			break;
 			// TODO Implement the other client screen identifiers
 	}
-}
-
-std::vector<std::string>& split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
-{
-	// construct a stream from the string 
-	std::stringstream ss(input);
-
-	std::string s;
-	while (std::getline(ss, s, delimiter)) {
-		output.push_back(s);
-	}
-
-	return output;
 }
 
 
@@ -110,7 +182,7 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 	std::vector<ClientButton*> matched_buttons {};
 	
 	std::vector<std::string> splitted_input;
-	splitted_input = split_by_delimiter(user_input, ' ', splitted_input);
+	splitted_input = StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
 	// Outputing debug info to the console
 	std::cout << "\nSplitted user input: " << std::endl;
@@ -119,17 +191,18 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 
 	std::cout << "\nGetting data from: " << this->get_identifier() << std::endl;
 	
-	// Calls the method on the child that recovers the client buttons pointers
+	// Calls the method on the current selected child screen and recovers the client buttons pointers
+	// associated with that screen
 	std::vector<ClientButton*> buttons = this->get_client_buttons();
 
 	for (const auto word : splitted_input) {
 		
-		std::cout << "" << std::endl;
-		std::cout << "Comparing: " << word << std::endl;
+		//std::cout << "" << std::endl;
+		//std::cout << "Comparing: " << word << std::endl;
 		
 		for (int i = 0; i < buttons.size(); i++) {
 			
-			std::cout << " with: " << buttons[i]->identifier << std::endl;
+			//std::cout << " with: " << buttons[i]->identifier << std::endl;
 			
 			if ( strcmp(buttons[i]->identifier, word.c_str()) == 0 ) 
 			{
@@ -138,7 +211,7 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 			}
 			else 
 			{
-				std::cout << "\t No match!" << std::endl;
+				//std::cout << "\t No match!" << std::endl;
 			}
 		}
 	}
@@ -164,9 +237,45 @@ LeagueClientScreenIdentifier ChooseGame::get_identifier()
 	return this->identifier;
 }
 
+LeagueClientScreenIdentifier TFT::get_identifier()
+{
+	return this->identifier;
+}
+
+LeagueClientScreenIdentifier Clash::get_identifier()
+{
+	return this->identifier;
+}
+
+LeagueClientScreenIdentifier Profile::get_identifier()
+{
+	return this->identifier;
+}
+
+LeagueClientScreenIdentifier Collection::get_identifier()
+{
+	return this->identifier;
+}
+
+LeagueClientScreenIdentifier Loot::get_identifier()
+{
+	return this->identifier;
+}
+
+LeagueClientScreenIdentifier YourShop::get_identifier()
+{
+	return this->identifier;
+}
+
+LeagueClientScreenIdentifier Store::get_identifier()
+{
+	return this->identifier;
+}
+
+
 
 /**
-* Getters for the keyword identifiers
+* Getters for the buttons keyword identifiers
 */
 std::vector<ClientButton*> LeagueClientScreen::get_client_buttons()
 {
@@ -182,6 +291,44 @@ std::vector<ClientButton*> ChooseGame::get_client_buttons()
 {
 	return this->client_buttons;
 }
+
+std::vector<ClientButton*> TFT::get_client_buttons()
+{
+	return this->client_buttons;
+}
+
+std::vector<ClientButton*> Clash::get_client_buttons()
+{
+	return this->client_buttons;
+}
+
+std::vector<ClientButton*> Profile::get_client_buttons()
+{
+	return this->client_buttons;
+}
+
+std::vector<ClientButton*> Collection::get_client_buttons()
+{
+	return this->client_buttons;
+}
+
+std::vector<ClientButton*> Loot::get_client_buttons()
+{
+	return this->client_buttons;
+}
+
+std::vector<ClientButton*> YourShop::get_client_buttons()
+{
+	return this->client_buttons;
+}
+
+std::vector<ClientButton*> Store::get_client_buttons()
+{
+	return this->client_buttons;
+}
+
+
+
 
 /**
 * Getter for the current language selected on the API
@@ -201,3 +348,37 @@ const Language& ChooseGame::get_selected_language()
 	return this->selected_language;
 }
 
+const Language& TFT::get_selected_language()
+{
+	return this->selected_language;
+}
+
+const Language& Clash::get_selected_language()
+{
+	return this->selected_language;
+}
+
+const Language& Profile::get_selected_language()
+{
+	return this->selected_language;
+}
+
+const Language& Collection::get_selected_language()
+{
+	return this->selected_language;
+}
+
+const Language& Loot::get_selected_language()
+{
+	return this->selected_language;
+}
+
+const Language& YourShop::get_selected_language()
+{
+	return this->selected_language;
+}
+
+const Language& Store::get_selected_language()
+{
+	return this->selected_language;
+}

@@ -47,6 +47,12 @@ class RumbleLeague
 		// The League of Legends client screen on which the user it's currently located
 		LeagueClientScreen* current_league_client_screen;
 
+		// The League of Legends client screen previous to the current one
+		LeagueClientScreen* previous_league_client_screen;
+
+		// Represents the user command voice to choose a match
+		LeagueClientScreenIdentifier game_lobby_candidate;
+
 		// A map to store all the available League of Legends screen instances of the classes that represents them.
 		// Think about the map's signature, it will be <const char*, LeagueClientScreen*>,
 		// containing all the childrens of the LeagueClientScreen class. It's literally a map with a matched keyword as a key, that it's contained
@@ -71,6 +77,15 @@ class RumbleLeague
 		// and converting it into an variant of the Language (enum) type in the implementation of this method
 		void set_cpp_language();
 
+		// Sets the correct lobby screen when the "GO" button it's called. Go button leads to a lobby screen, but we had to know what
+		// lobby it's the right one. The reason it's that the selection of the game mode doesn't lead to change the screen of what 
+		// this->current_league_screem it's pointing to. 
+		void set_correct_lobby_screen();
+
+
+		// Sets the image that will be the needle to detect against the video stream
+		void set_needle_image(const ClientButton* const& client_button, cv::Mat& needle_image);
+
 
 	public:
 		// Constructors
@@ -81,9 +96,8 @@ class RumbleLeague
 		// TODO Implement the destructor, and log some useful details that will help to decide an option about concurrent tasks on Python's side
 
 		// The entry point for the Python API
-		void play(const std::string& user_input);
+		const char* play(const std::string& user_input);
 
 		void league_client_action(const ClientButton* const& client_button);
 
-		void set_needle_image(const ClientButton* const& client_button, cv::Mat& needle_image);
 };

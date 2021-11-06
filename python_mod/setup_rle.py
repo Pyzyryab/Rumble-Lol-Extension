@@ -57,5 +57,16 @@ if as_standalone:
     # Print it's memory address to ckeck if it's working correctly
     print(rumble_league)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour
 
-    # For now, the unique method availiable it's the one shown below.
-    rumble_league.play('Rumble, play')
+    control = True
+
+    while control:
+        # query = rumble.listen()
+        query = input('Introduce una acción: \n')
+        print(f'He escuchado desde dentro del LoL: {query}')
+            
+        if query == "desactivar":
+            break
+        elif query != "":
+            result = rumble_league.play( query.lower() )
+            print( f'resultado: {result}' )
+            print( '*************************\n' )

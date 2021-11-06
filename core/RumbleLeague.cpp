@@ -48,7 +48,8 @@ using namespace cv;
 RumbleLeague::RumbleLeague(const int language_id)
 	: window_capture{ new WindowCapture },
 	rumble_vision{ new RumbleLeagueVision },
-	current_league_client_screen{ LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen) }
+	current_league_client_screen{ LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen) },
+	game_lobby_candidate{ LeagueClientScreenIdentifier::Unset }
 { 
 	this->set_cpp_language();
 	this->current_league_client_screen = LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen);
@@ -64,39 +65,49 @@ RumbleLeague::RumbleLeague()
 /// The main interface method exposed to the Python API.
 /// It's receives the query that the user entered, parse it again and decides what type
 /// of action should be performed
-/// 
-/// TODO insted of void, should return something meaninful to the Python API, in order to talk with the user
-/// if something goes wrong, or provide some kind of response, in case of be necessary.
-void RumbleLeague::play(const std::string& user_input)
+///
+/// Returns a str with information to the Python API
+const char* RumbleLeague::play(const std::string& user_input)
 {
-	// TODO Change the implementor's method name
+	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etc
+
 	// 1�st -> Get a list with the posible client buttons that could possible be the desired user action
 	auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
 
-	
-	/* 2 ->
-		TODO Design a logical patter for when the matched keywords it's bigger than one...
-		Should just take the first? Make a NLP processing? Just returning an string with a voice error message
-		indicating that two petitions (or having two coincident results) can't(shouldn't) be processed at the same time?
+	if (matched_client_buttons.size() > 0)
+	{
 
-		Maybe just the more coincident? or better above 80% coincident?
-	*/
+		/* 2 ->
+			TODO Design a logical patter for when the matched keywords it's bigger than one...
+			Should just take the first? Make a NLP processing? Just returning an string with a voice error message
+			indicating that two petitions (or having two coincident results) can't(shouldn't) be processed at the same time?
 
-	/* 3 ->
-		Perform an action against the League Client
-	*/
+			Maybe just the more coincident? or better above 80% coincident?
+		*/
 
-	cout << "\n *************************" << endl;
-	for (auto button : matched_client_buttons) {
-		cout << "Founded a button candidate: " << button->identifier << endl;
+		/* 3 ->
+			Perform an action against the League Client
+		*/
+
+		cout << "\n *************************" << endl;
+		for (auto button : matched_client_buttons) {
+			cout << "Founded a button candidate: " << button->identifier << endl;
+		}
+
+		const ClientButton* const& button = matched_client_buttons[0];
+		cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
+			"This is because there is not NLP implemented yet." << endl;
+
+		// Calls the member method to perform a desired action based on the matched button.
+		this->league_client_action(button);
+		return "Action completed successfully";
+
+	}
+	else 
+	{
+		return "No match founded for your query";
 	}
 
-	const ClientButton* const& button = matched_client_buttons[0];
-	cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
-		"This is because there is not NLP implemented yet." << endl;
-
-	// Calls the member method to perform a desired action based on the matched button.
-	this->league_client_action(button);
 }
 
 /// <summary>
@@ -106,35 +117,56 @@ void RumbleLeague::play(const std::string& user_input)
 /// </summary>
 /// <param name="matched_keyword"></param>
 void RumbleLeague::league_client_action(const ClientButton* const& client_button)
-{
-	cout << "Image path on league_client_action: " << client_button->image_path << endl;
-	
-	// Updates the pointer to the screen with the enum value that identifies what screen comes
-	// next after pressing the button
-	this->current_league_client_screen = this->current_league_client_screen->
-		factory_screen( client_button->next_screen );
+{	
+	// Tracks the lastest screen seen before the current one
+	this->previous_league_client_screen = this->current_league_client_screen;
+	cout << "[INFO] Previous screen -> " << this->previous_league_client_screen->get_identifier() << " <- ";
+
+	/**
+	* Whem the user it's selecting a game mode to play, the way to go to the lobby screen it's by clicking
+	* the "Confirm button". This kind of actions inside the ChooseGame screen break the sense of that any requested action
+	* calls a button with a concrete identifier, and that butoon has a variable that points to the next screen.
+	* So, we can just simpl check when the user it's selecting a game mode, and save the type of game that he/she desires
+	* to play. If thw user finally goes to the lobby screen (by selecting the "Confirm" button") we just simply retrieve that
+	* game lobby candidate and pointing again the member variable that tracks it to the correct game lobby.
+	* Note that many of the game modes has different game lobbies wih different possible actions
+	*/
+	//if (this->current_league_client_screen->get_identifier()
+	//	== LeagueClientScreenIdentifier::ChooseGame)
+	//{
+	//	this->game_lobby_candidate = client_button->next_screen;
+	//}
+
+	//// Changes the generic GameLobby for the concrete one
+	//if (client_button->next_screen == LeagueClientScreenIdentifier::GameLobby)
+	//{
+	//	this->current_league_client_screen 
+	//}
+
+
+	/** Updates the pointer to the screen with the enum value that identifies what screen comes
+	* next after pressing the button
+	*/
+	if (client_button->next_screen == LeagueClientScreenIdentifier::PreviousScreen
+		|| client_button->next_screen == LeagueClientScreenIdentifier::GameLobby)
+	{
+		this->current_league_client_screen = this->current_league_client_screen->
+			factory_screen(this->previous_league_client_screen->get_identifier());	
+	}
+	else
+	{
+		this->current_league_client_screen = this->current_league_client_screen->
+			factory_screen(client_button->next_screen);
+	}
+
+	cout << "[INFO] Current screen -> " << this->current_league_client_screen->get_identifier() << " <- ";
+
+
 
 	// Sets the needle image for what we are looking for
 	Mat needle_image;
 	this->set_needle_image(client_button, needle_image);
 
-
-	/** 
-		Finally, we can call the method that will perform the image matching and the mouse click event.
-		There are two kind of events that will trigger the two available methods that represents the two type of actions
-
-		First -> ::click_event() 
-			The one who perform click events when the desired image it's present on the screen.
-
-		Second -> ::wait_event()
-			Runs until a certain event happens on the screen, like for example, the the auto-accept game.
-			A wait event can be followed by a click event.
-
-
-		NOTE: This will be optionally upgraded to more types of actions, like, for example, in game events, like detect
-		enemies on the minimap, or track the neutral and enemy jungle camps... etc.
-
-	*/
 	bool moved_once = false;
 	int key = 0;
 	while (key != 27) // 'ESC' key
@@ -158,10 +190,8 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 			delete rumble_motion;
 			break;
 		}
-
 		key = waitKey(60); // you can change wait time. Need a large value when the find game it's detected?
 	}
-
 	// Prevents to leak memory and clean up resources
 	cv::destroyAllWindows();
 }
@@ -170,10 +200,14 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 /**
 * Helpers private methods
 */
+void set_correct_lobby_screen() 
+{
+	
+}
+
 
 void RumbleLeague::set_needle_image(const ClientButton* const& client_button, Mat& needle_image)
 {
-	cout << "Image path: " << client_button->image_path << endl;
 	cv::Mat img_to_find = cv::imread(client_button->image_path, cv::IMREAD_COLOR);
 	cvtColor(img_to_find, needle_image, COLOR_BGR2BGRA);
 }

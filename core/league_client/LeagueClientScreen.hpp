@@ -78,3 +78,125 @@ class ChooseGame : public LeagueClientScreen
 		virtual const Language& get_selected_language() override;
 
 };
+
+
+class TFT : public LeagueClientScreen
+{
+	private:
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::TFT;
+		const Language& selected_language;
+		std::vector<ClientButton*> client_buttons{};
+
+	public:
+		TFT();
+		TFT(const Language& language);
+
+		LeagueClientScreenIdentifier get_identifier();
+		std::vector<ClientButton*> get_client_buttons() override;
+		virtual const Language& get_selected_language() override;
+
+};
+
+
+class Clash : public LeagueClientScreen
+{
+	private:
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::Clash;
+		const Language& selected_language;
+		std::vector<ClientButton*> client_buttons{};
+
+	public:
+		Clash();
+		Clash(const Language& language);
+
+		LeagueClientScreenIdentifier get_identifier();
+		std::vector<ClientButton*> get_client_buttons() override;
+		virtual const Language& get_selected_language() override;
+
+};
+
+class Profile : public LeagueClientScreen
+{
+	private:
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::Profile;
+		const Language& selected_language;
+		std::vector<ClientButton*> client_buttons{};
+
+	public:
+		Profile();
+		Profile(const Language& language);
+
+		LeagueClientScreenIdentifier get_identifier();
+		std::vector<ClientButton*> get_client_buttons() override;
+		virtual const Language& get_selected_language() override;
+
+};
+
+class Collection : public LeagueClientScreen
+{
+	private:
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::Collection;
+		const Language& selected_language;
+		std::vector<ClientButton*> client_buttons{};
+
+	public:
+		Collection();
+		Collection(const Language& language);
+
+		LeagueClientScreenIdentifier get_identifier();
+		std::vector<ClientButton*> get_client_buttons() override;
+		virtual const Language& get_selected_language() override;
+
+};
+
+class Loot : public LeagueClientScreen
+{
+	private:
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::Loot;
+		const Language& selected_language;
+		std::vector<ClientButton*> client_buttons{};
+
+	public:
+		Loot();
+		Loot(const Language& language);
+
+		LeagueClientScreenIdentifier get_identifier();
+		std::vector<ClientButton*> get_client_buttons() override;
+		virtual const Language& get_selected_language() override;
+
+};
+
+
+class YourShop : public LeagueClientScreen
+{
+	private:
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::YourShop;
+		const Language& selected_language;
+		std::vector<ClientButton*> client_buttons{};
+
+	public:
+		YourShop();
+		YourShop(const Language& language);
+
+		LeagueClientScreenIdentifier get_identifier();
+		std::vector<ClientButton*> get_client_buttons() override;
+		virtual const Language& get_selected_language() override;
+
+};
+
+class Store : public LeagueClientScreen
+{
+	private:
+		static const LeagueClientScreenIdentifier identifier = LeagueClientScreenIdentifier::Store;
+		const Language& selected_language;
+		std::vector<ClientButton*> client_buttons{};
+
+	public:
+		Store();
+		Store(const Language& language);
+
+		LeagueClientScreenIdentifier get_identifier();
+		std::vector<ClientButton*> get_client_buttons() override;
+		virtual const Language& get_selected_language() override;
+
+};
