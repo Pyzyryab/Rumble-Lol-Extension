@@ -37,29 +37,26 @@ using namespace cv;
 /// "constructor initialization list", which it's the real way of **initializate** any object property.
 /// This is because the compiler knows that at creation time, properties have to be initialized to the passed values.
 /// 
-/// 2� -> The default constructor, or better, the no args constructor in this case, it's initializing the member
-/// variables shown below, and **assign** the window_capture and rumble_vision members to a new object of it's type.
+/// 2� -> The no args constructor in this case, it's initializing he member variables
+/// throught the overloaded constructor (delegating constructor).
 /// In this way, objects are not properly initialized, because when the compiler reaches the body of a constructor, the object itself
 /// it's already initialized and already exists in memory, so there what it's really going on it's just an assingment to new values.
 /// Members that it's values are assigned on constructor body contains random garbage data before reach this point, and then are
 /// overwritten and assigned to new values, so that's why constructor initialization list it's really more efficient
 /// 
+/// We still have to assign the data of the "current_league_client_screen" member in the constructor body, 'cause until this
+/// point we don't have available what language (as an Enum variant) it's currently setted.
 /// </summary>
-RumbleLeague::RumbleLeague(const int language_id)
+RumbleLeague::RumbleLeague(const int language_id, const bool debug_mode)
 	: window_capture{ new WindowCapture },
 	rumble_vision{ new RumbleLeagueVision },
-	current_league_client_screen{ LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen) },
-	game_lobby_candidate{ LeagueClientScreenIdentifier::Unset }
+	debug_mode{ debug_mode }
 { 
 	this->set_cpp_language();
-	this->current_league_client_screen = LeagueClientScreen::factory_screen(LeagueClientScreenIdentifier::MainScreen);
+	current_league_client_screen = new LeagueClientScreen(this->language);
 }
 
-RumbleLeague::RumbleLeague()
-	: RumbleLeague{ 1 }  // 1 it's the ID for the default language (English)
-{	
-	this->set_cpp_language();
-}
+RumbleLeague::RumbleLeague() : RumbleLeague{ 1, false } {} // 1 it's the ID for the default language (English)
 
  
 /// The main interface method exposed to the Python API.
@@ -101,11 +98,10 @@ const char* RumbleLeague::play(const std::string& user_input)
 		// Calls the member method to perform a desired action based on the matched button.
 		this->league_client_action(button);
 		return "Action completed successfully";
-
 	}
 	else 
 	{
-		return "No match founded for your query";
+		return "No match was found for your query";
 	}
 
 }
@@ -120,47 +116,40 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 {	
 	// Tracks the lastest screen seen before the current one
 	this->previous_league_client_screen = this->current_league_client_screen;
-	cout << "[INFO] Previous screen -> " << this->previous_league_client_screen->get_identifier() << " <- ";
-
-	/**
-	* Whem the user it's selecting a game mode to play, the way to go to the lobby screen it's by clicking
-	* the "Confirm button". This kind of actions inside the ChooseGame screen break the sense of that any requested action
-	* calls a button with a concrete identifier, and that butoon has a variable that points to the next screen.
-	* So, we can just simpl check when the user it's selecting a game mode, and save the type of game that he/she desires
-	* to play. If thw user finally goes to the lobby screen (by selecting the "Confirm" button") we just simply retrieve that
-	* game lobby candidate and pointing again the member variable that tracks it to the correct game lobby.
-	* Note that many of the game modes has different game lobbies wih different possible actions
-	*/
-	//if (this->current_league_client_screen->get_identifier()
-	//	== LeagueClientScreenIdentifier::ChooseGame)
-	//{
-	//	this->game_lobby_candidate = client_button->next_screen;
-	//}
-
-	//// Changes the generic GameLobby for the concrete one
-	//if (client_button->next_screen == LeagueClientScreenIdentifier::GameLobby)
-	//{
-	//	this->current_league_client_screen 
-	//}
-
+	cout << "[INFO] Previous screen -> " << 
+		this->previous_league_client_screen->get_identifier() << " <- " << endl;
 
 	/** Updates the pointer to the screen with the enum value that identifies what screen comes
 	* next after pressing the button
 	*/
-	if (client_button->next_screen == LeagueClientScreenIdentifier::PreviousScreen
-		|| client_button->next_screen == LeagueClientScreenIdentifier::GameLobby)
+	switch (client_button->next_screen)
 	{
-		this->current_league_client_screen = this->current_league_client_screen->
-			factory_screen(this->previous_league_client_screen->get_identifier());	
-	}
-	else
-	{
-		this->current_league_client_screen = this->current_league_client_screen->
-			factory_screen(client_button->next_screen);
+		case LeagueClientScreenIdentifier::ChooseGame:
+			/**
+			* When the user it's selecting a game mode to play, the way to go to the lobby screen it's by clicking
+			* the "Confirm button". This kind of actions inside the ChooseGame screen break the sense of that any requested action
+			* calls a button with a concrete identifier, and that butoon has a variable that points to the next screen.
+			* So, we can just simply check when the user it's selecting a game mode, and save the type of game that he/she desires
+			* to play in a variable that tracks what button it's pressing (by voice command).
+			* If the user finally goes to the lobby screen (by selecting the "Confirm" button") we just simply retrieve that
+			* game lobby candidate and pointing again the member variable that tracks it to the correct game lobby.
+			* Note that many of the game modes has different game lobbies wih different possible actions
+			*/
+			this->game_lobby_candidate == client_button->next_screen;
+			break;
+	
+		case LeagueClientScreenIdentifier::GameLobby:
+			this->current_league_client_screen->set_identifier(this->game_lobby_candidate);
+			break;
+
+		default:
+			// Any voice command that presses a button that leads to a screen change
+			this->current_league_client_screen->set_identifier(client_button->next_screen);
+
 	}
 
-	cout << "[INFO] Current screen -> " << this->current_league_client_screen->get_identifier() << " <- ";
-
+	cout << "[INFO] Current screen -> " << 
+		this->current_league_client_screen->get_identifier() << " <- " << endl;
 
 
 	// Sets the needle image for what we are looking for
@@ -175,7 +164,7 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 		Mat* video_source_ptr = &video_source;
 
 		// Img finder. Matches the video source and the needle image and returns the point where the needle image is found inside the video source.
-		Point m_loc = this->rumble_vision->find(video_source_ptr, needle_image);
+		Point m_loc = this->rumble_vision->find(video_source_ptr, needle_image, 0.05, this->debug_mode);
 		
 		// If statement for debug purposes. This one should be replaced for a method call that parses the input query from the user voice
 		// and decides what event should run

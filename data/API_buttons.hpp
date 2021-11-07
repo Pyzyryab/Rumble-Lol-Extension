@@ -48,8 +48,8 @@ namespace RLE_data {
 		
 		// Find Game - Cancel queue - Confirm action
 		make_tuple("find", "find_game", LeagueClientScreenIdentifier::AcceptDecline),
-		make_tuple("go", "confirm_button", LeagueClientScreenIdentifier::PreviousScreen),
-		make_tuple("cancel", "cancel_button", LeagueClientScreenIdentifier::PreviousScreen),
+		make_tuple("go", "confirm_button", LeagueClientScreenIdentifier::GameLobby),
+		make_tuple("cancel", "cancel_button", LeagueClientScreenIdentifier::MainScreen),
 	};
 
 	vector<tuple<const char*, const char*, const LeagueClientScreenIdentifier>> spanish_buttons{

@@ -52,7 +52,7 @@ os.chdir('./python_mod')
 if as_standalone:
     import rle
 
-    rumble_league = rle.RumbleLeague(1)  
+    rumble_league = rle.RumbleLeague(1, False)  
 
     # Print it's memory address to ckeck if it's working correctly
     print(rumble_league)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour

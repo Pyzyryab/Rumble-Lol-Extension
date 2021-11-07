@@ -42,8 +42,7 @@ Point RumbleLeagueVision::find(Mat* video_src, Mat templ, double threshold, bool
         //return matchLoc;
     }
 
-    //TODO Threat this line as a debug flag controlled parameter?
-   imshow(image_window, img);
+    if (debug_mode) { imshow(image_window, img); }
 
     return Point();
 }

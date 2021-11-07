@@ -26,6 +26,10 @@ class RumbleLeague
 		// transform it into a C++ enum variant
 		int language_id;
 
+		// Control flag to allow the Python's side determine when it's desired to see some useful logs
+		// or even the OpenCV window showing how it's performing a match on the image
+		bool debug_mode;
+
 		// The current selected language, as a C++ enum variant. This tracks the language that the main API it's using,
 		// and acts as a flag for some common tree decision actions based on what the user it's quering.
 		Language language;
@@ -53,23 +57,6 @@ class RumbleLeague
 		// Represents the user command voice to choose a match
 		LeagueClientScreenIdentifier game_lobby_candidate;
 
-		// A map to store all the available League of Legends screen instances of the classes that represents them.
-		// Think about the map's signature, it will be <const char*, LeagueClientScreen*>,
-		// containing all the childrens of the LeagueClientScreen class. It's literally a map with a matched keyword as a key, that it's contained
-		// on one of the array of keywords of the instance stored as a value, with a raw pointer to that instance.
-		// It's really important to underestand what are the values stored with the new operator, and that it's because the new operator
-		// always returns a pointer to the new allocated object, and that's exactly what we need, a container of polymorphic objects.
-		// Simply note how this class just stores a pointer to the base class, and they behaves at the desired class at runtime.
-		// Note that also the map needs a custom comparator to find a value by the key with the .find() method, because the key type it's
-		// const char*, or simply an array of pointers to inmutable strings, so if we use the .find() method with some string value, it will just
-		// compare memory locations, no string values.
-		const std::map<const char*, LeagueClientScreen*, StringHelper::cmp_str> available_league_client_screens {
-			std::make_pair("start", new MainScreen), // TODO SPLIT BY LANGUAGE THE MAP
-			std::make_pair("inicio", new MainScreen),
-			std::make_pair("jugar", new ChooseGame),
-			std::make_pair("play", new ChooseGame)
-		};
-
 
 		/// Private methods. Should act as a helper for parse info or performs internal operations
 
@@ -90,7 +77,7 @@ class RumbleLeague
 	public:
 		// Constructors
 		RumbleLeague();
-		RumbleLeague(const int language_id);
+		RumbleLeague(const int language_id, const bool debug_mode);
 		// TODO Implement the copy and the move constructors
 
 		// TODO Implement the destructor, and log some useful details that will help to decide an option about concurrent tasks on Python's side
