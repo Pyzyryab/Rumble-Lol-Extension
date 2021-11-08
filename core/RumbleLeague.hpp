@@ -30,6 +30,10 @@ class RumbleLeague
 		// or even the OpenCV window showing how it's performing a match on the image
 		bool debug_mode;
 
+		// Represents the config option where the user desires the behaviour of automatically aceept a match
+		// or if prefers to accept it / decline it by voice control
+		bool autoaccept_behaviour;
+
 		// The current selected language, as a C++ enum variant. This tracks the language that the main API it's using,
 		// and acts as a flag for some common tree decision actions based on what the user it's quering.
 		Language language;
@@ -64,10 +68,15 @@ class RumbleLeague
 		// and converting it into an variant of the Language (enum) type in the implementation of this method
 		void set_cpp_language();
 
-		// Sets the correct lobby screen when the "GO" button it's called. Go button leads to a lobby screen, but we had to know what
-		// lobby it's the right one. The reason it's that the selection of the game mode doesn't lead to change the screen of what 
-		// this->current_league_screem it's pointing to. 
-		void set_correct_lobby_screen();
+		/*
+		* Designed to encapsulate the final behaviour of a move and click action on the RumbleLeague object.
+		* This method receives a needle image and inmedialy tries to found it on the video source, 
+		* WITHOUT waiting for the image to appear on the screen. This method it's intented to use in basic situations
+		* on click buttons that always are on the screen (basically, all buttons) with the exception of those who 
+		* has to be awaited to found them. One example is the "Accept" game button or the "Decline" game button.
+		* For actions like this, please, refer to the wait_event() member method.
+		*/
+		cv::Point click_event(const cv::Mat& needle_image);
 
 
 		// Sets the image that will be the needle to detect against the video stream
@@ -77,7 +86,7 @@ class RumbleLeague
 	public:
 		// Constructors
 		RumbleLeague();
-		RumbleLeague(const int language_id, const bool debug_mode);
+		RumbleLeague(const int language_id, bool autoaccept_behaviour, const bool debug_mode);
 		// TODO Implement the copy and the move constructors
 
 		// TODO Implement the destructor, and log some useful details that will help to decide an option about concurrent tasks on Python's side

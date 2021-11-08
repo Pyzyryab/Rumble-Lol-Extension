@@ -10,6 +10,20 @@ using namespace std;
 
 namespace RLE_data {
 
+	const size_t available_client_lobbies = 9;
+
+	const LeagueClientScreenIdentifier lobbies [ available_client_lobbies ] {
+		LeagueClientScreenIdentifier::SummonersBlindLobby,
+		LeagueClientScreenIdentifier::SummonersDraftLobby,
+		LeagueClientScreenIdentifier::SummonersRankedLobby,
+		LeagueClientScreenIdentifier::SummonersFlexLobby,
+		LeagueClientScreenIdentifier::AramLobby,
+		LeagueClientScreenIdentifier::TFT_NormalLobby,
+		LeagueClientScreenIdentifier::TFT_RankedLobby,
+		LeagueClientScreenIdentifier::TFT_HyperRollLobby,
+		LeagueClientScreenIdentifier::UrfLobby,
+	};
+
 	/**
 	* The available buttons to use with this API against the League of Legends client with the League
 	*/
@@ -30,10 +44,22 @@ namespace RLE_data {
 		make_tuple("aram", "aram", LeagueClientScreenIdentifier::AramLobby),
 		make_tuple("tft", "teamfight_tactics", LeagueClientScreenIdentifier::TFT_NormalLobby),
 		make_tuple("urf", "urf", LeagueClientScreenIdentifier::UrfLobby),
+
+		// Ranked and draft modes position picker
+		make_tuple("primary", "primary", LeagueClientScreenIdentifier::GameLobby),
+		make_tuple("secondary", "secondary", LeagueClientScreenIdentifier::GameLobby),
 		
+		// Roles
+		make_tuple("top", "top_role", LeagueClientScreenIdentifier::GameLobby),
+		make_tuple("jungler", "jungler_role", LeagueClientScreenIdentifier::GameLobby),
+		make_tuple("mid", "mid_role", LeagueClientScreenIdentifier::GameLobby),
+		make_tuple("bot", "bot_role", LeagueClientScreenIdentifier::GameLobby),
+		make_tuple("support", "support_role", LeagueClientScreenIdentifier::GameLobby),
+		make_tuple("fill", "autofill_role", LeagueClientScreenIdentifier::GameLobby),
+
 		// Summoner's Rift buttons
 		make_tuple("blind", "blind_pick", LeagueClientScreenIdentifier::SummonersBlindLobby),
-		make_tuple("draft", "draft_pick", LeagueClientScreenIdentifier::AramLobby),
+		make_tuple("draft", "draft_pick", LeagueClientScreenIdentifier::SummonersDraftLobby),
 		make_tuple("ranked", "ranked_solo_duo", LeagueClientScreenIdentifier::SummonersRankedLobby),
 		make_tuple("flex", "flex", LeagueClientScreenIdentifier::SummonersFlexLobby),
 		
@@ -48,8 +74,10 @@ namespace RLE_data {
 		
 		// Find Game - Cancel queue - Confirm action
 		make_tuple("find", "find_game", LeagueClientScreenIdentifier::AcceptDecline),
+		make_tuple("accept", "accept_match", LeagueClientScreenIdentifier::ChampSelect),
+		make_tuple("decline", "decline_match", LeagueClientScreenIdentifier::GameLobby),
 		make_tuple("go", "confirm_button", LeagueClientScreenIdentifier::GameLobby),
-		make_tuple("cancel", "cancel_button", LeagueClientScreenIdentifier::MainScreen),
+		make_tuple("cancel", "cancel_button", LeagueClientScreenIdentifier::CancelAction),
 	};
 
 	vector<tuple<const char*, const char*, const LeagueClientScreenIdentifier>> spanish_buttons{
@@ -87,12 +115,43 @@ namespace RLE_data {
 
 		// Creates a new button object, storing in a vector a raw pointer to the instance
 		for (auto &tuple : desired_group_buttons) {
-			api_buttons.push_back(
-				new ClientButton(std::get<0>(tuple), std::get<1>(tuple), std::get<2>(tuple), language)
-			);
+			
+			const LeagueClientScreenIdentifier* lcsi = std::find(std::begin(lobbies), std::end(lobbies), std::get<2>(tuple));
+			if (lcsi != std::end(lobbies))
+			{
+				api_buttons.push_back(
+					new ClientButton(
+						std::get<0>(tuple), 
+						std::get<1>(tuple), 
+						LeagueClientScreenIdentifier::ChooseGame, 
+						language, 
+						std::get<2>(tuple)
+					)
+				);
+			}
+			else 
+			{
+				api_buttons.push_back(
+					new ClientButton(
+						std::get<0>(tuple), 
+						std::get<1>(tuple), 
+						std::get<2>(tuple), 
+						language
+					)
+				);
+			}
+		}
+
+		for (ClientButton*& button : api_buttons)
+		{
+			std::cout << "Button with identifier: " << button->identifier
+				<< "; with path: " << button->image_path << endl;
+			std::cout << "\tpointing to: " << button->next_screen
+				<< " and belongs to: " << button->lobby << endl;
 		}
 
 		return api_buttons;
+		
 	}
 
 

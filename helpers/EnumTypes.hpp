@@ -18,20 +18,23 @@ inline std::ostream& operator<<(std::ostream& Str, Language language) {
 /// the use of raw char* or std::strings to match a property.
 /// </summary>
 enum class LeagueClientScreenIdentifier {
-	Base, Unset, // Defaults
+	Base, // Defaults
 	
 	// Control variant that allows to create the ability to recover the last screen when the action it's not linear
 	PreviousScreen,
 	// When the action does not leads to a screen change
 	SameScreen,
+	// Special actions
+	CancelAction,
 
 	MainScreen,  // Client main screen. Home.
 	ChooseGame,  // Play button
 	TFT, Clash,
 	Profile, Collection, Loot, YourShop, Store,
+	
 	// Lobbies
-	GameLobby, // Generic one, a method will set the correct one based on the last user input before "GO"
-
+	NoLobby, // Just fill the info about buttons that don't lead to a lobby
+	GameLobby, // Generic one, a kind of wildcard to set the correct one based on the last user input before "GO (Confirm button)"
 	// Summoners Rift game modes
 	SummonersBlindLobby, SummonersDraftLobby, SummonersRankedLobby, SummonersFlexLobby,
 	// Aram
@@ -41,19 +44,43 @@ enum class LeagueClientScreenIdentifier {
 	// URF
 	UrfLobby,
 	
-	AcceptDecline, ChampSelect
-};  // TODO Complete it.
+	AcceptDecline, 
+	ChampSelect
+};
 
 /// Overload the output stream operator for the LeagueClientScreenIdentifier custom type
 inline std::ostream& operator<<(std::ostream& Str, LeagueClientScreenIdentifier lcsi) {
 	switch (lcsi) {
 		case LeagueClientScreenIdentifier::Base: return Str << "Base"; break;
+
 		case LeagueClientScreenIdentifier::PreviousScreen: return Str << "Previous screen"; break;
 		case LeagueClientScreenIdentifier::SameScreen: return Str << "Same screen"; break;
+
 		case LeagueClientScreenIdentifier::MainScreen: return Str << "Main screen"; break;
 		case LeagueClientScreenIdentifier::ChooseGame: return Str << "Game selection"; break;
+		case LeagueClientScreenIdentifier::TFT: return Str << "TFT screen"; break;
+		case LeagueClientScreenIdentifier::Clash: return Str << "Clash screen"; break;
+		case LeagueClientScreenIdentifier::Profile: return Str << "Profile screen"; break;
+		case LeagueClientScreenIdentifier::Collection: return Str << "Collection screen"; break;
+		case LeagueClientScreenIdentifier::Loot: return Str << "Loot screen"; break;
+		case LeagueClientScreenIdentifier::YourShop: return Str << "Your shop screen"; break;
+		case LeagueClientScreenIdentifier::Store: return Str << "Store screen"; break;
+		case LeagueClientScreenIdentifier::GameLobby: return Str << "Game Lobby identifier"; break;
+		case LeagueClientScreenIdentifier::NoLobby: return Str << "No Lobby"; break;
+
+		case LeagueClientScreenIdentifier::SummonersBlindLobby: return Str << "Summoners Rift Blind Pick option pointed"; break;
+		case LeagueClientScreenIdentifier::SummonersDraftLobby: return Str << "Summoners Rift Draft Pick option pointed"; break;
+		case LeagueClientScreenIdentifier::SummonersRankedLobby: return Str << "Summoners Ranked Solo / Dúo option pointed"; break;
+		case LeagueClientScreenIdentifier::SummonersFlexLobby: return Str << "Summoners Rift Ranked Flex option pointed"; break;
+		case LeagueClientScreenIdentifier::AramLobby: return Str << "Aram option pointed"; break;
+		case LeagueClientScreenIdentifier::TFT_NormalLobby: return Str << "TFT Normal option pointed"; break;
+		case LeagueClientScreenIdentifier::TFT_RankedLobby: return Str << "TFT Ranked option pointed"; break;
+		case LeagueClientScreenIdentifier::TFT_HyperRollLobby: return Str << "TFT Hyper Roll option pointed"; break;
+		case LeagueClientScreenIdentifier::UrfLobby: return Str << "URF option pointed"; break;
+
 		case LeagueClientScreenIdentifier::AcceptDecline: return Str << "Accept / decline"; break;
 		case LeagueClientScreenIdentifier::ChampSelect: return Str << "Champ select"; break;
+
 		default: return Str << "No coincident one"; break;
 	};
 }

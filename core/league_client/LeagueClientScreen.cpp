@@ -15,7 +15,7 @@ using namespace std;
 
 
 /**
-* Main constructor of the base class
+* Overloaded constructor.
 */
 LeagueClientScreen::LeagueClientScreen(const Language& selected_language)
 	: identifier{ LeagueClientScreenIdentifier::MainScreen }, 
@@ -24,7 +24,7 @@ LeagueClientScreen::LeagueClientScreen(const Language& selected_language)
 	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
 }
 /**
-* Default constructors.
+* Default constructor.
 * 
 * The default constructor of the base class initializes the member reference variable to Language::English
 * as a default value through the default constructor invokation.
