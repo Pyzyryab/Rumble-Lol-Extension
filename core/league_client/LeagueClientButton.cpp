@@ -1,41 +1,56 @@
 #include <string.h>
 #include <ostream>
 #include <iostream>
+
+#include "LeagueClientButton.hpp"
+#include "../../helpers/EnumTypes.hpp"
  
 
-struct ClientButton
+ClientButton::ClientButton(
+	const char* identifier,
+	const char* image_path,
+	const LeagueClientScreenIdentifier next_screen,
+	const Language selected_language,
+	const LeagueClientScreenIdentifier lobby
+)
+	: identifier{ identifier }, 
+	image_path{ image_path }, 
+	next_screen{ next_screen }, 
+	selected_language{ selected_language },
+	lobby{ lobby }
 {
-	const char* identifier;
-	std::string image_path;
+	std::string base_path{};
+	std::string image_extension{ ".jpg" };
 
-
-	ClientButton(const char* identifier, const char* image_path)
-		: identifier{ identifier }, image_path{ }
+	switch (selected_language)
 	{
-
-		// TODO Take the language id from a configuration struct or class or whatever...
-		int current_language_id = 1;
-
-		
-		std::string base_path {};
-		std::string image_extension { ".jpg" };
-
-
-		// TODO This switch SHOULD not be here, cause it's creating for both EN and SP all of the same category
-		switch (current_language_id)
-		{
-			case 1:
-				base_path = "../assets/EN/";
-				break;
-			case 2:
-				base_path = "../assets/SP/";
-				break;
-		};
-
-
-		std::string concated_path{ base_path };
-		concated_path.append(image_path).append(image_extension);
-
-		this->image_path = concated_path;
+		case Language::English:
+			base_path = "../assets/EN/";
+			break;
+		case Language::Spanish:
+			base_path = "../assets/SP/";
+			break;
+		default:
+			base_path = "../assets/EN/";
+			break;
 	};
-};
+
+	base_path.append(image_path).append(image_extension);
+	this->image_path = base_path;
+}
+
+
+ClientButton::ClientButton(
+	const char* identifier, 
+	const char* image_path, 
+	const LeagueClientScreenIdentifier next_screen, 
+	const Language selected_language
+)
+	: ClientButton::ClientButton{ 
+		identifier, 
+		image_path, 
+		next_screen, 
+		selected_language,
+		LeagueClientScreenIdentifier::NoLobby
+	} {}
+
