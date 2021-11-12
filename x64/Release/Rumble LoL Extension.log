@@ -1,0 +1,15 @@
+﻿  LeagueClientButton.cpp
+  LeagueClientScreen.cpp
+  RumbleLeague.cpp
+  AutoCompile.cpp
+  StringHelper.cpp
+  RumbleMotion.cpp
+  RumbleVision.cpp
+  python_linker.cpp
+  WindowCapture.cpp
+     Creating library D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\rumble_league_extension_plugin\x64\Release\rle.lib and object D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\rumble_league_extension_plugin\x64\Release\rle.exp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 2943 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Rumble LoL Extension.vcxproj -> D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\rumble_league_extension_plugin\x64\Release\rle.pyd
