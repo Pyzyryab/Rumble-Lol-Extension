@@ -3,27 +3,6 @@
 using namespace std;
 using namespace cv;
 
-/** TODO -> Design path
-
-	The decision tree design will follow two branches.
-		**Direct decision** -> Like for example:
-			- I want to play an Aram, so from the Main Screen of the client the rle will auto
-			make all the necessary steps to perform an action.
-			- I want to play a ranked as a jungler and midlaner, so the same but it will auto-select the summoner position
-		**Simple decision** -> Every screen contains identifiers that will match all the posible movements from this screen to the next,
-			so the example above will be:
-			1� Wanna play / play
-			2� Ranked solo / duo
-			3� midlaner, jungler
-			4� Here will be the find match
-			5� Autoaccept game (automatic)
-			6� Choose me "Zed"
-			7� Ban "Vex, it's `fuc****` broken
-			8� Change n� of rune pages? (Complicated, implies slide)
-			9� Change summoners
-			10� Select skin (by name, or move right left)
-*/
-
 // Initializacion of static non const members of the class
 int RumbleLeague::instances_counter{ 0 };
 
