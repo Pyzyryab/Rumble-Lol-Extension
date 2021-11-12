@@ -1,7 +1,10 @@
 # Creates a relative path to this source file location on the filesystem, and then removes the last 64 characters of the str
 # that are the ones after the root of the project's path ( '\\rumble_league_extension_plugin' )
 from pathlib import Path
-rel_path = str(Path(__file__).absolute())[ : -64 ]
+rel_path = str(Path(__file__).absolute())
+
+# import os
+# os.chdir(rel_path)
 
 import subprocess
 import sys
@@ -15,7 +18,7 @@ except ImportError:
         raise RuntimeError('pybind11 install failed.')
 
 
-import pybind11
+# import pybind11
 
 cpp_args = [
     "-IC:\\vcpkg\\installed\\x64-windows\\include",
@@ -34,20 +37,20 @@ sfc_module = Extension(
     'rle',
     sources=[
         # Python bindings
-        f'{rel_path}\\rumble_league_extension_plugin\python_mod\c++_bindings\python_linker.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\python_mod\c++_bindings\python_linker.cpp',
         # Main library
-        f'{rel_path}\\rumble_league_extension_plugin\core\RumbleLeague.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\core\RumbleLeague.cpp',
         # League Client screens and buttons
-        f'{rel_path}\\rumble_league_extension_plugin\core\league_client\LeagueClientScreen.cpp',
-        f'{rel_path}\\rumble_league_extension_plugin\core\league_client\LeagueClientButton.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\core\league_client\LeagueClientScreen.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\core\league_client\LeagueClientButton.cpp',
         # Motion
-        f'{rel_path}\\rumble_league_extension_plugin\motion\RumbleMotion.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\motion\RumbleMotion.cpp',
         # Vision
-        f'{rel_path}\\rumble_league_extension_plugin\gision\RumbleVision.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\gision\RumbleVision.cpp',
         # Window Capture
-        f'{rel_path}\\rumble_league_extension_plugin\window_capture\WindowCapture.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\window_capture\WindowCapture.cpp',
         # Window Capture
-        f'{rel_path}\\rumble_league_extension_plugin\helpers\StringHelper.cpp',
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\helpers\StringHelper.cpp',
     ],
     include_dirs=[
         pybind11.get_include(),
@@ -57,8 +60,8 @@ sfc_module = Extension(
     )
 
 setup(
-    name='Rumble LoL Extension',
+    name='rumble_league_extension',
     version='1.0.0',
-    description='Python package that extends the Rumble-AI project with this module',
+    description='Python package that extends the Rumble-AI project with this module for voice control and AI related mechanics',
     ext_modules=[sfc_module],
 )
