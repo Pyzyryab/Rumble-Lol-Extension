@@ -3,9 +3,10 @@
 
 # ------ MSVC files -------
 
-# *.vcxproj    <---- Any vcxproj are included 
-# *vcxproj.*
+*.vcxproj
+*vcxproj.*
 *.sln
+*.pyproj
 
 # ------ IDE config folders files -------
 .idea/
@@ -22,7 +23,9 @@ Debug/
 # x64  <------ Included
 
 # ------ Python -------
-# */env/    <---------- Included
+*/env/
+env/
+dist/
 */__pycache__/
 /__pycache__/
 __pycache__/
@@ -32,3 +35,4 @@ __pycache__/
 
 # ------ Concrete files -------
 setup_rle_old.py
+direct_url.json

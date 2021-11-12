@@ -68,7 +68,7 @@ RumbleLeague::RumbleLeague(const int language_id, const bool autoaccept_behaviou
 }
 
 // No params constructor. Constructor delegation applied here.
-// // 1 it's the ID for the default language (English)
+// 1 it's the ID for the default language (English)
 RumbleLeague::RumbleLeague() : RumbleLeague{ 1, true, false } {} 
 
 
@@ -76,6 +76,7 @@ RumbleLeague::RumbleLeague() : RumbleLeague{ 1, true, false } {}
 RumbleLeague::~RumbleLeague()
 {
 	--RumbleLeague::instances_counter;
+	cout << "Destructor for the class RumbleLeague has been called. ";
 	cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << endl;
 }
  
