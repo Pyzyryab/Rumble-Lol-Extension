@@ -105,7 +105,6 @@ const char* RumbleLeague::play(const std::string& user_input)
 	{
 		return "No match was found for your query";
 	}
-
 }
 
 /**
@@ -227,9 +226,12 @@ Point RumbleLeague::click_event(const cv::Mat& needle_image)
 void RumbleLeague::wait_event(const cv::Mat& needle_image)
 {
 	int key = 0;
-	while (key != 27) // 'ESC' key
+	while (key != 27) // 'ESC' key // TODO Check if works on wait events or should be replaced by a while True
 	{
-		if (this->click_event(needle_image) != Point{ 0, 0 }) { break; }
+		if (this->click_event(needle_image) != Point{ 0, 0 })
+		{ 
+			break; 
+		}
 		key = waitKey(60); // you can change wait time. Need a large value when the find game it's detected?
 	}
 }

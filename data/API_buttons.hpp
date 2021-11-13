@@ -88,17 +88,17 @@ namespace RLE_data {
 	* Helper that returns a vector of ClientButton pointers, filled with the concretes one that satisfies the
 	* specified desired language.
 	* 
-	* // TODO Complete the full description of what this method does, and why it's designed in this way
+	* TODO Complete the full description of what this method does, and why it's designed in this way
 	*/
-	vector<ClientButton*> get_buttons(const Language language)
+	vector<ClientButton*> get_buttons(const Language language, const bool debug = false)
 	{
-
 		vector<tuple<const char*, const char*, const LeagueClientScreenIdentifier>> desired_group_buttons{};
 		vector<ClientButton*> api_buttons;
 
 		// Selectes the buttons based on the language. Moves them to a new container to avoid dangling references caused by std::tuple
 		switch (language)
 		{
+			// TODO Change the element variable to a reference (WARNING: does it takes ownership?)
 			case Language::English:
 				for (auto element : english_buttons)
 					desired_group_buttons.push_back(element);
@@ -142,12 +142,15 @@ namespace RLE_data {
 			}
 		}
 
-		for (ClientButton*& button : api_buttons)
+		if (debug) 
 		{
-			std::cout << "Button with identifier: " << button->identifier
-				<< "; with path: " << button->image_path << endl;
-			std::cout << "\tpointing to: " << button->next_screen
-				<< " and belongs to: " << button->lobby << endl;
+			for (ClientButton*& button : api_buttons)
+			{
+				std::cout << "Button with identifier: " << button->identifier
+					<< "; with path: " << button->image_path << endl;
+				std::cout << "\tpointing to: " << button->next_screen
+					<< " and belongs to: " << button->lobby << endl;
+			}
 		}
 
 		return api_buttons;

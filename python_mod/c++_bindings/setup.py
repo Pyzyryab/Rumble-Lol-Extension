@@ -49,8 +49,11 @@ sfc_module = Extension(
         f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\gision\RumbleVision.cpp',
         # Window Capture
         f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\window_capture\WindowCapture.cpp',
-        # Window Capture
+        # Writer
+        f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\writer\RumbleWriter.cpp',
+        # Helpers
         f'D:\MSi 2020-2021\Code\Python\Rumble-AI\src\plugins\\rumble_league_extension_plugin\helpers\StringHelper.cpp',
+        
     ],
     include_dirs=[
         pybind11.get_include(),

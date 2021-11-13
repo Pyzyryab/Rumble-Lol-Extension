@@ -42,6 +42,9 @@
     <ClCompile Include="helpers\StringHelper.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="writer\RumbleWriter.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\league_client\LeagueClientScreen.hpp">
@@ -150,6 +153,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="core\league_client\LeagueClientButton.hpp">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="writer\RumbleWriter.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
