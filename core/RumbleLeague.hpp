@@ -8,6 +8,7 @@
 #include "opencv2/opencv.hpp"
 
 #include "../motion/RumbleMotion.hpp"
+#include "../writer/RumbleWriter.h"
 #include "../gision/RumbleVision.h"
 #include "../window_capture/WindowCapture.h"
 #include "league_client/LeagueClientScreen.hpp"
@@ -44,7 +45,7 @@ class RumbleLeague
 		Language language;
 
 
-		/** 
+		/*
 		* Declares our helper to get the video source
 		* BIG TODO -> On the named constructor, should implement a way to converse coordinates from a captured window,
 		* ie, the League of Legends window, instead of capturing the whole screen. Second way it's the implemented right now,
@@ -54,7 +55,7 @@ class RumbleLeague
 		*/
 		WindowCapture* window_capture;
 
-		/**
+		/*
 		* Rumble Vision.Tools for simulate vision skills for Rumble AI.The main goal of this object
 		* it's to interface the "find" method, that will locate the images of the League Client on the screen
 		* that will match the image that we need to perform an action
@@ -73,7 +74,7 @@ class RumbleLeague
 
 		/// Private methods. Should act as a helper for parse info or performs internal operations
 
-		/**
+		/*
 		* Sets the language on this C++ library by taking the id of the language (provided via constructor from Rumble AI),
 		* and converting it into an variant of the Language (enum) type in the implementation of this method
 		*/

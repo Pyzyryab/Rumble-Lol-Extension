@@ -19,16 +19,18 @@ inline std::ostream& operator<<(std::ostream& Str, Language language) {
 /// the use of raw char* or std::strings to match a property.
 /// </summary>
 enum class LeagueClientScreenIdentifier {
-	Base, // Defaults
-	
+	Base, // Default, just for initialization before the real init one
+	// Represents an status, more than a screen, after the user closes the client or logged out
+	ClientClosed,
 	// Control variant that allows to create the ability to recover the last screen when the action it's not linear
 	PreviousScreen,
 	// When the action does not leads to a screen change
 	SameScreen,
 	// Special actions
 	CancelAction,
-
-	MainScreen,  // Client main screen. Home.
+	// Client main screen. Home.
+	MainScreen,
+	// NavBar options
 	ChooseGame,  // Play button
 	TFT, Clash,
 	Profile, Collection, Loot, YourShop, Store,
@@ -44,7 +46,11 @@ enum class LeagueClientScreenIdentifier {
 	TFT_NormalLobby, TFT_RankedLobby, TFT_HyperRollLobby,
 	// URF
 	UrfLobby,
-	
+	// Training lobbies
+	TutorialLobby, 
+	PracticeTool,
+
+	// Special screens or screens with special actions
 	AcceptDecline, 
 	ChampSelect
 };
@@ -53,6 +59,7 @@ enum class LeagueClientScreenIdentifier {
 inline std::ostream& operator<<(std::ostream& Str, LeagueClientScreenIdentifier lcsi) {
 	switch (lcsi) {
 		case LeagueClientScreenIdentifier::Base: return Str << "Base"; break;
+		case LeagueClientScreenIdentifier::ClientClosed: return Str << "Client closed"; break;
 
 		case LeagueClientScreenIdentifier::PreviousScreen: return Str << "Previous screen"; break;
 		case LeagueClientScreenIdentifier::SameScreen: return Str << "Same screen"; break;
@@ -71,7 +78,7 @@ inline std::ostream& operator<<(std::ostream& Str, LeagueClientScreenIdentifier 
 
 		case LeagueClientScreenIdentifier::SummonersBlindLobby: return Str << "Summoners Rift Blind Pick option pointed"; break;
 		case LeagueClientScreenIdentifier::SummonersDraftLobby: return Str << "Summoners Rift Draft Pick option pointed"; break;
-		case LeagueClientScreenIdentifier::SummonersRankedLobby: return Str << "Summoners Ranked Solo / Dúo option pointed"; break;
+		case LeagueClientScreenIdentifier::SummonersRankedLobby: return Str << "Summoners Ranked Solo / Dï¿½o option pointed"; break;
 		case LeagueClientScreenIdentifier::SummonersFlexLobby: return Str << "Summoners Rift Ranked Flex option pointed"; break;
 		case LeagueClientScreenIdentifier::AramLobby: return Str << "Aram option pointed"; break;
 		case LeagueClientScreenIdentifier::TFT_NormalLobby: return Str << "TFT Normal option pointed"; break;
