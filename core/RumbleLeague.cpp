@@ -3,27 +3,6 @@
 using namespace std;
 using namespace cv;
 
-/** TODO -> Design path
-
-	The decision tree design will follow two branches.
-		**Direct decision** -> Like for example:
-			- I want to play an Aram, so from the Main Screen of the client the rle will auto
-			make all the necessary steps to perform an action.
-			- I want to play a ranked as a jungler and midlaner, so the same but it will auto-select the summoner position
-		**Simple decision** -> Every screen contains identifiers that will match all the posible movements from this screen to the next,
-			so the example above will be:
-			1� Wanna play / play
-			2� Ranked solo / duo
-			3� midlaner, jungler
-			4� Here will be the find match
-			5� Autoaccept game (automatic)
-			6� Choose me "Zed"
-			7� Ban "Vex, it's `fuc****` broken
-			8� Change n� of rune pages? (Complicated, implies slide)
-			9� Change summoners
-			10� Select skin (by name, or move right left)
-*/
-
 // Initializacion of static non const members of the class
 int RumbleLeague::instances_counter{ 0 };
 
@@ -126,7 +105,6 @@ const char* RumbleLeague::play(const std::string& user_input)
 	{
 		return "No match was found for your query";
 	}
-
 }
 
 /**
@@ -154,8 +132,8 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 			* When the user it's selecting a game mode to play, the way to go to the lobby screen it's by clicking
 			* the "Confirm button". This kind of actions inside the ChooseGame screen break the sense of that any requested action
 			* calls a button with a concrete identifier, and that butoon has a variable that points to the next screen.
-			* So, we can just simply check when the user it's selecting a game mode, and save the type of game that he/she desires
-			* to play in a variable that tracks what button it's pressing (by voice command).
+			* So, we can just simply check when the user it's selecting a game mode, and save the type of game that desires
+			* to play in a variable that tracks what button it's being called by voice command.
 			* If the user finally goes to the lobby screen (by selecting the "Confirm" button) we just simply retrieve that
 			* game lobby candidate and pointing again the member variable that tracks it to the correct game lobby.
 			* Note that many of the game modes has different game lobbies wih different possible actions
@@ -201,15 +179,7 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 	this->set_needle_image(client_button->image_path, needle_image);
 
 	// Change this for a fn pointer or callback inside the button
-	if (!wait_event)
-	{
-		this->click_event(needle_image);
-	}
-	else
-	{
-		
-		this->wait_event(needle_image);
-	}
+	(!wait_event) ? this->click_event(needle_image) : this->wait_event(needle_image);
 
 	// Special behaviour (Under testing and development)
 	if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()
@@ -223,6 +193,11 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 	// Prevents to leak memory and clean up resources
 	cv::destroyAllWindows();
 }
+
+
+/**
+* Private members
+*/
 
 Point RumbleLeague::click_event(const cv::Mat& needle_image)
 {
@@ -248,16 +223,19 @@ Point RumbleLeague::click_event(const cv::Mat& needle_image)
 void RumbleLeague::wait_event(const cv::Mat& needle_image)
 {
 	int key = 0;
-	while (key != 27) // 'ESC' key
+	while (key != 27) // 'ESC' key // TODO Check if works on wait events or should be replaced by a while True
 	{
-		if (this->click_event(needle_image) != Point{ 0, 0 }) { break; }
+		if (this->click_event(needle_image) != Point{ 0, 0 })
+		{ 
+			break; 
+		}
 		key = waitKey(60); // you can change wait time. Need a large value when the find game it's detected?
 	}
 }
 
 
 /**
-* Helpers private methods
+* Helpers
 */
 
 void RumbleLeague::set_needle_image(const std::string& image_path, Mat& needle_image)

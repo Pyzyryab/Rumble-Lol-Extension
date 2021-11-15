@@ -29,6 +29,8 @@ print( f'Base path: { base_path }' )
         3.2 - Add the folder to the DLL search path 
 '''
 dll_folder = base_path + '\\x64\\Release'
+ # NEW - TODO PROVIDE AN INTERNAL FOLDER WITH THE OPENCV /bin folder and DLL's (like the x64\Release folder)
+ # or find a way to provide a path to the installation directory (in this case, managed by vcpkg)
 os.add_dll_directory(dll_folder)
 
 '''
@@ -60,10 +62,9 @@ if as_standalone:
 
     while control:
         # query = rumble.listen()
-        query = input('Introduce una acción: \n')
-        print(f'He escuchado desde dentro del LoL: {query}')
+        query = input('Provide an action: \n')
             
-        if query == "desactivar":
+        if query == "stop":
             break
         elif query != "":
             result = rumble_league.play( query.lower() )

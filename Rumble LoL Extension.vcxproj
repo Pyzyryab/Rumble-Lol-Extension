@@ -160,6 +160,7 @@
     <ClCompile Include="gision\RumbleVision.cpp" />
     <ClCompile Include="python_mod\c++_bindings\python_linker.cpp" />
     <ClCompile Include="window_capture\WindowCapture.cpp" />
+    <ClCompile Include="writer\RumbleWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\league_client\LeagueClientButton.hpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="python\env\Lib\site-packages\pybind11\include\pybind11\stl_bind.h" />
     <ClInclude Include="gision\RumbleVision.h" />
     <ClInclude Include="window_capture\WindowCapture.h" />
+    <ClInclude Include="writer\RumbleWriter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
