@@ -132,8 +132,8 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 			* When the user it's selecting a game mode to play, the way to go to the lobby screen it's by clicking
 			* the "Confirm button". This kind of actions inside the ChooseGame screen break the sense of that any requested action
 			* calls a button with a concrete identifier, and that butoon has a variable that points to the next screen.
-			* So, we can just simply check when the user it's selecting a game mode, and save the type of game that he/she desires
-			* to play in a variable that tracks what button it's pressing (by voice command).
+			* So, we can just simply check when the user it's selecting a game mode, and save the type of game that desires
+			* to play in a variable that tracks what button it's being called by voice command.
 			* If the user finally goes to the lobby screen (by selecting the "Confirm" button) we just simply retrieve that
 			* game lobby candidate and pointing again the member variable that tracks it to the correct game lobby.
 			* Note that many of the game modes has different game lobbies wih different possible actions
@@ -179,15 +179,7 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 	this->set_needle_image(client_button->image_path, needle_image);
 
 	// Change this for a fn pointer or callback inside the button
-	if (!wait_event)
-	{
-		this->click_event(needle_image);
-	}
-	else
-	{
-		
-		this->wait_event(needle_image);
-	}
+	(!wait_event) ? this->click_event(needle_image) : this->wait_event(needle_image);
 
 	// Special behaviour (Under testing and development)
 	if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()
@@ -201,6 +193,11 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 	// Prevents to leak memory and clean up resources
 	cv::destroyAllWindows();
 }
+
+
+/**
+* Private members
+*/
 
 Point RumbleLeague::click_event(const cv::Mat& needle_image)
 {
@@ -238,7 +235,7 @@ void RumbleLeague::wait_event(const cv::Mat& needle_image)
 
 
 /**
-* Helpers private methods
+* Helpers
 */
 
 void RumbleLeague::set_needle_image(const std::string& image_path, Mat& needle_image)

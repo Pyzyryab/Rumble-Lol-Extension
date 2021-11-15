@@ -6,6 +6,7 @@
 const std::map<const char, const uint32_t> RumbleWriter::virtual_keycodes
 {
     // Special keyboard caps
+    { ' ', 0X08 }, // BACKSPACE
     { ' ', 0X20 }, // SPACEBAR
     // Common letters
     { 'a', 0X41 }, { 'b', 0X42 }, { 'c', 0X43 }, { 'd', 0X44 }, { 'e', 0X45 }, { 'f', 0X46 },
@@ -52,7 +53,7 @@ void RumbleWriter::speech_to_keyboard_input(std::string text_from_voice)
         this->input.ki.dwFlags = 0; // 0 for key press
         SendInput(1, &input, sizeof(INPUT));
 
-        // Release the "A" key
+        // Release the key
         this->input.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
         SendInput(1, &input, sizeof(INPUT));
     }

@@ -31,7 +31,7 @@ print( f'Base path: { base_path }' )
 dll_folder = base_path + '\\x64\\Release'
  # NEW - TODO PROVIDE AN INTERNAL FOLDER WITH THE OPENCV /bin folder and DLL's (like the x64\Release folder)
  # or find a way to provide a path to the installation directory (in this case, managed by vcpkg)
-os.add_dll_directory("C:\\vcpkg\\installed\\x64-windows\\bin")
+os.add_dll_directory(dll_folder)
 
 '''
     3º - Since Python 3.8, DLL's from installed libs should be manually pointed, mark it them as a safe-directory.
