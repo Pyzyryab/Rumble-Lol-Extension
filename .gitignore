@@ -1,15 +1,38 @@
+# Several build files are included in order to make it available to anyone that wants to build the project
+
+
+# ------ MSVC files -------
+
 *.vcxproj
 *vcxproj.*
 *.sln
+*.pyproj
+
+# ------ IDE config folders files -------
 .idea/
-x64/
 .vscode/
 .vs/
+
+# ------ Files and binaries -------
 *.exe
+*.tlog
+
+
+# ------ Debug and Release build folders -------
 Debug/
+# x64  <------ Included
+
+# ------ Python -------
 */env/
+env/
+dist/
 */__pycache__/
+/__pycache__/
+__pycache__/
+/build/
+/Rumble_LoL_Extension.egg-info/
 
 
-# Concrete files
+# ------ Concrete files -------
 setup_rle_old.py
+direct_url.json

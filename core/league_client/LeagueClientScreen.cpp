@@ -1,65 +1,51 @@
-#include "LeagueClientScreen.hpp"
 #include <algorithm>
 #include <iostream>
-#include <string> 
-#include <vector> 
+#include <string>
 #include <sstream>
+#include <vector>
+#include <tuple>
+
+
+#include "LeagueClientScreen.hpp"
+#include "../../helpers/EnumTypes.hpp"
+#include "../../data/API_buttons.hpp"
+#include "../../helpers/StringHelper.hpp"
+
+using namespace std;
 
 
 /**
-* Default constructors
+* Overloaded constructor.
 */
-LeagueClientScreen::LeagueClientScreen() {}
+LeagueClientScreen::LeagueClientScreen(const Language& selected_language)
+	: identifier{ LeagueClientScreenIdentifier::MainScreen }, 
+	selected_language{ selected_language } 
+{
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
+}
+/**
+* Default constructor.
+* 
+* The default constructor of the base class initializes the member reference variable to Language::English
+* as a default value through the default constructor invokation.
+*/
+LeagueClientScreen::LeagueClientScreen()
+	: LeagueClientScreen{ Language::English } 
+{
+	this->client_buttons = RLE_data::get_buttons( this->get_selected_language() );
+}
 
-MainScreen::MainScreen() {}
-
-ChooseGame::ChooseGame() {}
 
 /**
-* Virtual destructor for the base class.
+* Destructor for this class.
 * 
 * This destructor allows to fully safe delete all resources allocated via dynamic dispatch.
-* 
-* If a given class instanciate a child of the LeagueClientScreen via pointer reference (polymorphsm) 
-* the virtual destructor deletes the resources associated with the child class, not with the base (or parent) class.
 */
 LeagueClientScreen::~LeagueClientScreen()
 {
-	std::cout << "Virtual destructor called for the child of LeagueClientScreen: " << this->get_identifier() << std::endl;
+	std::cout << "Destructor called on the screen of LeagueClientScreen: " << this->get_identifier() << std::endl;
 }
 
-
-
-// This factory method is a static method of a class that returns an object of that class' type. 
-// But unlike a constructor, the actual object it returns might be an instance of a subclass. 
-// Another advantage of a factory method is that it can return existing instances multiple times.
-LeagueClientScreen* LeagueClientScreen::factory_screen(const LeagueClientScreenIdentifier& screen_identifier)
-{
-	switch (screen_identifier)
-	{
-	case LeagueClientScreenIdentifier::MainScreen:
-		return new MainScreen;
-		break;
-	case LeagueClientScreenIdentifier::ChooseGame:
-		return new ChooseGame;
-		break;
-		// TODO Implement the other methods
-	}
-
-}
-
-std::vector<std::string>& split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
-{
-	// construct a stream from the string 
-	std::stringstream ss(input);
-
-	std::string s;
-	while (std::getline(ss, s, delimiter)) {
-		output.push_back(s);
-	}
-
-	return output;
-}
 
 
 /// <summary>
@@ -74,7 +60,7 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 	std::vector<ClientButton*> matched_buttons {};
 	
 	std::vector<std::string> splitted_input;
-	splitted_input = split_by_delimiter(user_input, ' ', splitted_input);
+	splitted_input = StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
 	// Outputing debug info to the console
 	std::cout << "\nSplitted user input: " << std::endl;
@@ -83,78 +69,57 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 
 	std::cout << "\nGetting data from: " << this->get_identifier() << std::endl;
 	
-	// TODO Get the correct language to get the correct array from the config struct
-	std::vector<ClientButton*> buttons = this->get_english_client_buttons();
+	// Calls the method on the current selected child screen and recovers the client buttons pointers
+	// associated with that screen
+	std::vector<ClientButton*> buttons = this->get_client_buttons();
 
 	for (const auto word : splitted_input) {
-		std::cout << "" << std::endl;
-		std::cout << "Comparing: " << word << std::endl;
+		
+		//std::cout << "" << std::endl;
+		//std::cout << "Comparing: " << word << std::endl;
+		
 		for (int i = 0; i < buttons.size(); i++) {
-			std::cout << " with: " << buttons[i]->identifier << std::endl;
-			if ( strcmp(buttons[i]->identifier, word.c_str()) == 0 ) {
+			
+			//std::cout << " with: " << buttons[i]->identifier << std::endl;
+			
+			if ( strcmp(buttons[i]->identifier, word.c_str()) == 0 ) 
+			{
 				std::cout << "\t Match founded!" << std::endl;
 				matched_buttons.push_back(buttons[i]);
 			}
 			else 
 			{
-				std::cout << "\t No match!" << std::endl;
+				//std::cout << "\t No match!" << std::endl;
 			}
 		}
 	}
-
 	return matched_buttons;
 }
 
+
 /**
-* Getters for the LeagueClientScreenIdentifier identifiers
+* Getters
 */
 LeagueClientScreenIdentifier LeagueClientScreen::get_identifier()
 {
 	return this->identifier;
 }
 
-LeagueClientScreenIdentifier MainScreen::get_identifier()
+std::vector<ClientButton*> LeagueClientScreen::get_client_buttons()
 {
-	return this->identifier;
+	return this->client_buttons;
 }
 
-LeagueClientScreenIdentifier ChooseGame::get_identifier()
+const Language& LeagueClientScreen::get_selected_language()
 {
-	return this->identifier;
+	return this->selected_language;
 }
 
 
 /**
-* Getters for the keyword identifiers
+* Setters
 */
-std::vector<ClientButton*> LeagueClientScreen::get_english_client_buttons()
+void LeagueClientScreen::set_identifier(LeagueClientScreenIdentifier identifier)
 {
-	return this->english_client_buttons;
+	this->identifier = identifier;
 }
-
-std::vector<ClientButton*> MainScreen::get_english_client_buttons()
-{
-	return this->english_client_buttons;
-}
-
-std::vector<ClientButton*> ChooseGame::get_english_client_buttons()
-{
-	return this->english_client_buttons;
-}
-
-
-std::vector<ClientButton*> LeagueClientScreen::get_spanish_client_buttons()
-{
-	return this->spanish_client_buttons;
-}
-
-std::vector<ClientButton*> MainScreen::get_spanish_client_buttons()
-{
-	return this->spanish_client_buttons;
-}
-
-std::vector<ClientButton*> ChooseGame::get_spanish_client_buttons()
-{
-	return this->spanish_client_buttons;
-}
-

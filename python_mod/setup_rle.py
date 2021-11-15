@@ -9,7 +9,7 @@ import os
 base_path = os.getcwd()
 as_standalone = False
 
-if base_path.endswith( 'python_mod'):
+if base_path.endswith( 'python_mod' ):
     base_path = base_path[ : len( base_path ) - (len( 'python_mod' ) + 1) ]
 
 if base_path.endswith( 'Rumble-AI' ):
@@ -29,6 +29,8 @@ print( f'Base path: { base_path }' )
         3.2 - Add the folder to the DLL search path 
 '''
 dll_folder = base_path + '\\x64\\Release'
+ # NEW - TODO PROVIDE AN INTERNAL FOLDER WITH THE OPENCV /bin folder and DLL's (like the x64\Release folder)
+ # or find a way to provide a path to the installation directory (in this case, managed by vcpkg)
 os.add_dll_directory(dll_folder)
 
 '''
@@ -38,8 +40,8 @@ os.add_dll_directory(dll_folder)
 '''
 
 os.chdir( base_path )
-activate_this_file = ".\\python_mod\\env\\Scripts\\activate_this.py"
-exec(compile(open(activate_this_file, "rb").read(), activate_this_file, 'exec'), dict(__file__=activate_this_file))
+# activate_this_file = ".\\python_mod\\env\\Scripts\\activate_this.py"
+# exec(compile(open(activate_this_file, "rb").read(), activate_this_file, 'exec'), dict(__file__=activate_this_file))
 
 
 '''
@@ -49,13 +51,22 @@ exec(compile(open(activate_this_file, "rb").read(), activate_this_file, 'exec'),
 
 os.chdir('./python_mod')
 
-if True:
+if as_standalone:
     import rle
 
-    rumble_league = rle.RumbleLeague(1)  
+    rumble_league = rle.RumbleLeague(1, True, False)  
 
-    # Print it's memory address to ckeck if it's working correctly
+    # Print it's memory address to check if it's working correctly
     print(rumble_league)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour
+    control = True
 
-    # For now, the unique method availiable it's the one shown below.
-    rumble_league.play('Rumble, play')
+    while control:
+        # query = rumble.listen()
+        query = input('Provide an action: \n')
+            
+        if query == "stop":
+            break
+        elif query != "":
+            result = rumble_league.play( query.lower() )
+            print( f'C++ output: {result}' )
+            print( '*************************\n' )
