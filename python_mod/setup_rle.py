@@ -28,7 +28,7 @@ print( f'Base path: { base_path }' )
         3.1 - Let's gonna create a variable to track the folder
         3.2 - Add the folder to the DLL search path 
 '''
-dll_folder = base_path + '\\x64\\Release'
+dll_folder = base_path + '\\include'
  # NEW - TODO PROVIDE AN INTERNAL FOLDER WITH THE OPENCV /bin folder and DLL's (like the x64\Release folder)
  # or find a way to provide a path to the installation directory (in this case, managed by vcpkg)
 os.add_dll_directory(dll_folder)

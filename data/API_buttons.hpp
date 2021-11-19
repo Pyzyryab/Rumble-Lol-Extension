@@ -185,9 +185,9 @@ namespace RLE_data {
 		{
 			for (ClientButton*& button : api_buttons)
 			{
-				std::cout << "Button with identifier: " << button->identifier
+				cout << "Button with identifier: " << button->identifier
 					<< "; with path: " << button->image_path << endl;
-				std::cout << "\tpointing to: " << button->next_screen
+				cout << "\tpointing to: " << button->next_screen
 					<< " and belongs to: " << button->lobby << endl;
 			}
 		}

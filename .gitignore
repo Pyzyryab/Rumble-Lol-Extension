@@ -29,8 +29,8 @@ dist/
 */__pycache__/
 /__pycache__/
 __pycache__/
-/build/
-/Rumble_LoL_Extension.egg-info/
+build/
+rumble_league_extension.egg-info/
 
 
 # ------ Concrete files -------
