@@ -9,10 +9,10 @@ struct ClientButton
 	const char* identifier;
 	std::string image_path;
 	// When clicked, informs about what screen will follows the current one
-	const LeagueClientScreenIdentifier next_screen;
-	const Language selected_language;
+	LeagueClientScreenIdentifier next_screen;
+	Language selected_language;
 	// In case of the button belongs to a lobby, stores here what lobby will lead after press the "Confirm" button
-	const LeagueClientScreenIdentifier lobby; 
+	LeagueClientScreenIdentifier lobby; 
 
 
 	// Base constructor
@@ -31,4 +31,13 @@ struct ClientButton
 		const Language selected_language,
 		const LeagueClientScreenIdentifier lobby
 	);
+
+	// Copy constructor
+	ClientButton(const ClientButton &source);
+
+	// Move constructor
+	ClientButton(ClientButton &&source) noexcept;
+
+	// Destructor
+	~ClientButton();
 };

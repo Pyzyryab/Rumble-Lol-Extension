@@ -126,7 +126,7 @@ namespace RLE_data {
 	* 
 	* TODO Complete the full description of what this method does, and why it's designed in this way
 	*/
-	vector<ClientButton*> get_buttons(const Language language, const bool debug = false)
+	vector<ClientButton*> get_buttons(const Language language, const bool debug = true)
 	{
 		vector<tuple<const char*, const char*, const LeagueClientScreenIdentifier>> desired_group_buttons{};
 		vector<ClientButton*> api_buttons;
@@ -136,15 +136,15 @@ namespace RLE_data {
 		{
 			// TODO Change the element variable to a reference (WARNING: does it takes ownership?)
 			case Language::English:
-				for (auto element : english_buttons)
+				for (auto &element : english_buttons)
 					desired_group_buttons.push_back(element);
 				break;
 			case Language::Spanish:
-				for (auto element : spanish_buttons)
+				for (auto &element : spanish_buttons)
 					desired_group_buttons.push_back(element);
 				break;
 			default:
-				for (auto element : english_buttons)
+				for (auto &element : english_buttons)
 					desired_group_buttons.push_back(element);
 		};
 
