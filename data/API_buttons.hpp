@@ -134,7 +134,7 @@ namespace RLE_data {
 		// Selectes the buttons based on the language. Moves them to a new container to avoid dangling references caused by std::tuple
 		switch (language)
 		{
-			// TODO Change the element variable to a reference (WARNING: does it takes ownership?)
+			// TODO Do we really need to copy them 
 			case Language::English:
 				for (auto &element : english_buttons)
 					desired_group_buttons.push_back(element);

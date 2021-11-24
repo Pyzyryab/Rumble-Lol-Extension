@@ -30,7 +30,7 @@ ClientButton::ClientButton(
 	const Language selected_language,
 	const LeagueClientScreenIdentifier lobby
 )
-	: identifier{ identifier }, 
+	: identifier{ const_cast<char*>(identifier)  }, 
 	image_path{ image_path }, 
 	next_screen{ next_screen }, 
 	selected_language{ selected_language },
@@ -60,7 +60,7 @@ ClientButton::ClientButton(const ClientButton &source)
 {
 	// Deep copy of the raw char* pointer
 	identifier = new char[ strlen(source.identifier) + 1 ];
-	identifier = source.identifier;
+	strcpy(identifier, source.identifier);
 	// Shallow copy for the rest of the members
 	image_path = source.image_path;
 	next_screen = source.next_screen;
@@ -95,4 +95,32 @@ ClientButton::~ClientButton()
 	{
 		std::cout << "Destructor freeing data for nullptr" << std::endl;
 	}
+}
+
+// Copy assigment operator overload
+ClientButton &ClientButton::operator=(const ClientButton &rhs)
+{
+	std::cout << "Using copy assignment" << std::endl;
+	if (this == &rhs)
+		return *this;
+
+	const char* identifier_cpy;
+
+	delete [] this->identifier;
+	this->identifier = new char[ std::strlen(rhs.identifier) ];
+	std::strcpy( this->identifier, rhs.identifier );
+	return *this;
+}
+
+// Move assignment operator overload
+ClientButton &ClientButton::operator=(ClientButton &&rhs)
+{
+	std::cout << "Using move assignment" << std::endl;
+	if (this == &rhs)
+		return *this;
+
+	delete [] this->identifier;
+	identifier = rhs.identifier;
+	rhs.identifier = nullptr;
+	return *this;
 }

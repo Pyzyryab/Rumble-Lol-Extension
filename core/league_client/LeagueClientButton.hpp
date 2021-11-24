@@ -6,7 +6,7 @@
 
 struct ClientButton
 {
-	const char* identifier;
+	char* identifier;
 	std::string image_path;
 	// When clicked, informs about what screen will follows the current one
 	LeagueClientScreenIdentifier next_screen;
@@ -40,4 +40,10 @@ struct ClientButton
 
 	// Destructor
 	~ClientButton();
+
+	// Copy assignment operator overload
+	ClientButton &operator=(const ClientButton &rhs);
+
+	// Move assignment operator overload
+	ClientButton &operator=(ClientButton &&rhs);
 };
