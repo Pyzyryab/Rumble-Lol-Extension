@@ -101,8 +101,12 @@ class RumbleLeague
 		// Constructors
 		RumbleLeague();
 		RumbleLeague(const int language_id, bool autoaccept_behaviour, const bool debug_mode);
-		
-		// TODO Implement the copy and the move constructors
+
+		// Copy constructor
+		RumbleLeague(const RumbleLeague &source);
+
+		// Move constructor
+		RumbleLeague(const RumbleLeague &&source);
 
 		// Destructor
 		~RumbleLeague();
