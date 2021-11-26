@@ -96,6 +96,9 @@ class RumbleLeague
 		// Sets the image that will be the needle to detect against the video stream
 		void set_needle_image(const std::string& image_path, cv::Mat& needle_image);
 
+		// Executes an internal action of this API
+		void league_client_action(const ClientButton* const& client_button);
+
 
 	public:
 		// Constructors
@@ -114,6 +117,11 @@ class RumbleLeague
 		// The entry point for the Python API
 		const char* play(const std::string& user_input);
 
-		void league_client_action(const ClientButton* const& client_button);
+		void proba();
+
+		ClientButton RumbleLeague::copy_proba(ClientButton *client_button);
+		void RumbleLeague::move_proba(ClientButton &&client_button);
+
+		
 
 };
