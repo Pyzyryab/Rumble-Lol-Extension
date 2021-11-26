@@ -104,11 +104,14 @@ ClientButton &ClientButton::operator=(const ClientButton &rhs)
 	if (this == &rhs)
 		return *this;
 
-	const char* identifier_cpy;
-
-	delete [] this->identifier;
-	this->identifier = new char[ std::strlen(rhs.identifier) ];
+	this->identifier = new char[ std::strlen(rhs.identifier) + 1 ];
 	std::strcpy( this->identifier, rhs.identifier );
+
+	image_path = rhs.image_path;
+	next_screen = rhs.next_screen;
+	selected_language = rhs.selected_language;
+	lobby = rhs.lobby;
+
 	return *this;
 }
 
@@ -120,7 +123,15 @@ ClientButton &ClientButton::operator=(ClientButton &&rhs)
 		return *this;
 
 	delete [] this->identifier;
+
+	// Moving the data and nulling the source
 	identifier = rhs.identifier;
 	rhs.identifier = nullptr;
+
+	image_path = rhs.image_path;
+	next_screen = rhs.next_screen;
+	selected_language = rhs.selected_language;
+	lobby = rhs.lobby;
+
 	return *this;
 }

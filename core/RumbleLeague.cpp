@@ -58,6 +58,43 @@ RumbleLeague::~RumbleLeague()
 	cout << "Destructor for the class RumbleLeague has been called. ";
 	cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << endl;
 }
+
+void RumbleLeague::proba()
+{
+	std::cout << "" << std::endl;
+
+	ClientButton *cb = new ClientButton("training", "training", LeagueClientScreenIdentifier::ChooseGame, Language::English, LeagueClientScreenIdentifier::AcceptDecline);
+	ClientButton *new_cb = new ClientButton("another", "another_path", LeagueClientScreenIdentifier::Base, Language::Spanish, LeagueClientScreenIdentifier::Loot);
+	
+	std::cout << "ClientButton cb memory address -> " << cb << std::endl;
+	std::cout << "ClientButton cb identifier -> " << cb->identifier << std::endl;
+
+	std::cout << "ClientButton new_cb memory address -> " << cb << std::endl;
+	std::cout << "ClientButton new_cb identifier -> " << new_cb->identifier << std::endl;
+
+	std::cout << "" << std::endl;
+
+	copy_proba(cb);
+	move_proba(ClientButton("training", "training", LeagueClientScreenIdentifier::ChooseGame, Language::English, LeagueClientScreenIdentifier::AcceptDecline));
+}
+
+ClientButton RumbleLeague::copy_proba(ClientButton *client_button)
+{
+	std::cout << "" << std::endl;
+	std::cout << "LCSI -> " << client_button->next_screen << std::endl;
+	ClientButton clientb = ClientButton("cosa", "nueva", LeagueClientScreenIdentifier::ChooseGame, Language::English, LeagueClientScreenIdentifier::AcceptDecline);
+
+	*client_button = clientb; 
+	*client_button = ClientButton("move", "nueva", LeagueClientScreenIdentifier::ChooseGame, Language::English, LeagueClientScreenIdentifier::AcceptDecline);; 
+
+	return *client_button;
+}
+
+void RumbleLeague::move_proba(ClientButton &&client_button)
+{
+	std::cout << "" << std::endl;
+	std::cout << "Button on move proba -> " << client_button.next_screen << std::endl;
+}
  
 /**
 * The main interface method exposed to the Python API.
@@ -68,43 +105,45 @@ RumbleLeague::~RumbleLeague()
 */
 const char* RumbleLeague::play(const std::string& user_input)
 {
-	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etc
+	this->proba();
+	return "nada";
+	// // TODO Very first -> Create the decision tree, to find by action, by button identifier... etc
 
-	// 1�st -> Get a list with the posible client buttons that could possible be the desired user action
-	auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
+	// // 1�st -> Get a list with the posible client buttons that could possible be the desired user action
+	// auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
 
-	if (matched_client_buttons.size() > 0)
-	{
+	// if (matched_client_buttons.size() > 0)
+	// {
 
-		/* 2 ->
-			TODO Design a logical patter for when the matched keywords it's bigger than one...
-			Should just take the first? Make a NLP processing? Just returning an string with a voice error message
-			indicating that two petitions (or having two coincident results) can't(shouldn't) be processed at the same time?
+	// 	/* 2 ->
+	// 		TODO Design a logical patter for when the matched keywords it's bigger than one...
+	// 		Should just take the first? Make a NLP processing? Just returning an string with a voice error message
+	// 		indicating that two petitions (or having two coincident results) can't(shouldn't) be processed at the same time?
 
-			Maybe just the more coincident? or better above 80% coincident?
-		*/
+	// 		Maybe just the more coincident? or better above 80% coincident?
+	// 	*/
 
-		/* 3 ->
-			Perform an action against the League Client
-		*/
+	// 	/* 3 ->
+	// 		Perform an action against the League Client
+	// 	*/
 
-		cout << "\n *************************" << endl;
-		for (auto button : matched_client_buttons) {
-			cout << "Founded a button candidate: " << button->identifier << endl;
-		}
+	// 	cout << "\n *************************" << endl;
+	// 	for (auto button : matched_client_buttons) {
+	// 		cout << "Founded a button candidate: " << button->identifier << endl;
+	// 	}
 
-		const ClientButton* const& button = matched_client_buttons[0];
-		cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
-			"This is because there is not NLP implemented yet." << endl;
+	// 	const ClientButton* const& button = matched_client_buttons[0];
+	// 	cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
+	// 		"This is because there is not NLP implemented yet." << endl;
 
-		// Calls the member method to perform a desired action based on the matched button.
-		this->league_client_action(button);
-		return "Action completed successfully";
-	}
-	else 
-	{
-		return "No match was found for your query";
-	}
+	// 	// Calls the member method to perform a desired action based on the matched button.
+	// 	this->league_client_action(button);
+	// 	return "Action completed successfully";
+	// }
+	// else 
+	// {
+	// 	return "No match was found for your query";
+	// }
 }
 
 /**
