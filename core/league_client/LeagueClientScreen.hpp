@@ -18,7 +18,7 @@ class LeagueClientScreen
 		LeagueClientScreenIdentifier identifier;
 
 		// The current selected language of this API
-		const Language& selected_language;
+		const Language &selected_language;
 
 		// Dynamic container for store pointers to the client buttons objects
 		std::vector<ClientButton*> client_buttons { };
@@ -26,7 +26,7 @@ class LeagueClientScreen
 	public:
 		// Constructors
 		LeagueClientScreen();
-		LeagueClientScreen(const Language& language);
+		LeagueClientScreen(const Language &language);
 
 		// Destructor
 		~LeagueClientScreen();
@@ -40,6 +40,6 @@ class LeagueClientScreen
 		void set_identifier(LeagueClientScreenIdentifier identifier);
 
 		// Methods
-		std::vector<ClientButton*> find_client_button(const std::string& user_input);
+		std::vector<ClientButton*> find_client_button(const std::string &user_input);
 		
 };
