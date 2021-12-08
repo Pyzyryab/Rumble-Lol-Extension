@@ -1,7 +1,7 @@
 # Creates a relative path to this source file location on the filesystem, and then removes the last 64 characters of the str
 # that are the ones after the root of the project's path ( '\\rumble_league_extension_plugin' )
 from pathlib import Path
-rel_path = str(Path(__file__).absolute())[ : -64 ]
+rel_path = str(Path(__file__).absolute())[ : - 64 ]
 
 import subprocess
 import sys
@@ -43,7 +43,7 @@ sfc_module = Extension(
         # Motion
         f'{rel_path}\\rumble_league_extension_plugin\motion\RumbleMotion.cpp',
         # Vision
-        f'{rel_path}\\rumble_league_extension_plugin\gision\RumbleVision.cpp',
+        f'{rel_path}\\rumble_league_extension_plugin\\vision\RumbleVision.cpp',
         # Window Capture
         f'{rel_path}\\rumble_league_extension_plugin\window_capture\WindowCapture.cpp',
         # Window Capture

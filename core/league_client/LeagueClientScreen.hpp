@@ -8,7 +8,7 @@
 #include "../../helpers/EnumTypes.hpp"
 
 /// <summary>
-/// **Base class** that represents any of the existing screens on the League of Legends client.
+/// Represents any of the existing screens on the League of Legends client.
 /// Used to store as much information it's necessary to complete the desired user request.
 /// </summary>
 class LeagueClientScreen

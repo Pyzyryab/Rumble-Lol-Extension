@@ -39,7 +39,6 @@ Point RumbleLeagueVision::find(Mat* video_src, Mat templ, double threshold, bool
     {
         rectangle(img, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), CV_RGB(0, 255, 0), cv::BORDER_CONSTANT);
         return matchLoc + (Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows) - matchLoc) / 2;
-        //return matchLoc;
     }
 
     if (debug_mode) { imshow(image_window, img); }
