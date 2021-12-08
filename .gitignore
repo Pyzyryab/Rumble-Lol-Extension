@@ -1,5 +1,8 @@
 # Several build files are included in order to make it available to anyone that wants to build the project
 
+probas.txt
+setup_no_dyn.py
+
 
 # ------ MSVC files -------
 

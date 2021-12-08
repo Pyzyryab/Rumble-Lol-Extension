@@ -9,7 +9,7 @@
 
 #include "../motion/RumbleMotion.hpp"
 #include "../writer/RumbleWriter.h"
-#include "../gision/RumbleVision.h"
+#include "../vision/RumbleVision.h"
 #include "../window_capture/WindowCapture.h"
 #include "league_client/LeagueClientScreen.hpp"
 #include "../helpers/StringHelper.hpp"
@@ -116,12 +116,5 @@ class RumbleLeague
 
 		// The entry point for the Python API
 		const char* play(const std::string& user_input);
-
-		void proba();
-
-		ClientButton RumbleLeague::copy_proba(ClientButton *client_button);
-		void RumbleLeague::move_proba(ClientButton &&client_button);
-
-		
 
 };
