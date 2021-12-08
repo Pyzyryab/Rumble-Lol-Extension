@@ -126,7 +126,7 @@ namespace RLE_data {
 	* 
 	* TODO Complete the full description of what this method does, and why it's designed in this way
 	*/
-	vector<ClientButton*> get_buttons(const Language language, const bool debug = true)
+	vector<ClientButton*> get_buttons(const Language language, const bool debug = false)
 	{
 		vector<tuple<const char*, const char*, const LeagueClientScreenIdentifier>> desired_group_buttons{};
 		vector<ClientButton*> api_buttons;

@@ -33,6 +33,7 @@ WindowCapture::WindowCapture(std::string window_name)
     );
 
     std::cout << "Current window name: " << this->window_name << std::endl;
+    std::cout << "this->hwnd: " << this->hwnd << std::endl;
 }
 
 
@@ -99,4 +100,9 @@ void WindowCapture::setup_bitmap(BITMAPINFOHEADER* bi, int width, int height)
 void WindowCapture::list_window_names()
 {
     // Impl pending
+}
+
+HWND WindowCapture::get_hwnd()
+{
+    return this->hwnd;
 }

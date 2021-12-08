@@ -1,0 +1,14 @@
+pyproject.toml
+setup.py
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/core/RumbleLeague.cpp
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/core/league_client/LeagueClientButton.cpp
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/core/league_client/LeagueClientScreen.cpp
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/helpers/StringHelper.cpp
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/motion/RumbleMotion.cpp
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/python_mod/c++_bindings/python_linker.cpp
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/vision/RumbleVision.cpp
+D:/MSi 2020-2021/Code/Python/Rumble-AI/src/plugins/rumble_league_extension_plugin/window_capture/WindowCapture.cpp
+Rumble_LoL_Extension.egg-info/PKG-INFO
+Rumble_LoL_Extension.egg-info/SOURCES.txt
+Rumble_LoL_Extension.egg-info/dependency_links.txt
+Rumble_LoL_Extension.egg-info/top_level.txt
