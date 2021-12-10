@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "RumbleLeague.hpp"
 
 using namespace std;
@@ -61,7 +62,6 @@ RumbleLeague::~RumbleLeague()
 
  
 /**
- * 
 * The main interface method exposed to the Python API.
 * It's receives the query that the user entered, parse it again and decides what type
 * of action should be performed
@@ -70,30 +70,62 @@ RumbleLeague::~RumbleLeague()
 */
 const char* RumbleLeague::play(const std::string& user_input)
 {
-	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etc
+	/**
+	 * Rumble League has two type of posible pathways:
+	 * 1 - Click buttons by voice control. This will be called a "click button" action. 
+	 *     It's a really simple action. User provides a command by voice, that should match a button 
+	 *     identifier, and Rumble tries to find the button on the screen. If finds it, it makes a click 
+	 * 	   on the button on the position where it has been finded.
+	 * 
+	 * 2 - A compound action. This action will be the precursor of the future neural networks that will 
+	 * 	   composite the "Rumble's brain", capable of perform complex actions like pick and ban champs, 
+	 * 	   autoaccept games without need to track screen changes and not needing to create procedural 
+	 * 	   complex code to achieve the result... etc.
+	 * 
+	 * 	   For now an action will be a predefined group of "click button" secuences and writing on the
+	 *     screen to pick/ban champs or talk with chat. 
+	 */
 
-	// 1�st -> Get a list with the posible client buttons that could possible be the desired user action
-	auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
+	const std::vector<string> actions_keywords { "ranked",  };
+	
+	// 1st - Decide if it's an action or a simple click on a button
+	std::vector<std::string> splitted_input;
+	splitted_input = StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
-	if (matched_client_buttons.size() > 0)
-	{
-		cout << "\n *************************" << endl;
-		for (auto button : matched_client_buttons) {
-			cout << "Founded a button candidate: " << button->identifier << endl;
+	for (const auto& word : splitted_input) {
+		bool has_action_keyword {
+			std::find(actions_keywords.begin(), actions_keywords.end(), word) != actions_keywords.end() 
+		};
+
+		if (has_action_keyword) {
+			// run action
+		} else {
+			// Get a list with the client buttons that could possible be the desired user action
+			auto matched_client_buttons = this->current_league_client_screen->find_client_button(splitted_input);
+
+			if (matched_client_buttons.size() > 0)
+			{
+				cout << "\n *************************" << endl;
+				for (auto button : matched_client_buttons) {
+					cout << "Founded a button candidate: " << button->identifier << endl;
+				}
+
+				// TODO Pending the NLP implementation
+				const ClientButton* const& button = matched_client_buttons[0];
+				cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
+					"This is because there is not NLP implemented yet." << endl;
+
+				// Calls the member method to perform a desired action based on the matched button.
+				this->league_client_action(button);
+				return "Action completed successfully";
+			}
+			else 
+			{
+				return "No match was found for your query";
+			}
 		}
-
-		const ClientButton* const& button = matched_client_buttons[0];
-		cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
-			"This is because there is not NLP implemented yet." << endl;
-
-		// Calls the member method to perform a desired action based on the matched button.
-		this->league_client_action(button);
-		return "Action completed successfully";
 	}
-	else 
-	{
-		return "No match was found for your query";
-	}
+
 }
 
 /**

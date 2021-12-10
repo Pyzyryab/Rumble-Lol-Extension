@@ -40,6 +40,6 @@ class LeagueClientScreen
 		void set_identifier(LeagueClientScreenIdentifier identifier);
 
 		// Methods
-		std::vector<ClientButton*> find_client_button(const std::string &user_input);
+		std::vector<ClientButton*> find_client_button(const std::vector<std::string> splitted_input);
 		
 };

@@ -55,12 +55,9 @@ LeagueClientScreen::~LeagueClientScreen()
 /// <returns>
 /// std::vector<ClientButton*>
 /// </returns>
-std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::string& user_input)
+std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::vector<std::string> splitted_input)
 {
 	std::vector<ClientButton*> matched_buttons {};
-	
-	std::vector<std::string> splitted_input;
-	splitted_input = StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
 	// Outputing debug info to the console
 	std::cout << "\nSplitted user input: " << std::endl;
@@ -74,22 +71,11 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 	std::vector<ClientButton*> buttons = this->get_client_buttons();
 
 	for (const auto word : splitted_input) {
-		
-		//std::cout << "" << std::endl;
-		//std::cout << "Comparing: " << word << std::endl;
-		
 		for (int i = 0; i < buttons.size(); i++) {
-			
-			//std::cout << " with: " << buttons[i]->identifier << std::endl;
-			
 			if ( strcmp(buttons[i]->identifier, word.c_str()) == 0 ) 
 			{
 				std::cout << "\t Match founded!" << std::endl;
 				matched_buttons.push_back(buttons[i]);
-			}
-			else 
-			{
-				//std::cout << "\t No match!" << std::endl;
 			}
 		}
 	}
