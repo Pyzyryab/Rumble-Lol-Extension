@@ -48,6 +48,8 @@ sfc_module = Extension(
         f'{rel_path}\\rumble_league_extension_plugin\window_capture\WindowCapture.cpp',
         # Window Capture
         f'{rel_path}\\rumble_league_extension_plugin\helpers\StringHelper.cpp',
+        # Actions
+        f'{rel_path}\\rumble_league_extension_plugin\\core\\league_client\\actions\\actions.cpp',
     ],
     include_dirs=[
         pybind11.get_include(),
