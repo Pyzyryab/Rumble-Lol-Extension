@@ -23,6 +23,7 @@ Debug/
 # x64  <------ Included
 
 # ------ Python -------
+linux_venv/
 */env/
 env/
 dist/
