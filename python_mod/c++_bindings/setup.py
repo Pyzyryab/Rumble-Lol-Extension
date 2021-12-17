@@ -14,16 +14,8 @@ except ImportError:
     if subprocess.call([sys.executable, '-m', 'pip', 'install', 'pybind11']):
         raise RuntimeError('pybind11 install failed.')
 
-
 import pybind11
 
-# cpp_args = [
-#     f"D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_core.lib"
-#     f"D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_highgui.lib"
-#     f"D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_imgproc.lib"
-#     f"D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_imgcodecs.lib",
-#     f"-I{rel_path}\\include"
-# ]
 
 builder_cfg = Extension(
     'rle',
