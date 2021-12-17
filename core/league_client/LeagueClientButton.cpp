@@ -11,14 +11,16 @@ ClientButton::ClientButton(
 	const char* identifier, 
 	const char* image_path, 
 	const LeagueClientScreenIdentifier next_screen, 
-	const Language selected_language
+	const Language selected_language,
+	const bool is_waiting_button
 )
-	: ClientButton::ClientButton{ 
+	: ClientButton::ClientButton { 
 		identifier, 
 		image_path, 
+		LeagueClientScreenIdentifier::NoLobby,
 		next_screen, 
 		selected_language,
-		LeagueClientScreenIdentifier::NoLobby
+		is_waiting_button
 	} {}
 
 
@@ -26,15 +28,17 @@ ClientButton::ClientButton(
 ClientButton::ClientButton(
 	const char* identifier,
 	const char* image_path,
+	const LeagueClientScreenIdentifier lobby,
 	const LeagueClientScreenIdentifier next_screen,
 	const Language selected_language,
-	const LeagueClientScreenIdentifier lobby
+	const bool is_waiting_button
 )
-	: identifier{ const_cast<char*>(identifier)  }, 
-	image_path{ image_path }, 
-	next_screen{ next_screen }, 
-	selected_language{ selected_language },
-	lobby{ lobby }
+	: identifier { const_cast<char*>(identifier) }, 
+	image_path { image_path },
+	lobby { lobby }, 
+	next_screen { next_screen }, 
+	selected_language { selected_language },
+	is_waiting_button { is_waiting_button }
 {
 	std::string base_path{ "../assets/" };
 	std::string image_extension{ ".jpg" };
@@ -57,15 +61,16 @@ ClientButton::ClientButton(
 
 // Copy constructor
 ClientButton::ClientButton(const ClientButton &source)
+	// Shallow copy for non pointer variables
+	: image_path { source.image_path },
+	lobby { source.lobby }, 
+	next_screen { source.next_screen }, 
+	selected_language { source.selected_language },
+	is_waiting_button { source.is_waiting_button }
 {
 	// Deep copy of the raw char* pointer
 	identifier = new char[ strlen(source.identifier) + 1 ];
 	strcpy(identifier, source.identifier);
-	// Shallow copy for the rest of the members
-	image_path = source.image_path;
-	next_screen = source.next_screen;
-	selected_language = source.selected_language;
-	lobby = source.lobby;
 
 	std::cout << "[Warning]  - Copy constructor called for " << identifier << std::endl;
 }
@@ -76,7 +81,8 @@ ClientButton::ClientButton(ClientButton &&source) noexcept
 	image_path { source.image_path },
 	next_screen { source.next_screen },
 	selected_language { source.selected_language },
-	lobby { source.lobby}
+	lobby { source.lobby},
+	is_waiting_button { source.is_waiting_button }
 {
 	// Now we null the raw pointer that contains the moved data from the another resource
 	source.identifier = nullptr;
@@ -98,7 +104,7 @@ ClientButton::~ClientButton()
 }
 
 // Copy assigment operator overload
-ClientButton &ClientButton::operator=(const ClientButton &rhs)
+ClientButton& ClientButton::operator=(const ClientButton &rhs)
 {
 	std::cout << "Using copy assignment" << std::endl;
 	if (this == &rhs)
@@ -111,12 +117,13 @@ ClientButton &ClientButton::operator=(const ClientButton &rhs)
 	next_screen = rhs.next_screen;
 	selected_language = rhs.selected_language;
 	lobby = rhs.lobby;
+	is_waiting_button = rhs.is_waiting_button;
 
 	return *this;
 }
 
 // Move assignment operator overload
-ClientButton &ClientButton::operator=(ClientButton &&rhs)
+ClientButton& ClientButton::operator=(ClientButton &&rhs)
 {
 	std::cout << "Using move assignment" << std::endl;
 	if (this == &rhs)
@@ -132,6 +139,7 @@ ClientButton &ClientButton::operator=(ClientButton &&rhs)
 	next_screen = rhs.next_screen;
 	selected_language = rhs.selected_language;
 	lobby = rhs.lobby;
+	is_waiting_button = rhs.is_waiting_button;
 
 	return *this;
 }

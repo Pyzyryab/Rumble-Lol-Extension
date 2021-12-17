@@ -1,23 +1,17 @@
 #pragma once
 
 #include "opencv2/opencv.hpp"
+#include "../league_client/LeagueClientButton.hpp"
 
 /**
  * Interface that defines the content of the behaviour of an action
  */
 class Action 
 {
-    private:
-        const char* identifiers[1]; 
+    // TODO Implement the action Factory
     public:
-        // // Builder
-        // static ActionBuilder create();
         // Pure virtual method definitions
         virtual void run_action() = 0;
-        Action() {}
-
-        // Friends
-        friend class ActionBuilder;
 };
 
 /**

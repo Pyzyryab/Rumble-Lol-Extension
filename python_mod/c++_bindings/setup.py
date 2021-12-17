@@ -36,7 +36,7 @@ builder_cfg = Extension(
         # Window Capture
         f'{rel_path}\\helpers\StringHelper.cpp',
         # Actions
-        f'{rel_path}\\core\\actions\\Actions.cpp',
+        f'{rel_path}\\core\\actions\\ClickScreenButton.cpp',
     ],
     include_dirs = [
         pybind11.get_include(),

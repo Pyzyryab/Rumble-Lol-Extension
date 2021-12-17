@@ -1,4 +1,4 @@
-#include "WindowCapture.h"
+#include "WindowCapture.hpp"
 #include "../helpers/StringHelper.hpp"
 
 using namespace cv;
@@ -95,12 +95,6 @@ void WindowCapture::setup_bitmap(BITMAPINFOHEADER* bi, int width, int height)
     (*bi).biClrImportant = 0;
 }
 
-
-// TODO As a helper?
-void WindowCapture::list_window_names()
-{
-    // Impl pending
-}
 
 HWND WindowCapture::get_hwnd()
 {

@@ -21,9 +21,6 @@ class WindowCapture
 
 		/// Methods
 		cv::Mat get_video_source();
-		
-		// TODO Future impl as a helper to retrieve available windows names
-		void list_window_names();
 
 		// Getters
 		HWND get_hwnd();

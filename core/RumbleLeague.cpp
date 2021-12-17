@@ -30,9 +30,7 @@ int RumbleLeague::instances_counter{ 0 };
 * point we don't have available what language (as an Enum variant) it's currently setted.
 */
 RumbleLeague::RumbleLeague(const int language_id, const bool autoaccept_behaviour, const bool debug_mode)
-	: window_capture{ new WindowCapture( "League of Legends" ) },
-	rumble_vision{ new RumbleLeagueVision },
-	autoaccept_behaviour{ autoaccept_behaviour },
+	: autoaccept_behaviour{ autoaccept_behaviour },
 	debug_mode{ debug_mode },
 	previous_league_client_screen{ nullptr },
 	game_lobby_candidate{ LeagueClientScreenIdentifier::SummonersBlindLobby }
@@ -43,7 +41,7 @@ RumbleLeague::RumbleLeague(const int language_id, const bool autoaccept_behaviou
 	// Increment the number of instances created
 	++RumbleLeague::instances_counter;
 	cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << endl;
-	
+	// TODO Generate exception if are more than one instance
 }
 
 // No params constructor. Constructor delegation applied here.
@@ -86,7 +84,7 @@ const char* RumbleLeague::play(const std::string& user_input)
 	 *     screen to pick/ban champs or talk with chat. 
 	 */
 
-	const std::vector<string> actions_keywords { "ranked",  };
+	const std::vector<string> actions_keywords { "want to play ranked",  }; // TODO Changes this line for some serious code
 	
 	// 1st - Decide if it's an action or a simple click on a button
 	std::vector<std::string> splitted_input;
@@ -116,35 +114,49 @@ const char* RumbleLeague::play(const std::string& user_input)
 					"This is because there is not NLP implemented yet." << endl;
 
 				// Calls the member method to perform a desired action based on the matched button.
-				this->league_client_action(button);
+				this->manage_screen_data(button);
+
+				// TODO Implement the Action factory to really decide what element should be actioned
+				// So action could be a member, and with the factory dynamically choose the implementor subclass
+				// that encapsulates certain behaviour
+				Action* action = new ClickScreenButton(button);
+				action->run_action();
+				// So, for now, we should free resources
+				delete action;
+				
+				// Special behaviour (Under testing and development)
+				if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()
+					== LeagueClientScreenIdentifier::AcceptDecline)
+				{
+					cout << "Generating a recursive call for the autoaccept behaviour " << endl;
+					// Recursive call for generate the autoaccept match when the screen spawns
+					this->play("accept"); // TODO the value should be passed by language
+				}
 				return "Action completed successfully";
-			}
+			}	// TODO The return of this method are what actually Rumble talks back to the user, or answers
+				// to the user as a response to the command, so every action could potentially have multiple answers
+				// and randomly (or not) choose something if talking mode is enabled?
 			else 
 			{
 				return "No match was found for your query";
 			}
 		}
+		// Prevents to leak memory and clean up resources
+		cv::destroyAllWindows();
 	}
 
 }
 
-/**
-* Moves the mouse and make a click on the location on the League of Legends Client.
-* Changes the pointer value what points to instance of the LeagueClientScreen child for the new one after matching a user input,
-* and performs some action 
+/*
+* Access the pointer that points to the instance of the LeagueClientScreen member
+* after matching a user input and performs some action to updates the value of the
+* identifier property, that mimics what it's the current screen on what the 
+* League of Legends client are
 */
-void RumbleLeague::league_client_action(const ClientButton* const& client_button)
+void RumbleLeague::manage_screen_data(const ClientButton* const& client_button)
 {
-	// Controls when an even should be awaited (until appears on screen) or not.
-	bool wait_event{ false };
-
-	// Tracks the lastest screen seen before the current one
-	this->previous_league_client_screen = this->current_league_client_screen;
-	cout << "[INFO] Previous screen -> " <<
-		this->previous_league_client_screen->get_identifier() << " <- " << endl;
-
 	/** Updates the pointer to the LeagueClientScreen with the enum value that identifies what screen comes
-	* next after pressing any button
+	* next after pressing any button on the screen.
 	*/
 	switch (client_button->next_screen)
 	{
@@ -183,7 +195,6 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 			break;
 
 		case LeagueClientScreenIdentifier::ChampSelect:
-			wait_event = true;
 			this->current_league_client_screen->set_identifier(client_button->next_screen);
 
 		default:
@@ -193,90 +204,10 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 
 	cout << "[INFO] Current screen -> " <<
 		this->current_league_client_screen->get_identifier() << " <- " << endl;
-
-
-	// Sets the needle image for what we are looking for
-	cv::Mat needle_image;
-	this->set_needle_image(client_button->image_path, needle_image);
-
-	// Change this for a fn pointer or callback inside the button
-	(!wait_event) ? this->click_event(needle_image) : this->wait_event(needle_image);
-
-	// Special behaviour (Under testing and development)
-	if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()
-		== LeagueClientScreenIdentifier::AcceptDecline)
-	{
-		cout << "Generating a recursive call for the autoaccept behaviour " << endl;
-		// Recursive call for generate the autoaccept match when the screen spawns
-		this->play("accept"); // TODO the value should be passed by language
-	}
-
-	// Prevents to leak memory and clean up resources
-	cv::destroyAllWindows();
 }
 
 
-/**
-* Private members
-*/
-
-cv::Point RumbleLeague::click_event(const cv::Mat& needle_image)
-{
-	cv::Mat video_source = this->window_capture->get_video_source();
-	cv::Mat* video_source_ptr = &video_source;
-
-	// Img finder. Matches the video source and the needle image and returns the point where the needle image is found inside the video source.
-	cv::Point m_loc = this->rumble_vision->find(
-		video_source_ptr, needle_image, RumbleLeague::threshold_rate, this->debug_mode
-	);
-
-
-	if (m_loc.x != 0 && m_loc.y != 0)
-	{
-		// Copy the data from the openCV Point type to the POINT type from the Windows API
-		POINT coords { m_loc.x, m_loc.y };
-
-		// Transform the match location coordinates into the relative coordinates 
-		// of the current machine desktop screen
-		// Details: https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-clienttoscreen
-		::ClientToScreen(this->window_capture->get_hwnd(), &coords);
-
-		std::cout << "MATCH LOCATION (Windowed) -> " << m_loc << std::endl;
-		std::cout << "MATCH LOCATION -> [" << coords.x << " , " << coords.y << "]" << std::endl;
-
-		RumbleMotion* rumble_motion = new RumbleMotion();
-		rumble_motion->move_mouse_and_left_click(coords.x, coords.y);
-		delete rumble_motion;
-	}
-
-	return m_loc;
-}
-
-
-void RumbleLeague::wait_event(const cv::Mat& needle_image)
-{
-	int key = 0;
-	while (key != 27) // 'ESC' key // TODO Check if works on wait events or should be replaced by a while True
-	{
-		if (this->click_event(needle_image) != cv::Point{ 0, 0 })
-		{ 
-			break; 
-		}
-		key = cv::waitKey(60); // you can change wait time. Need a large value when the find game it's detected?
-	}
-}
-
-
-/**
-* Helpers
-*/
-
-void RumbleLeague::set_needle_image(const std::string& image_path, cv::Mat& needle_image)
-{
-	cv::Mat img_to_find = cv::imread(image_path, cv::IMREAD_COLOR);
-	cvtColor(img_to_find, needle_image, cv::COLOR_BGR2BGRA);
-}
-
+// TODO Should be transformed into a config class
 void RumbleLeague::set_cpp_language(const int language_id)
 {
 	// Switch statement prefered here 'cause potentially the API could be translated to more languages.

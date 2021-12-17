@@ -9,8 +9,7 @@
 using namespace std;
 
 
-/**
- * @brief 
+/*
  * Place for store all the available data for the API.
  * 
  * TODO Notate how in the future, this should be replaced by a REST API data supplier, 
@@ -19,12 +18,11 @@ using namespace std;
  */
 namespace RLE_data {
 
-	/**
+	/*
 	 * Represents all the game lobbies available in the API, this means,
 	 * every lobby screen that the user can access by voice control
 	 */
 	const size_t available_client_lobbies = 9;
-
 	const LeagueClientScreenIdentifier lobbies [ available_client_lobbies ] {
 		LeagueClientScreenIdentifier::SummonersBlindLobby,
 		LeagueClientScreenIdentifier::SummonersDraftLobby,
@@ -35,6 +33,15 @@ namespace RLE_data {
 		LeagueClientScreenIdentifier::TFT_RankedLobby,
 		LeagueClientScreenIdentifier::TFT_HyperRollLobby,
 		LeagueClientScreenIdentifier::UrfLobby,
+	};
+
+	/*
+	 * Represents all the buttons on the League of Legends client that should be awaited
+	 * until appears on the screen
+	 */
+	const size_t total_waiting_buttons = 1;
+	const LeagueClientScreenIdentifier waiting_buttons [ total_waiting_buttons ] {
+		LeagueClientScreenIdentifier::ChampSelect
 	};
 
 	/**
@@ -115,7 +122,7 @@ namespace RLE_data {
 	};
 
 	vector<tuple<const char*, const char*, const LeagueClientScreenIdentifier>> spanish_buttons{
-		// TODO Just change it for the spanish correct definitions
+		// TODO Just change it for the spanish button definitions
 	};
 
 
@@ -134,7 +141,6 @@ namespace RLE_data {
 		// Selectes the buttons based on the language. Moves them to a new container to avoid dangling references caused by std::tuple
 		switch (language)
 		{
-			// TODO Do we really need to copy them 
 			case Language::English:
 				for (auto &element : english_buttons)
 					desired_group_buttons.push_back(element);
@@ -152,9 +158,16 @@ namespace RLE_data {
 		// Creates a new button object, storing in a vector a raw pointer to the instance
 		for (auto &tuple : desired_group_buttons) {
 			
+			// Looks if the button that we want to build it's in the list of buttons that leads the user to a lobby screen.
 			const LeagueClientScreenIdentifier* lcsi = std::find(
 				std::begin(lobbies), std::end(lobbies), std::get<2>(tuple)
 			);
+
+			// Looks if the button is a button that must be awaited until appears on the screen
+			const LeagueClientScreenIdentifier* wb = std::find(
+				std::begin(waiting_buttons), std::end(waiting_buttons), std::get<2>(tuple)
+			);
+
 
 			if (lcsi != std::end(lobbies))
 			{
@@ -162,9 +175,10 @@ namespace RLE_data {
 					new ClientButton(
 						std::get<0>(tuple), 
 						std::get<1>(tuple), 
+						std::get<2>(tuple),
 						LeagueClientScreenIdentifier::ChooseGame, 
-						language, 
-						std::get<2>(tuple)
+						language,
+						(wb) ? true : false
 					)
 				);
 			}
@@ -175,7 +189,8 @@ namespace RLE_data {
 						std::get<0>(tuple), 
 						std::get<1>(tuple), 
 						std::get<2>(tuple), 
-						language
+						language,
+						(wb) ? true : false
 					)
 				);
 			}
