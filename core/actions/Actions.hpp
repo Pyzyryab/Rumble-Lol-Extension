@@ -1,6 +1,6 @@
 #pragma once
 
-// #include "opencv2/opencv.hpp"
+#include "opencv2/opencv.hpp"
 
 /**
  * Interface that defines the content of the behaviour of an action
@@ -10,11 +10,11 @@ class Action
     private:
         const char* identifiers[1]; 
     public:
-        // Builder
-        static ActionBuilder create();
+        // // Builder
+        // static ActionBuilder create();
         // Pure virtual method definitions
         virtual void run_action() = 0;
-        virtual Action() {}
+        Action() {}
 
         // Friends
         friend class ActionBuilder;
@@ -28,8 +28,6 @@ class Action
 */
 class I_SimpleAction : public Action 
 {
-    private:
-        const char* identifiers[1];
     public:
         virtual ~I_SimpleAction() {}
 };
@@ -41,8 +39,6 @@ class I_SimpleAction : public Action
  */
 class I_ComplexAction : public Action
 {
-    private:
-        const char* identifiers[1];
     public:
         virtual ~I_ComplexAction() {}
 };
