@@ -1,9 +1,9 @@
 #pragma once
 
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_core.lib")
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_highgui.lib")
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_imgproc.lib")
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_imgcodecs.lib")
+// #pragma comment(lib, "D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_core.lib")
+// #pragma comment(lib, "D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_highgui.lib")
+// #pragma comment(lib, "D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_imgproc.lib")
+// #pragma comment(lib, "D:\\MSi 2020-2021\\Code\\Python\\Rumble-AI\\src\\plugins\\rumble_league_extension_plugin\\include\\opencv2_libs\\opencv_imgcodecs.lib")
 
 #include "opencv2/opencv.hpp"
 
