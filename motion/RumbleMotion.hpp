@@ -1,11 +1,6 @@
 #pragma once
 
-#pragma comment(lib, "kernel32.lib")
-#pragma comment(lib, "user32.lib")
-#pragma comment(lib, "gdi32.lib")
-#pragma comment(lib, "comdlg32.lib")
-
-#include <Windows.h>
+#include <windows.h>
 
 class RumbleMotion
 {

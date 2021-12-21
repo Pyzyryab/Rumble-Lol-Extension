@@ -12,6 +12,7 @@ class Action
     public:
         // Pure virtual method definitions
         virtual void run_action() = 0;
+        virtual ~Action() = 0;
 };
 
 /**

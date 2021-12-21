@@ -66,7 +66,7 @@ RumbleLeague::~RumbleLeague()
 *
 * Returns a str with information to the Python API
 */
-const char* RumbleLeague::play(const std::string& user_input)
+std::string RumbleLeague::play(const std::string& user_input)
 {
 	/**
 	 * Rumble League has two type of posible pathways:
@@ -90,6 +90,8 @@ const char* RumbleLeague::play(const std::string& user_input)
 	std::vector<std::string> splitted_input;
 	splitted_input = StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
+	std::string response = "";
+
 	for (const auto& word : splitted_input) {
 		bool has_action_keyword {
 			std::find(actions_keywords.begin(), actions_keywords.end(), word) != actions_keywords.end() 
@@ -97,6 +99,7 @@ const char* RumbleLeague::play(const std::string& user_input)
 
 		if (has_action_keyword) {
 			// run action
+			return response;
 		} else {
 			// Get a list with the client buttons that could possible be the desired user action
 			auto matched_client_buttons = this->current_league_client_screen->find_client_button(splitted_input);
@@ -132,19 +135,19 @@ const char* RumbleLeague::play(const std::string& user_input)
 					// Recursive call for generate the autoaccept match when the screen spawns
 					this->play("accept"); // TODO the value should be passed by language
 				}
-				return "Action completed successfully";
+				response = "Action completed successfully";
 			}	// TODO The return of this method are what actually Rumble talks back to the user, or answers
 				// to the user as a response to the command, so every action could potentially have multiple answers
 				// and randomly (or not) choose something if talking mode is enabled?
 			else 
 			{
-				return "No match was found for your query";
+				response = "No match was found for your query";
 			}
 		}
-		// Prevents to leak memory and clean up resources
-		cv::destroyAllWindows();
 	}
-
+	// Prevents to leak memory and clean up resources
+	cv::destroyAllWindows();
+	return response;
 }
 
 /*

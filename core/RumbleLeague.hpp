@@ -62,6 +62,6 @@ class RumbleLeague
 		~RumbleLeague();
 
 		// The entry point for the Python API
-		const char* play(const std::string& user_input);
+		std::string play(const std::string& user_input);
 
 };
