@@ -1,12 +1,10 @@
-# Creates a relative path to this source file location on the filesystem, and then removes the last 33 characters of the str
-# that are the ones after the root of the project's path ( '/rumble_league_extension_plugin' )
-from pathlib import Path
-rel_path = str(Path(__file__).absolute())[ : - 33 ]
-
+# Creates a relative path to this source file location on the filesystem
 import subprocess
 import sys
-
+from pathlib import Path
 from setuptools import setup, Extension
+
+BASE_PATH = str(Path(__file__).absolute())[ : - 33 ]
 
 try:
     import pybind11
@@ -16,44 +14,42 @@ except ImportError:
 
 import pybind11
 
+# Set path separator slashes according to the current OS
+SEP = '\\' if sys.platform.startswith("win32") else '/'
+
 
 builder_cfg = Extension(
     'rle',
     sources = [
         # Python bindings
-        f'{rel_path}/python_mod/c++_bindings/python_linker.cpp',
+        f'{BASE_PATH}{SEP}python_mod{SEP}c++_bindings{SEP}python_linker.cpp',
         # Main library
-        f'{rel_path}/core/RumbleLeague.cpp',
+        f'{BASE_PATH}{SEP}core{SEP}RumbleLeague.cpp',
         # League Client screens and buttons
-        f'{rel_path}/core/league_client/LeagueClientScreen.cpp',
-        f'{rel_path}/core/league_client/LeagueClientButton.cpp',
+        f'{BASE_PATH}{SEP}core{SEP}league_client{SEP}LeagueClientScreen.cpp',
+        f'{BASE_PATH}{SEP}core{SEP}league_client{SEP}LeagueClientButton.cpp',
         # Motion
-        f'{rel_path}/motion/RumbleMotion.cpp',
+        f'{BASE_PATH}{SEP}motion{SEP}RumbleMotion.cpp',
         # Vision
-        f'{rel_path}/vision/RumbleVision.cpp',
+        f'{BASE_PATH}{SEP}vision{SEP}RumbleVision.cpp',
         # Window Capture
-        f'{rel_path}/window_capture/WindowCapture.cpp',
+        f'{BASE_PATH}{SEP}window_capture{SEP}WindowCapture.cpp',
         # Window Capture
-        f'{rel_path}/helpers/StringHelper.cpp',
+        f'{BASE_PATH}{SEP}helpers{SEP}StringHelper.cpp',
         # Actions
-        f'{rel_path}/core/actions/ClickScreenButton.cpp',
+        f'{BASE_PATH}{SEP}core{SEP}actions{SEP}ClickScreenButton.cpp',
     ],
     include_dirs = [
         pybind11.get_include(),
-        f"{rel_path}/include",
-        # f"{rel_path}/include/windows/include",
-        # f"{rel_path}/include/mingw_include"
-        '/usr/x86_64-w64-mingw32/include'
+        f"{BASE_PATH}{SEP}include"
     ],
     library_dirs = [
-        f"{rel_path}/include/opencv2_libs",
-        f"{rel_path}/include/windows/lib",
-        '/usr/x86_64-w64-mingw32/lib',
-        '/usr/x86_64-w64-mingw32/include/lib'
+        f"{BASE_PATH}{SEP}include{SEP}opencv2_libs",
+        f"{BASE_PATH}{SEP}include{SEP}windows"
     ],
     libraries = [
         'opencv_core', 'opencv_highgui', 'opencv_imgcodecs', 'opencv_imgproc',
-        'kernel32', 'user32', 'gdi32', 'comdlg32.lib'
+        'kernel32', 'user32', 'gdi32', 'comdlg32'
     ],
     language='c++'
 )

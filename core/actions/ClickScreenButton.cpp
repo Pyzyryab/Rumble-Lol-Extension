@@ -7,7 +7,6 @@
 /**
  * Simulated the mouse click on a League of Legends Client button
  * if the button it's found on the screen
- * 
  */
 
 ClickScreenButton::ClickScreenButton(const ClientButton* const& client_button)
