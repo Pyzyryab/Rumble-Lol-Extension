@@ -35,7 +35,8 @@ dist/
 __pycache__/
 build/
 rumble_league_extension.egg-info/
-
+*.egg.info/
+*.egg.info
 
 # ------ Concrete files -------
 setup_rle_old.py
