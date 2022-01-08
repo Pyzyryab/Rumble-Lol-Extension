@@ -8,7 +8,7 @@ int RumbleLeague::instances_counter{ 0 };
 
 /**
 * 
-* Constructors more critical part it's to create the internal user defined C++ objects
+* Constructors is one of the most critical part it's to create the internal user defined C++ objects
 * { WindowCapture, RumbleLeagueVision } dependant objects of this class.
 * They will by dispatched via dinamic memory allocation, storing them on the heap 
 * and returning a pointer for each of them.

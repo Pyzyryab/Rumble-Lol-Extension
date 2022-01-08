@@ -95,18 +95,18 @@ ClientButton::~ClientButton()
 	// Just debugging if we are correctly using the move constructor.
 	if (identifier != nullptr)
 	{
-		std::cout << "Destructor freeing data for " << identifier << std::endl;
+		std::cout << "[Info] - Destructor freeing data for " << identifier << std::endl;
 	}
 	else 
 	{
-		std::cout << "Destructor freeing data for nullptr" << std::endl;
+		std::cout << "[Info] - Destructor freeing data for nullptr" << std::endl;
 	}
 }
 
 // Copy assigment operator overload
 ClientButton& ClientButton::operator=(const ClientButton &rhs)
 {
-	std::cout << "Using copy assignment" << std::endl;
+	std::cout << "[Info] - Using copy assignment" << std::endl;
 	if (this == &rhs)
 		return *this;
 
@@ -125,7 +125,7 @@ ClientButton& ClientButton::operator=(const ClientButton &rhs)
 // Move assignment operator overload
 ClientButton& ClientButton::operator=(ClientButton &&rhs)
 {
-	std::cout << "Using move assignment" << std::endl;
+	std::cout << "[Info] - Using move assignment" << std::endl;
 	if (this == &rhs)
 		return *this;
 

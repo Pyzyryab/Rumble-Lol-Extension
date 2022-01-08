@@ -4,10 +4,6 @@
 #include "../../motion/RumbleMotion.hpp"
 #include "../../data/constants.hpp"
 
-/**
- * Simulated the mouse click on a League of Legends Client button
- * if the button it's found on the screen
- */
 
 ClickScreenButton::ClickScreenButton(const ClientButton* const& client_button)
     : client_button{ client_button } 
@@ -32,14 +28,7 @@ void ClickScreenButton::run_action()
         : this->wait_event(needle_image);
 }
 
-/*
-* Designed to encapsulate the final behaviour of a move and click action on the RumbleLeague object.
-* This method receives a needle image and inmedialy tries to found it on the video source, 
-* WITHOUT waiting for the image to appear on the screen. This method it's intented to use in basic situations
-* on click buttons that always are on the screen (basically, all buttons) with the exception of those who 
-* has to be awaited to found them. One example is the "Accept" game button or the "Decline" game button.
-* For actions like this, please, refer to the ::wait_event() method.
-*/
+
 cv::Point ClickScreenButton::click_event(const cv::Mat& needle_image)
 {
     cv::Mat video_source = this->window_capture->get_video_source();

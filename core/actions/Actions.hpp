@@ -4,13 +4,13 @@
 #include "../league_client/LeagueClientButton.hpp"
 
 /**
- * Interface that defines the content of the behaviour of an action
+ * Interface for declaring the definition of the behaviour of an action
  */
 class Action 
 {
     // TODO Implement the action Factory
     public:
-        // Pure virtual method definitions
+        // Pure virtual method declaration
         virtual void run_action() = 0;
 };
 
@@ -27,12 +27,12 @@ class I_SimpleAction : public Action
 };
 
 /**
- * A complex action it's just the sum of many "I_SimpleAction" that performs a complex
+ * A compound action it's just the sum of many "I_SimpleAction" that performs a complex
  * task, like the automatation of pick or ban a champ, select summoners,
  * select a game mode directly from any place and so forth.
  */
-class I_ComplexAction : public Action
+class I_CompoundAction : public Action
 {
     public:
-        virtual ~I_ComplexAction() {}
+        virtual ~I_CompoundAction() {}
 };
