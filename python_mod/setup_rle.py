@@ -1,3 +1,5 @@
+'''Python script to run RLE as standalone or as a plugin of Rumble-AI'''
+
 import os
 
 '''
@@ -21,6 +23,7 @@ if base_path.endswith( 'Rumble-AI' ):
 else:
     as_standalone = True
 
+print(f'Running as a standalone: {as_standalone}')
 print( f'Base path: { base_path }' )
 
 '''
@@ -28,7 +31,7 @@ print( f'Base path: { base_path }' )
         3.1 - Let's gonna create a variable to track the folder
         3.2 - Add the folder to the DLL search path 
 '''
-dll_folder = base_path + '\\include'
+dll_folder = base_path + '\\bin'
  # NEW - TODO PROVIDE AN INTERNAL FOLDER WITH THE OPENCV /bin folder and DLL's (like the x64\Release folder)
  # or find a way to provide a path to the installation directory (in this case, managed by vcpkg)
 os.add_dll_directory(dll_folder)
@@ -57,16 +60,17 @@ if as_standalone:
     rumble_league = rle.RumbleLeague(1, True, False)  # TODO Document the constructor
 
     # Print it's memory address to check if it's working correctly
-    print(rumble_league)  ## TODO In the C++ lib, on the pybind module, change the __repr__ python behaviour
-    control = True
+    print(rumble_league)  ## TODO In the C++ lib, on the pybind module,
+    # change the __repr__ python behaviour
+    # CONTROL = True
 
-    while control:
+    while True:
         # query = rumble.listen()
         query = input('Provide an action: \n')
-            
+
         if query == "stop":
             break
-        elif query != "":
+        if query != "":
             result = rumble_league.play( query.lower() )
             print( f'C++ output: {result}' )
             print( '*************************\n' )

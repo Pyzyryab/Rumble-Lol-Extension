@@ -1,9 +1,11 @@
 #pragma once
 
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_core.lib")
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_highgui.lib")
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_imgproc.lib")
-#pragma comment(lib, "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_imgcodecs.lib")
+// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_core.lib")
+// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_highgui.lib")
+// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_imgproc.lib")
+// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_imgcodecs.lib")
+
+#pragma comment(lib, "C:/opencv/build/x64/vc16/lib/opencv_world480.lib")
 
 #include "opencv2/opencv.hpp"
 

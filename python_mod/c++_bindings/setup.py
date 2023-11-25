@@ -1,64 +1,77 @@
-# Creates a relative path to this source file location on the filesystem, and then removes the last 64 characters of the str
-# that are the ones after the root of the project's path ( '\\rumble_league_extension_plugin' )
-from pathlib import Path
-rel_path = str(Path(__file__).absolute())[ : - 64 ]
+"""
+Rumble LoL Extension
 
-import subprocess
+This is a Python package that extends the Rumble-AI project with a C++ module.
+
+Usage (from the root directory):
+    $ pip install ./python_mod/c++_bindings
+"""
+
+import os
 import sys
-
-from setuptools import setup, Extension
+import subprocess
 
 try:
     import pybind11
-except ImportError:
+except ImportError as err:
     if subprocess.call([sys.executable, '-m', 'pip', 'install', 'pybind11']):
-        raise RuntimeError('pybind11 install failed.')
+        raise RuntimeError('pybind11 install failed.') from err
 
+from setuptools import setup, Extension
 
-import pybind11
+# TODO legacy commment left by reference:
+# Creates a relative path to this source file location on the filesystem,
+# and then removes the last 64 characters of the str,
+# that are the ones after the root of the project's path ( '/rumble_league_extension_plugin' )
 
-cpp_args = [
-    "-IC:\\vcpkg\\installed\\x64-windows\\include",
-    f"-I{rel_path}\\rumble_league_extension_plugin\X64\RELEASE",
-    "/link",
-    "/LIBPATH:C:\\vcpkg\\installed\\x64-windows\\lib",
-    "/LIBPATH:C:\\vcpkg\\installed\\x64-windows\\bin",
-    "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_core.lib",
-    "C:\\vcpkg\\installed\\x64-windows\\lib\\opencv_highgui.lib",
-    f"/LIBPATH:{rel_path}\\rumble_league_extension_plugin\X64\RELEASE",
-    "/LIBPATH:C:\\vcpkg\\installed\\x64-windows\\lib\\*.lib",
-    '/c "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\HostX86\x64\link.exe"',
- ]
+# Get the absolute path of the current script
+current_script_path = os.path.abspath(__file__)
+
+# Get the directory containing the current script
+script_directory = os.path.dirname(current_script_path)
+
+# Navigate two directories above
+rle_root = os.path.abspath(os.path.join(script_directory, '..', '..'))
+
+print("RLE root directory: ", rle_root)
+
 
 sfc_module = Extension(
-    'rle',
+    'rle', # Extension name
+    language='c++',
+    include_dirs = [
+        pybind11.get_include(),
+        "C:/opencv/build/include", # Adjust the path based on your installation
+    ],
+    libraries = ['opencv_world480'],  # Adjust the version number as needed
+    library_dirs = ['C:/opencv/build/x64/vc16/lib'],  # Adjust the path based on your installation
+    extra_compile_args = [
+        # ... Your compiler options ...
+    ],
     sources=[
         # Python bindings
-        f'{rel_path}\\rumble_league_extension_plugin\python_mod\c++_bindings\python_linker.cpp',
+        f'{rle_root}/python_mod/c++_bindings/python_linker.cpp',
         # Main library
-        f'{rel_path}\\rumble_league_extension_plugin\core\RumbleLeague.cpp',
+        f'{rle_root}/core/RumbleLeague.cpp',
         # League Client screens and buttons
-        f'{rel_path}\\rumble_league_extension_plugin\core\league_client\LeagueClientScreen.cpp',
-        f'{rel_path}\\rumble_league_extension_plugin\core\league_client\LeagueClientButton.cpp',
+        f'{rle_root}/core/league_client/LeagueClientScreen.cpp',
+        f'{rle_root}/core/league_client/LeagueClientButton.cpp',
         # Motion
-        f'{rel_path}\\rumble_league_extension_plugin\motion\RumbleMotion.cpp',
+        f'{rle_root}/motion/RumbleMotion.cpp',
         # Vision
-        f'{rel_path}\\rumble_league_extension_plugin\\vision\RumbleVision.cpp',
+        f'{rle_root}/vision/RumbleVision.cpp',
         # Window Capture
-        f'{rel_path}\\rumble_league_extension_plugin\window_capture\WindowCapture.cpp',
+        f'{rle_root}/window_capture/WindowCapture.cpp',
         # Window Capture
-        f'{rel_path}\\rumble_league_extension_plugin\helpers\StringHelper.cpp',
+        f'{rle_root}/helpers/StringHelper.cpp',
     ],
-    include_dirs=[
-        pybind11.get_include(),
-    ],
-    language='c++',
-    extra_compile_args=cpp_args,
-    )
+)
 
 setup(
     name='Rumble LoL Extension',
     version='1.0.0',
+    author='Alex Vergara',
+    author_email='alex.vergara.dev@gmail.com',
     description='Python package that extends the Rumble-AI project with this module',
     ext_modules=[sfc_module],
 )
