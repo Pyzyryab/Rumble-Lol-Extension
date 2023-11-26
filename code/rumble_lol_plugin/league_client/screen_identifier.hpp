@@ -1,4 +1,5 @@
 #pragma once
+
 #include <ostream>
 
 // The availiable languages for the API as an enum type

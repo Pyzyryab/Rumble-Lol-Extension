@@ -1,4 +1,4 @@
-#include "RumbleLeague.hpp"
+#include <rumble_lol_plugin/RumbleLeague.hpp>
 
 using namespace std;
 

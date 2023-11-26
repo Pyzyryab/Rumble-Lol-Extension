@@ -1,5 +1,5 @@
-#include "WindowCapture.h"
-#include "../helpers/StringHelper.hpp"
+#include <rumble_lol_plugin/capture/window_capture.hpp>
+#include <rumble_lol_plugin/helpers/string.hpp>
 
 using namespace cv;
 

@@ -1,4 +1,4 @@
-#include "RumbleVision.h"
+#include <rumble_lol_plugin/vision/vision.hpp>
 
 using namespace std;
 using namespace cv;

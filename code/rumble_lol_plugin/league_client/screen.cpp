@@ -5,11 +5,10 @@
 #include <vector>
 #include <tuple>
 
-
-#include "LeagueClientScreen.hpp"
-#include "../../helpers/EnumTypes.hpp"
-#include "../../data/API_buttons.hpp"
-#include "../../helpers/StringHelper.hpp"
+#include <rumble_lol_plugin/league_client/screen.hpp>
+#include <rumble_lol_plugin/league_client/screen_identifier.hpp>
+#include <rumble_lol_plugin/league_client/api_buttons.hpp>
+#include <rumble_lol_plugin/helpers/string.hpp>
 
 using namespace std;
 

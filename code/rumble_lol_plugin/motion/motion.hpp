@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO move this to the build system library linkage setup 
 #pragma comment(lib, "kernel32.lib")
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "gdi32.lib")

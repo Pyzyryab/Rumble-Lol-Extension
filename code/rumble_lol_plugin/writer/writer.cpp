@@ -1,7 +1,7 @@
 #include <map>
 #include <iostream>
 
-#include "RumbleWriter.h"
+#include <rumble_lol_plugin/writer/writer.hpp>
 
 const std::map<const char, const uint32_t> RumbleWriter::virtual_keycodes
 {

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../../helpers/EnumTypes.hpp"
+#include <rumble_lol_plugin/league_client/screen_identifier.hpp>
 
 struct ClientButton
 {

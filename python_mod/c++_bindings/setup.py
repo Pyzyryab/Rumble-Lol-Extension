@@ -33,42 +33,54 @@ script_directory = os.path.dirname(current_script_path)
 # Navigate two directories above
 rle_root = os.path.abspath(os.path.join(script_directory, '..', '..'))
 
-print("RLE root directory: ", rle_root)
+# The code root directory
+rle_code_dir = os.path.join(rle_root, 'code')
+
+# The source code directory, following the guidelines of
+# https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1204r0.html
+rle_code_root = os.path.join(rle_code_dir, 'rumble_lol_plugin')
+
+print(f'RLE root directory: {rle_root}\n RLE SRC root dir: {rle_code_root}')
 
 
 sfc_module = Extension(
-    'rle', # Extension name
+    name = 'rlp', # The name of the generated Python module
     language='c++',
     include_dirs = [
         pybind11.get_include(),
         "C:/opencv/build/include", # Adjust the path based on your installation
+        # Our code include path
+        rle_code_dir,
+        rle_code_root
     ],
     libraries = ['opencv_world480'],  # Adjust the version number as needed
     library_dirs = ['C:/opencv/build/x64/vc16/lib'],  # Adjust the path based on your installation
     extra_compile_args = [
         # ... Your compiler options ...
     ],
-    sources=[
-        # Python bindings
-        f'{rle_root}/python_mod/c++_bindings/python_linker.cpp',
-        # Main library
-        f'{rle_root}/core/RumbleLeague.cpp',
+    sources = [
+        # C++ -> Python  FFI
+        f'{rle_code_root}/ffi/pybind_conf.cpp',
+        # Core
+        f'{rle_code_root}/RumbleLeague.cpp',
         # League Client screens and buttons
-        f'{rle_root}/core/league_client/LeagueClientScreen.cpp',
-        f'{rle_root}/core/league_client/LeagueClientButton.cpp',
+        f'{rle_code_root}/league_client/screen.cpp',
+        f'{rle_code_root}/league_client/button.cpp',
         # Motion
-        f'{rle_root}/motion/RumbleMotion.cpp',
+        f'{rle_code_root}/motion/motion.cpp',
         # Vision
-        f'{rle_root}/vision/RumbleVision.cpp',
+        f'{rle_code_root}/vision/vision.cpp',
+        # Writer (non ready yeat)
+        # f'{rle_code_root}/writer/writer.cpp',
         # Window Capture
-        f'{rle_root}/window_capture/WindowCapture.cpp',
-        # Window Capture
-        f'{rle_root}/helpers/StringHelper.cpp',
+        f'{rle_code_root}/capture/window_capture.cpp',
+        # Helpers
+        f'{rle_code_root}/helpers/string.cpp',
     ],
 )
 
 setup(
-    name='Rumble LoL Extension',
+    name='Rumble LoL Plugin',
     version='1.0.0',
     author='Alex Vergara',
     author_email='alex.vergara.dev@gmail.com',

@@ -2,10 +2,8 @@
 #include <ostream>
 #include <iostream>
 
-#include "LeagueClientButton.hpp"
-#include "../../helpers/EnumTypes.hpp"
+#include <rumble_lol_plugin/league_client/button.hpp>
  
-
 /// Four parameters delegating constructor
 ClientButton::ClientButton(
 	const char* identifier, 

@@ -1,21 +1,16 @@
 #pragma once
 
-// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_core.lib")
-// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_highgui.lib")
-// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_imgproc.lib")
-// #pragma comment(lib, "C:\\Users\\Alex Vergara\\Desktop\\code\\Rumble\\Rumble-LoL-Extension\\include\\opencv_imgcodecs.lib")
-
 #pragma comment(lib, "C:/opencv/build/x64/vc16/lib/opencv_world480.lib")
 
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 
-#include "../motion/RumbleMotion.hpp"
-#include "../writer/RumbleWriter.h"
-#include "../vision/RumbleVision.h"
-#include "../window_capture/WindowCapture.h"
-#include "league_client/LeagueClientScreen.hpp"
-#include "../helpers/StringHelper.hpp"
-#include "../helpers/EnumTypes.hpp"
+#include <rumble_lol_plugin/motion/motion.hpp>
+// #include <rumble_lol_plugin/writer/writer.hpp>
+#include <rumble_lol_plugin/vision/vision.hpp>
+#include <rumble_lol_plugin/capture/window_capture.hpp>
+#include <rumble_lol_plugin/league_client/screen.hpp>
+#include <rumble_lol_plugin/league_client/screen_identifier.hpp>
+#include <rumble_lol_plugin/helpers/string.hpp>
 
 
 class RumbleLeague

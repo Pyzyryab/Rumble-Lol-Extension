@@ -4,8 +4,8 @@
 #include <vector>
 #include <array>
 
-#include "LeagueClientButton.hpp"
-#include "../../helpers/EnumTypes.hpp"
+#include <rumble_lol_plugin/league_client/button.hpp>
+#include <rumble_lol_plugin/league_client/screen_identifier.hpp>
 
 /// <summary>
 /// Represents any of the existing screens on the League of Legends client.

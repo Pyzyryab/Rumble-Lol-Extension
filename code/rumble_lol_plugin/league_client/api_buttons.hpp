@@ -1,10 +1,10 @@
 #pragma once
 
 #include <vector>
-#include <tuple>
+#include <iostream>
 
-#include "../helpers/EnumTypes.hpp"
-#include "../core/league_client/LeagueClientButton.hpp"
+#include <rumble_lol_plugin/league_client/button.hpp>
+#include <rumble_lol_plugin/league_client/screen_identifier.hpp>
 
 using namespace std;
 
@@ -25,7 +25,7 @@ namespace RLE_data {
 	 */
 	const size_t available_client_lobbies = 9;
 
-	const LeagueClientScreenIdentifier lobbies [ available_client_lobbies ] {
+	const LeagueClientScreenIdentifier lobbies [available_client_lobbies] {
 		LeagueClientScreenIdentifier::SummonersBlindLobby,
 		LeagueClientScreenIdentifier::SummonersDraftLobby,
 		LeagueClientScreenIdentifier::SummonersRankedLobby,
@@ -131,10 +131,9 @@ namespace RLE_data {
 		vector<tuple<const char*, const char*, const LeagueClientScreenIdentifier>> desired_group_buttons{};
 		vector<ClientButton*> api_buttons;
 
-		// Selectes the buttons based on the language. Moves them to a new container to avoid dangling references caused by std::tuple
+		// Selects the buttons based on the language. Moves them to a new container to avoid dangling references caused by std::tuple
 		switch (language)
 		{
-			// TODO Do we really need to copy them 
 			case Language::English:
 				for (auto &element : english_buttons)
 					desired_group_buttons.push_back(element);
