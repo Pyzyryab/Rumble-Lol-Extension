@@ -21,7 +21,7 @@ class LeagueClientScreen
 		const Language &selected_language;
 
 		// Dynamic container for store pointers to the client buttons objects
-		std::vector<ClientButton*> client_buttons { };
+		std::vector<ClientButton*> client_buttons {};
 
 	public:
 		// Constructors

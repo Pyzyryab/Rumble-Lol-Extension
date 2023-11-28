@@ -17,8 +17,8 @@ using namespace std;
 * Overloaded constructor.
 */
 LeagueClientScreen::LeagueClientScreen(const Language& selected_language)
-	: identifier{ LeagueClientScreenIdentifier::MainScreen }, 
-	selected_language{ selected_language } 
+	: identifier {LeagueClientScreenIdentifier::MainScreen}, 
+	selected_language {selected_language} 
 {
 	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
 }
@@ -29,9 +29,9 @@ LeagueClientScreen::LeagueClientScreen(const Language& selected_language)
 * as a default value through the default constructor invokation.
 */
 LeagueClientScreen::LeagueClientScreen()
-	: LeagueClientScreen{ Language::English } 
+	: LeagueClientScreen {Language::English} 
 {
-	this->client_buttons = RLE_data::get_buttons( this->get_selected_language() );
+	this->client_buttons = RLE_data::get_buttons(this->get_selected_language());
 }
 
 

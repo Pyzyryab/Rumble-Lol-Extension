@@ -7,7 +7,7 @@
 alias build='pip install ./python_mod/c++_bindings'
 
 # Clean the build project and uninstall RLE from the global or the active venv
-alias clean='rm -rf ./python_mod/c++_bindings/build && ./python_mod/c++_bindings/Rumble_LoL_Plugin.egg-info && pip uninstall Rumble-LoL-Plugin'
+alias clean='rm -rf ./python_mod/c++_bindings/build && rm -rf ./python_mod/c++_bindings/Rumble_LoL_Plugin.egg-info && pip uninstall Rumble-LoL-Plugin'
 
 # Run the RLE plugin
 alias run='python ./python_mod/run_rlp.py'
