@@ -158,24 +158,24 @@ namespace RLE_data {
 			if (lcsi != std::end(lobbies))
 			{
 				api_buttons.push_back(
-					new ClientButton(
+					new ClientButton {
 						std::get<0>(tuple), 
 						std::get<1>(tuple), 
 						LeagueClientScreenIdentifier::ChooseGame, 
 						language, 
 						std::get<2>(tuple)
-					)
+					}
 				);
 			}
 			else 
 			{
 				api_buttons.push_back(
-					new ClientButton(
+					new ClientButton {
 						std::get<0>(tuple), 
 						std::get<1>(tuple), 
 						std::get<2>(tuple), 
 						language
-					)
+					}
 				);
 			}
 		}

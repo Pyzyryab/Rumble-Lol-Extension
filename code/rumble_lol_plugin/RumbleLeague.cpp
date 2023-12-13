@@ -79,7 +79,7 @@ const char* RumbleLeague::play(const std::string& user_input)
 	{
 		cout << "\n *************************" << endl;
 		for (auto button : matched_client_buttons) {
-			cout << "Founded a button candidate: " << button->identifier << endl;
+			cout << "Found a button candidate: " << button->identifier << endl;
 		}
 
 		const ClientButton* const& button = matched_client_buttons[0];
@@ -168,7 +168,11 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 	this->set_needle_image(client_button->image_path, needle_image);
 
 	// Change this for a fn pointer or callback inside the button
-	(!wait_event) ? this->click_event(needle_image) : this->wait_event(needle_image);
+	if (!wait_event)
+		this->click_event(needle_image);
+	else
+		this->wait_event(needle_image);
+
 
 	// Special behaviour (Under testing and development)
 	if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()

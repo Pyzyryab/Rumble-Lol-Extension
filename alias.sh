@@ -17,3 +17,12 @@ alias cleanbuild='clean && build'
 
 # Cleans first, builds the project and then launches the RLE
 alias cbr='clean && build && run'
+
+## NEW ONES, intended to be used with the CMake pipeline
+alias clean_cmake='rm -rf build && rm -rf include/pybind11 && mkdir build'
+alias configure_cmake='(cd build && cmake -G "Ninja" -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/clang++.exe -DCMAKE_MAKE_PROGRAM=C:/msys64/usr/bin/make.exe -DCMAKE_AR=C:/msys64/mingw64/bin/ar.exe ..) || cd ..'
+alias run_make='(cd build && C:/msys64/usr/bin/make.exe) || cd ..'
+
+alias first_build='mkdir build && configure_cmake && run_make'
+alias build='configure_cmake && run_make'
+alias clean_rebuild='clean_cmake && configure_cmake && run_make'

@@ -1,5 +1,8 @@
 '''Python script to run RLE as standalone or as a plugin of Rumble-AI'''
 
+# TODO can we get rid out of all of this info and just use the standalone mode
+# in this file??
+
 import os
 
 '''
@@ -66,6 +69,6 @@ if AS_STANDALONE:
         if query == "stop":
             break
         if query != "":
-            result = rumble_league.play( query.lower() )
-            print( f'C++ output: {result}' )
-            print( '*************************\n' )
+            result = rumble_league.play(query.lower())
+            print(f'C++ output: {result}')
+            print('*************************\n')
