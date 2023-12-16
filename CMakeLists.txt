@@ -1,11 +1,38 @@
+# ----------------------------------------------------------------------------
+#  ROOT CMake file for configure and build the project
+#
+#  Find more details on the README.md of the project
+#
+#  Zero Day Code, 2023
+#
+#  Usage instructions:
+#   - move your pwd to the build directory, located in the root
+#     (create one if not exists)
+#   - launch: `cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake ..`
+#   - if everything was configured correctly, now build the project: cmake --build .
+#  
+#  Contributors:
+#   -  Alex Vergara (@Pyzyrab)
+# ----------------------------------------------------------------------------
+
 cmake_minimum_required(VERSION 3.5)
+
 set(PROJECT rumble_lol_plugin)
+
 project(${PROJECT}
     VERSION 1.0.0
     DESCRIPTION "Rumble League Plugin, a Python Module extension for Rumble-AI"
     HOMEPAGE_URL "https://github.com/zerodaycode/Rumble-LoL-Plugin"
     LANGUAGES CXX
 )
+
+# CMake Debug mode by default 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+list(APPEND CMAKE_CXX_FLAGS "-O2")
+list(APPEND CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS} "-O3")
 
 # require C++23
 set(CMAKE_CXX_STANDARD 23)
@@ -120,10 +147,11 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11)
         COMMAND ${CMAKE_COMMAND}
                 --build ${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11
                 --target install
-                -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/clang++.exe
-                -DCMAKE_MAKE_PROGRAM=C:/msys64/usr/bin/make.exe
-                -DCMAKE_AR=C:/msys64/mingw64/bin/ar.exe
+                -DCMAKE_POLICY_DEFAULT_CMP0148=OLD
+                -DCMAKE_BUILD_TYPE=Release
+                -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                 -DPYBIND11_TEST=OFF
+                -Wno-dev
     )
 
     message(INFO " Pybind11 built and installed. Proceding to build RLP!")
