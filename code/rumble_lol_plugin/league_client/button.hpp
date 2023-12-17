@@ -16,3 +16,14 @@ struct ClientButton
 	// In case of the button belongs to a lobby, stores here what lobby will lead after press the "Confirm" button
 	LeagueClientScreenIdentifier lobby; 
 };
+
+/// Overload the output stream operator for the LeagueClientScreenIdentifier custom type
+inline std::ostream& operator<<(std::ostream& oss, ClientButton rhs) {
+	return oss << "ClientButton[\n" 
+		<< "	Identifier: " << rhs.identifier << "\n"
+		<< "	Path: " << rhs.image_path << "\n"
+		<< "	Next Screen: " << rhs.next_screen << "\n"
+		<< "	Language: " << rhs.selected_language << "\n"
+		<< "	Lobby: " << rhs.lobby << "\n"
+		<< "]\n";
+}

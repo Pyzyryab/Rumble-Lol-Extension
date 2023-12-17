@@ -1,9 +1,7 @@
 '''Python script to run RLE as standalone or as a plugin of Rumble-AI'''
 
-# TODO can we get rid out of all of this info and just use the standalone mode
-# in this file??
-
 import os
+import sys
 
 '''
     1º -  Detects if the **rle** it's been running as a standalone or as an installed plugin of Rumble-AI.
@@ -32,10 +30,14 @@ print(f'Base path: {base_path}')
 '''
     3º - Since Python 3.8, DLL's from installed libs should be manually pointed, mark it them as a safe-directory.
         3.1 - Let's gonna create a variable to track the folder
-        3.2 - Add the folder to the DLL search path 
+        3.2 - Add the OpenCV dlls folder to the DLL search path 
+        3.3 - Also, add our .pyd generated module to the PYTHONPATH
 '''
 dll_folder = base_path + '/bin'
-os.add_dll_directory(dll_folder)
+opencv_dll_folder = base_path + '/install/opencv/x64/mingw/bin'
+
+sys.path.append(dll_folder)
+os.add_dll_directory(opencv_dll_folder)
 
 ''' # TODO legacy comment
     4º - Usage of venv. We should review this at some time in the future
@@ -43,7 +45,6 @@ os.add_dll_directory(dll_folder)
 os.chdir(base_path)
 # activate_this_file = ".\\python_mod\\env\\Scripts\\activate_this.py"
 # exec(compile(open(activate_this_file, "rb").read(), activate_this_file, 'exec'), dict(__file__=activate_this_file))
-
 
 ''' # TODO legacy comment
     5º - chdir to the lib env, to let the C++ library have a correct environment

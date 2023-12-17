@@ -36,6 +36,7 @@ std::wstring StringHelper::to_wstring(std::string str)
 /// </summary>
 std::vector<std::string>& StringHelper::split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
 {
+    // TODO avoid stringstream
     // construct a stream from the string 
     std::stringstream ss(input);
 
@@ -46,3 +47,5 @@ std::vector<std::string>& StringHelper::split_by_delimiter(const std::string& in
 
     return output;
 }
+
+// TODO Create a wrapper over std::string.compare(...)
