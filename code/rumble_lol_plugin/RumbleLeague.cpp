@@ -70,9 +70,7 @@ RumbleLeague::~RumbleLeague()
 */
 const char* RumbleLeague::play(const std::string& user_input)
 {
-	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etc
-cout << "\n *******************dfsgsdgdfsgsdfgsdf******" << endl;
-cout << "\n Current league client screen: " << this->current_league_client_screen->get_identifier() << endl;
+	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etccout << "\n Current league client screen: " << this->current_league_client_screen->get_identifier() << endl;
 	// 1�st -> Get a list with the posible client buttons that could possible be the desired user action
 	auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
 	cout << "\n *************************" << endl;
@@ -178,6 +176,7 @@ void RumbleLeague::league_client_action(const ClientButton& client_button)
 
 
 	// Special behaviour (Under testing and development)
+	// TODO probably check the screen before, and spawn a thread or coroutine? Will be much better than the autoaccept behaviour
 	if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()
 		== LeagueClientScreenIdentifier::AcceptDecline)
 	{
