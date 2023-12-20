@@ -70,20 +70,20 @@ RumbleLeague::~RumbleLeague()
 */
 const char* RumbleLeague::play(const std::string& user_input)
 {
-	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etc
-
+	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etccout << "\n Current league client screen: " << this->current_league_client_screen->get_identifier() << endl;
 	// 1�st -> Get a list with the posible client buttons that could possible be the desired user action
 	auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
+	cout << "\n *************************" << endl;
 
 	if (matched_client_buttons.size() > 0)
 	{
 		cout << "\n *************************" << endl;
 		for (auto button : matched_client_buttons) {
-			cout << "Founded a button candidate: " << button->identifier << endl;
+			cout << "Found a button candidate: " << button.identifier << endl;
 		}
 
-		const ClientButton* const& button = matched_client_buttons[0];
-		cout << "[WARNING] Taking -> " << button->identifier << " <- as the first element matched. "
+		const ClientButton button = matched_client_buttons[0];
+		cout << "[WARNING] Taking -> " << button.identifier << " <- as the first element matched. "
 			"This is because there is not NLP implemented yet." << endl;
 
 		// Calls the member method to perform a desired action based on the matched button.
@@ -101,7 +101,7 @@ const char* RumbleLeague::play(const std::string& user_input)
 * Changes the pointer value what points to instance of the LeagueClientScreen child for the new one after matching a user input,
 * and performs some action 
 */
-void RumbleLeague::league_client_action(const ClientButton* const& client_button)
+void RumbleLeague::league_client_action(const ClientButton& client_button)
 {
 	// Controls when an even should be awaited (until appears on screen) or not.
 	bool wait_event{ false };
@@ -114,7 +114,7 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 	/** Updates the pointer to the LeagueClientScreen with the enum value that identifies what screen comes
 	* next after pressing any button
 	*/
-	switch (client_button->next_screen)
+	switch (client_button.next_screen)
 	{
 		case LeagueClientScreenIdentifier::ChooseGame:
 			/**
@@ -127,14 +127,14 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 			* game lobby candidate and pointing again the member variable that tracks it to the correct game lobby.
 			* Note that many of the game modes has different game lobbies wih different possible actions
 			*/
-			if (client_button->lobby != LeagueClientScreenIdentifier::NoLobby)
+			if (client_button.lobby != LeagueClientScreenIdentifier::NoLobby)
 			{
-				this->game_lobby_candidate = client_button->lobby;
+				this->game_lobby_candidate = client_button.lobby;
 				cout << "[INFO] Game lobby candidate -> " << this->game_lobby_candidate << " <- " << endl;
 			}
 
 			this->current_league_client_screen->set_identifier(
-				client_button->next_screen
+				client_button.next_screen
 			);
 
 			break;
@@ -152,11 +152,11 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 
 		case LeagueClientScreenIdentifier::ChampSelect:
 			wait_event = true;
-			this->current_league_client_screen->set_identifier(client_button->next_screen);
+			this->current_league_client_screen->set_identifier(client_button.next_screen);
 
 		default:
 			// Any voice command that presses a button that leads to a screen change
-			this->current_league_client_screen->set_identifier(client_button->next_screen);
+			this->current_league_client_screen->set_identifier(client_button.next_screen);
 	}
 
 	cout << "[INFO] Current screen -> " <<
@@ -165,12 +165,18 @@ void RumbleLeague::league_client_action(const ClientButton* const& client_button
 
 	// Sets the needle image for what we are looking for
 	cv::Mat needle_image;
-	this->set_needle_image(client_button->image_path, needle_image);
+	cout << "Setting the OpenCV needle image: " << client_button.image_path << endl;
+	this->set_needle_image(client_button.image_path, needle_image);
 
 	// Change this for a fn pointer or callback inside the button
-	(!wait_event) ? this->click_event(needle_image) : this->wait_event(needle_image);
+	if (!wait_event)
+		this->click_event(needle_image);
+	else
+		this->wait_event(needle_image);
+
 
 	// Special behaviour (Under testing and development)
+	// TODO probably check the screen before, and spawn a thread or coroutine? Will be much better than the autoaccept behaviour
 	if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()
 		== LeagueClientScreenIdentifier::AcceptDecline)
 	{
@@ -245,23 +251,10 @@ void RumbleLeague::set_needle_image(const std::string& image_path, cv::Mat& need
 	cvtColor(img_to_find, needle_image, cv::COLOR_BGR2BGRA);
 }
 
-void RumbleLeague::set_cpp_language(const int language_id)
+void RumbleLeague::set_cpp_language(int language_id)
 {
-	// Switch statement prefered here 'cause potentially the API could be translated to more languages.
-	// Obviously, the default case always should be setted to a default language (English in this case),
-	// even if it's already an option. This is 'cause if it's selected first, the compiler don't have to check
-	// the another alternatives.
-	switch (language_id)
-	{
-		case 1:
-			this->language = Language::English;
-			break;
-		case 2:
-			this->language = Language::Spanish;
-			break;
-		// ... case N
-		default:
-			this->language = Language::English;
-			break;
-	}
+	if (language_id == 1)
+		this->language = Language::English;
+	else if (language_id == 2)
+		this->language = Language::Spanish;
 }

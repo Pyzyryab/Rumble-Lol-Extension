@@ -16,7 +16,7 @@ using namespace std;
 /**
 * Overloaded constructor.
 */
-LeagueClientScreen::LeagueClientScreen(const Language& selected_language)
+LeagueClientScreen::LeagueClientScreen(const Language selected_language)
 	: identifier {LeagueClientScreenIdentifier::MainScreen}, 
 	selected_language {selected_language} 
 {
@@ -54,12 +54,11 @@ LeagueClientScreen::~LeagueClientScreen()
 /// <returns>
 /// std::vector<ClientButton*>
 /// </returns>
-std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::string& user_input)
+std::vector<ClientButton> LeagueClientScreen::find_client_button(const std::string& user_input)
 {
-	std::vector<ClientButton*> matched_buttons {};
-	
-	std::vector<std::string> splitted_input;
-	splitted_input = StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
+	std::vector<ClientButton> matched_buttons {}; // TODO avoid pointers
+	std::vector<std::string> splitted_input {};
+	StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
 	// Outputing debug info to the console
 	std::cout << "\nSplitted user input: " << std::endl;
@@ -70,25 +69,16 @@ std::vector<ClientButton*> LeagueClientScreen::find_client_button(const std::str
 	
 	// Calls the method on the current selected child screen and recovers the client buttons pointers
 	// associated with that screen
-	std::vector<ClientButton*> buttons = this->get_client_buttons();
+	std::vector<ClientButton> buttons = this->get_client_buttons();
 
 	for (const auto word : splitted_input) {
 		
 		//std::cout << "" << std::endl;
 		//std::cout << "Comparing: " << word << std::endl;
-		
-		for (int i = 0; i < buttons.size(); i++) {
-			
-			//std::cout << " with: " << buttons[i]->identifier << std::endl;
-			
-			if ( strcmp(buttons[i]->identifier, word.c_str()) == 0 ) 
-			{
+		for (const auto button : buttons) {
+			if (word.compare(button.identifier) == 0) {
 				std::cout << "\t Match founded!" << std::endl;
-				matched_buttons.push_back(buttons[i]);
-			}
-			else 
-			{
-				//std::cout << "\t No match!" << std::endl;
+				matched_buttons.push_back(button); // Ensure that this is a copy
 			}
 		}
 	}
@@ -104,12 +94,12 @@ LeagueClientScreenIdentifier LeagueClientScreen::get_identifier()
 	return this->identifier;
 }
 
-std::vector<ClientButton*> LeagueClientScreen::get_client_buttons()
+std::vector<ClientButton> LeagueClientScreen::get_client_buttons()
 {
 	return this->client_buttons;
 }
 
-const Language& LeagueClientScreen::get_selected_language()
+const Language LeagueClientScreen::get_selected_language()
 {
 	return this->selected_language;
 }

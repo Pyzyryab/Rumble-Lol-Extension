@@ -1,5 +1,9 @@
-# ------ MSVC files -------
+# ------ Build/Install ------
+build/
+install/
+include/pybind11/
 
+# ------ MSVC files -------
 *.vcxproj
 *vcxproj.*
 *.sln
@@ -28,8 +32,3 @@ dist/
 __pycache__/
 build/
 **.egg-info/
-
-
-# ------ Concrete files -------
-setup_rle_old.py
-direct_url.json

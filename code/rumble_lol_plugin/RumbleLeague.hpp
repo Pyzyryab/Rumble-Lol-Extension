@@ -94,7 +94,7 @@ class RumbleLeague
 		void set_needle_image(const std::string& image_path, cv::Mat& needle_image);
 
 		// Executes an internal action of this API
-		void league_client_action(const ClientButton* const& client_button);
+		void league_client_action(const ClientButton& client_button);
 
 
 	public:
