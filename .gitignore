@@ -2,6 +2,7 @@
 build/
 install/
 include/pybind11/
+compile_commands.json
 
 # ------ MSVC files -------
 *.vcxproj
