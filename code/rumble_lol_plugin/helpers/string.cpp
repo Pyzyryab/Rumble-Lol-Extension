@@ -36,6 +36,7 @@ std::wstring StringHelper::to_wstring(std::string str)
 /// </summary>
 std::vector<std::string>& StringHelper::split_by_delimiter(const std::string& input, char delimiter, std::vector<std::string>& output)
 {
+    // TODO avoid stringstream
     // construct a stream from the string 
     std::stringstream ss(input);
 
@@ -47,15 +48,4 @@ std::vector<std::string>& StringHelper::split_by_delimiter(const std::string& in
     return output;
 }
 
-/// <summary>
-/// Created to be able to compare char* on std data structures. In detail, to allow the .find() method of the std::map DS to match
-/// keys with the type const char*.
-/// A char* it's just a pointer to a C-String style, which are just contiguous characters on a chuck of memory, that's why the find method
-/// fails trying to find a char* key against a passed in char*, because it's comparing memory addreses, not string values.
-/// </summary>
-bool StringHelper::cmp_str::operator()(char const* a, char const* b) const
-{
-    return std::strcmp(a, b) < 0; // TODO Consider using strcpy_s instead
-}
-
-
+// TODO Create a wrapper over std::string.compare(...)
