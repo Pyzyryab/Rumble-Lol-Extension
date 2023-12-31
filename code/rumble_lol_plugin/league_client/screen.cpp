@@ -26,7 +26,7 @@ LeagueClientScreen::LeagueClientScreen(const Language selected_language)
 * Default constructor.
 * 
 * The default constructor of the base class initializes the member reference variable to Language::English
-* as a default value through the default constructor invokation.
+* as a default value through the default constructor invocation.
 */
 LeagueClientScreen::LeagueClientScreen()
 	: LeagueClientScreen {Language::English} 
@@ -60,8 +60,8 @@ std::vector<ClientButton> LeagueClientScreen::find_client_button(const std::stri
 	std::vector<std::string> splitted_input {};
 	StringHelper::split_by_delimiter(user_input, ' ', splitted_input);
 
-	// Outputing debug info to the console
-	std::cout << "\nSplitted user input: " << std::endl;
+	// Outputting debug info to the console
+	std::cout << "\nSplit user input: " << std::endl;
 	for (int i = 0; i < splitted_input.size(); i++)
 		std::cout << "    N" << i + 1 << ": " << splitted_input[i] << std::endl;
 
