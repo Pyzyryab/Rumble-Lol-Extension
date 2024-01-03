@@ -4,7 +4,7 @@ Rumble LoL Extension
 This is a Python package that extends the Rumble-AI project with a C++ module.
 
 Usage (from the root directory):
-    $ pip install ./python_mod/c++_bindings
+    $ pip install ./python/c++_bindings
 """
 
 import os

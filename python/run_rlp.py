@@ -7,13 +7,13 @@ import sys
     1º -  Detects if the **rle** it's been running as a standalone or as an installed plugin of Rumble-AI.
     If the base path contains the Rumble-AI folder, it should be as plugin, else, as standalone.
     Also, if this script it's running as __main__, the base path should be a dir above this one, needing to 
-    strip the /python_mod from the base path to set it to the root dir of the project.
+    strip the /python from the base path to set it to the root dir of the project.
 '''
 base_path = os.getcwd()
 AS_STANDALONE = False
 
-if base_path.endswith( 'python_mod' ):
-    base_path = base_path[ : len( base_path ) - (len( 'python_mod' ) + 1) ]
+if base_path.endswith( 'python' ):
+    base_path = base_path[ : len( base_path ) - (len( 'python' ) + 1) ]
 
 if base_path.endswith( 'Rumble-AI' ):
     '''
@@ -43,7 +43,7 @@ os.add_dll_directory(opencv_dll_folder)
     4º - Usage of venv. We should review this at some time in the future
 '''
 os.chdir(base_path)
-# activate_this_file = ".\\python_mod\\env\\Scripts\\activate_this.py"
+# activate_this_file = ".\\python\\env\\Scripts\\activate_this.py"
 # exec(compile(open(activate_this_file, "rb").read(), activate_this_file, 'exec'), dict(__file__=activate_this_file))
 
 ''' # TODO legacy comment
@@ -51,7 +51,7 @@ os.chdir(base_path)
     to load all the necessary assets
 '''
 
-os.chdir('./python_mod')
+os.chdir('./python')
 
 if AS_STANDALONE:
     import rlp

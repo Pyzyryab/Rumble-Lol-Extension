@@ -190,7 +190,7 @@ else()
     message(INFO " Pybind11 is already installed. Proceding to build RLP!")
 endif()
 
-# find_package(Python 3.11.6 COMPONENTS Interpreter Development REQUIRED)
+find_package(Python 3.11.6 COMPONENTS Interpreter Development REQUIRED)
 
 # Brings the configuration of our main target, the C++ library that will
 # be built as a Python module extension

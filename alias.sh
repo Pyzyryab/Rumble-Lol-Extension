@@ -4,13 +4,13 @@
 # Note that the alias are ready to be executed from within the root path of the project
 
 # Build the RLE with setup-tools
-alias build='pip install ./python_mod/c++_bindings'
+alias build='pip install ./python/c++_bindings'
 
 # Clean the build project and uninstall RLE from the global or the active venv
-alias clean='rm -rf ./python_mod/c++_bindings/build && rm -rf ./python_mod/c++_bindings/Rumble_LoL_Plugin.egg-info && pip uninstall Rumble-LoL-Plugin'
+alias clean='rm -rf ./python/c++_bindings/build && rm -rf ./python/c++_bindings/Rumble_LoL_Plugin.egg-info && pip uninstall Rumble-LoL-Plugin'
 
 # Run the RLE plugin
-alias run='python ./python_mod/run_rlp.py'
+alias run='python ./python/run_rlp.py'
 
 # Cleans first, then launches the build process
 alias cleanbuild='clean && build'
