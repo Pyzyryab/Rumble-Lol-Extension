@@ -129,7 +129,7 @@ up the introduction of new functionalities.
 For this, from the root of the project, just run:
 
 ```bash
-python ./python_mod/run_rlp.py
+python ./python/run_rlp.py
 ```
 
 And you should see the application running directly in your terminal.
@@ -167,7 +167,7 @@ so, for you to be able to run the project, you'll need an installation of `OpenC
 > For building the project in this way, we support up until OpenCV <= 4.8.1.
 
 We assume up until this point, that you already installed `OpenCV`. Where you installed it, it's completely up to you,
-but remember to modify the `include` paths accordingly in the [setup.py](./python_mod/c++_bindings/setup.py),
+but remember to modify the `include` paths accordingly in the [setup.py](./python/c++_bindings/setup.py),
 as well the ones to the dependent libraries and DLL's.
 
 The best part of this procedure is that is extremely straightforward. You just need to literally use *Python's pip* package manager
@@ -179,7 +179,7 @@ to get the job done.
 From the root of the project, you just need to invoke:
 
 ```bash
-pip install ./python_mod/c++_bindings/setup.py
+pip install ./python/c++_bindings/setup.py
 ```
 
 You'll see the process build starting. If everything goes well, `pip` will automatically make the `C++` code a library that will be generated

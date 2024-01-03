@@ -15,7 +15,7 @@ using namespace std;
  * 
  * TODO Notate how in the future, this should be replaced by a REST API data supplier, 
  * where we can retrieve data dynamically from every patch, every client aspect change
- * with posible new butttons etc.
+ * with posible new buttons etc.
  */
 namespace RLE_data {
 
@@ -90,7 +90,7 @@ namespace RLE_data {
 		make_tuple("tutorial", "tutorial", LeagueClientScreenIdentifier::TutorialLobby),
 		make_tuple("practice", "practice", LeagueClientScreenIdentifier::PracticeTool),
 		make_tuple("start", "start", LeagueClientScreenIdentifier::GameLobby),
-		// TODO Pending implement the add bot funcionality, or a handler to the same modal
+		// TODO Pending implement the add bot functionality, or a handler to the same modal
 		// Join button from the team making screen
 		make_tuple("join", "join_game", LeagueClientScreenIdentifier::GameLobby),
 
@@ -142,10 +142,7 @@ namespace RLE_data {
 
 
 	/**
-	* Helper that returns a vector of ClientButton pointers, filled with the concretes one that satisfies the
-	* specified desired language.
-	* 
-	* TODO Complete the full description of what this method does, and why it's designed in this way
+	* Helper that returns a vector of ClientButton aggregates
 	*/
 	vector<ClientButton> get_buttons(const Language language, const bool debug = false)
 	{
@@ -179,8 +176,7 @@ namespace RLE_data {
 			const auto identifier = std::get<0>(tuple);
 			const auto path = add_assets_route(std::get<1>(tuple), language);
 
-			if (lcsi != std::end(lobbies))
-			{
+			if (lcsi != std::end(lobbies)) {
 				const auto but = ClientButton {
 						identifier,
 						path,
@@ -192,9 +188,7 @@ namespace RLE_data {
 				api_buttons.push_back(
 					but
 				);
-			}
-			else 
-			{
+			} else {
 				const auto but = ClientButton {
 						identifier, 
 						path,
@@ -209,10 +203,8 @@ namespace RLE_data {
 			}
 		}
 
-		if (debug) 
-		{
-			for (ClientButton& button : api_buttons)
-			{
+		if (debug) {
+			for (ClientButton& button : api_buttons) {
 				cout << "Button with identifier: " << button.identifier
 					<< "; with path: " << button.image_path << endl;
 				cout << "\tpointing to: " << button.next_screen
