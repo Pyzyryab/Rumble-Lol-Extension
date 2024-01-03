@@ -11,6 +11,7 @@
 #include <rumble_lol_plugin/league_client/screen.hpp>
 #include <rumble_lol_plugin/league_client/screen_identifier.hpp>
 #include <rumble_lol_plugin/helpers/string.hpp>
+#include <rumble_lol_plugin/config/rlp_config.hpp>
 
 
 class RumbleLeague

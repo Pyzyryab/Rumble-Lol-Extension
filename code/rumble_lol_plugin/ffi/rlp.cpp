@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <rumble_lol_plugin/RumbleLeague.hpp>
+#include <rumble_lol_plugin/config/rlp_config.hpp>
 
 namespace py = pybind11;
 

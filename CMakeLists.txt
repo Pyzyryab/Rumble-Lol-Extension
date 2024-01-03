@@ -10,6 +10,10 @@
 #     (create one if not exists)
 #   - launch: `cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake ..`
 #   - if everything was configured correctly, now build the project: cmake --build .
+#
+#   - You can also use a fancy one-line for build and configure, and also you can do it from
+#     the project's root, like this:
+#     `cmake -S . -B ./build -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake && cmake --build ./build`
 #  
 #  Contributors:
 #   - Alex Vergara (@Pyzyrab)
@@ -22,7 +26,7 @@ set(PROJECT rumble_lol_plugin)
 set(PY_MODULE rlp)
 
 project(${PROJECT}
-    VERSION 1.0.0
+    VERSION 0.1.0
     DESCRIPTION "Rumble League Plugin, a Python Module extension for Rumble-AI"
     HOMEPAGE_URL "https://github.com/zerodaycode/Rumble-LoL-Plugin"
     LANGUAGES CXX
@@ -55,7 +59,10 @@ set(RLP_SOURCES_ROOT ${RLP_CODE_ROOT}/${PROJECT})
 
 set(PROJECT_BUILD_DIRECTORY     ${RLP_ROOT}/build)
 set(PROJECT_INSTALL_DIRECTORY   ${RLP_ROOT}/install)
-set(PROJECT_BINARIES_DIRECTORY   ${RLP_ROOT}/bin)
+set(PROJECT_BINARIES_DIRECTORY  ${RLP_ROOT}/bin)
+
+# add the project's configuration header
+add_subdirectory(configuration)
 
 # Changing where CMake will performn the installations
 set(CMAKE_INSTALL_PREFIX ${PROJECT_INSTALL_DIRECTORY})
