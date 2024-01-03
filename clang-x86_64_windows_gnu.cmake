@@ -26,7 +26,7 @@ set(EXCEPTS         -fexceptions)
 set(RTTI            -frtti)
 
 # Append the cfg flags to the CXX flags
-set(CMAKE_CXX_FLAGS "${LIBCPP} ${CPPABI} ${LUNWIND} ${UNWIND_TABLES} ${RTTI}")
+set(CMAKE_CXX_FLAGS "${LIBCPP} ${UNWIND_TABLES} ${RTTI}")
 
 # Linker flags
 set(USE_LLD -fuse-ld=lld)

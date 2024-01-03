@@ -3,7 +3,7 @@
 #
 #  Find more details on the README.md of the project
 #
-#  Zero Day Code, 2023
+#  Zero Day Code, 2023 - Present
 #
 #  Usage instructions:
 #   - move your pwd to the build directory, located in the root
@@ -12,7 +12,8 @@
 #   - if everything was configured correctly, now build the project: cmake --build .
 #  
 #  Contributors:
-#   -  Alex Vergara (@Pyzyrab)
+#   - Alex Vergara (@Pyzyrab)
+#   - Pylyv        (@Pylyv)
 # ----------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.5)
@@ -35,8 +36,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # TODO add the project's CXX flags, like -Wall...
-# TODO split this into multiple CMakeLists.txt files
-# Change the name of the generated library
+# TODO split this into multiple CMakeLists.txt files (in progress)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
@@ -44,6 +44,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
 # require C++23
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # ------- Project variables -------
 set(RLP_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
@@ -54,6 +55,7 @@ set(RLP_SOURCES_ROOT ${RLP_CODE_ROOT}/${PROJECT})
 
 set(PROJECT_BUILD_DIRECTORY     ${RLP_ROOT}/build)
 set(PROJECT_INSTALL_DIRECTORY   ${RLP_ROOT}/install)
+set(PROJECT_BINARIES_DIRECTORY   ${RLP_ROOT}/bin)
 
 # Changing where CMake will performn the installations
 set(CMAKE_INSTALL_PREFIX ${PROJECT_INSTALL_DIRECTORY})
@@ -188,44 +190,8 @@ else()
     message(INFO " Pybind11 is already installed. Proceding to build RLP!")
 endif()
 
+# find_package(Python 3.11.6 COMPONENTS Interpreter Development REQUIRED)
 
-# Add the project's source files
-set(SOURCES
-    ${RLP_SOURCES_ROOT}/ffi/rlp.cpp
-    ${RLP_SOURCES_ROOT}/RumbleLeague.cpp
-    ${RLP_SOURCES_ROOT}/league_client/screen.cpp
-    ${RLP_SOURCES_ROOT}/motion/motion.cpp
-    ${RLP_SOURCES_ROOT}/vision/vision.cpp
-    ${RLP_SOURCES_ROOT}/capture/window_capture.cpp
-    ${RLP_SOURCES_ROOT}/helpers/string.cpp
-)
-
-
-find_package(Python 3.11.6 COMPONENTS Interpreter Development REQUIRED)
-find_package(pybind11 CONFIG REQUIRED)
-pybind11_add_module(${PY_MODULE} MODULE ${SOURCES})
-
-target_include_directories(${PY_MODULE} PRIVATE
-    ${RLP_INCLUDE_DIR}
-    ${OpenCV_INCLUDE_DIRS}
-    ${pybind11_INSTALL_DIR}/include
-    ${Python_LIBRARIES}
-)
-
-# Link libraries
-target_link_libraries(${PY_MODULE} PUBLIC
-    ${OpenCV_LIBS}
-    pybind11::module
-    pybind11::lto
-    pybind11::thin_lto
-)
-
-
-# Specify the output directory for the Python module
-set_target_properties(${PY_MODULE} PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
-    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
-)
- 
-set_target_properties(${PY_MODULE} PROPERTIES PREFIX "" SUFFIX ".cp311-mingw_x86_64_clang.pyd")
+# Brings the configuration of our main target, the C++ library that will
+# be built as a Python module extension
+add_subdirectory(code)
