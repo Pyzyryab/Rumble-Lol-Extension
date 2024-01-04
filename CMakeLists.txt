@@ -77,10 +77,6 @@ set(pybind11_INSTALL_DIR    ${PROJECT_INSTALL_DIRECTORY}/pybind11)
 # Set the build dirs
 set(OpenCV_BUILD_DIR        ${PROJECT_BUILD_DIRECTORY}/opencv/build)
 set(pybind11_BUILD_DIR      ${PROJECT_BUILD_DIRECTORY}/pybind11/build)
-# Set the external_package_DIR, required to found the installation
-set(OpenCV_DIR              ${OpenCV_INSTALL_DIR})
-set(pybind11_DIR            ${pybind11_INSTALL_DIR}/share/cmake/pybind11)
-
 
 # Attempt to find OpenCV in quiet mode. This will allow us to skip CMake code 
 # in the consecutive iterations of the build process
@@ -148,6 +144,9 @@ if(NOT OpenCV_FOUND)
         COMMAND cmake --build . --target install
         WORKING_DIRECTORY ${OpenCV_BUILD_DIR}
     )
+
+    set(OpenCV_DIR ${OpenCV_INSTALL_DIR})
+    message(INFO " OpenCV configured, built and installed.")
 else()
     message (STATUS "OpenCV installation found. Version: ${OpenCV_VERSION}. Path: ${OpenCV_DIR}")
 endif()
@@ -192,12 +191,14 @@ if(NOT pybind11_FOUND)
         WORKING_DIRECTORY ${pybind11_BUILD_DIR}
     )
 
-    message(INFO " Pybind11 built and installed. Proceding to build RLP!")
+    set(pybind11_DIR ${pybind11_INSTALL_DIR}/share/cmake/pybind11)
+
+    message(INFO " Pybind11 configured, built and installed.")
 else()
-    message(INFO " Pybind11 is already installed. Proceding to build RLP!")
+    message(INFO " Pybind11 is already configured, built and installed.")
 endif()
 
-find_package(Python 3.11.6 COMPONENTS Interpreter Development REQUIRED)
+find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
 # Brings the configuration of our main target, the C++ library that will
 # be built as a Python module extension

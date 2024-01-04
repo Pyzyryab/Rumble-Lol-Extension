@@ -57,18 +57,43 @@ Open the **MSYS2** **Clang64** terminal and download the following tools
 pacman -S mingw-w64-clang-x86_64-cmake
 pacman -S mingw-w64-clang-x86_64-ninja
 pacman -S mingw-w64-clang-x86_64-clang
-pacman -S mingw-w64-clang-x86_64-llvm
-pacman -S mingw-w64-clang-x86_64-llvm-libs
-pacman -S mingw-w64-clang-x86_64-clang-analyzer
-pacman -S mingw-w64-clang-x86_64-lld
-pacman -S mingw-w64-clang-x86_64-libc++
+pacman -S mingw-w64-clang-x86_64-llvm (already gathered with `pacman -S mingw-w64-clang-x86_64-clang`)
+pacman -S mingw-w64-clang-x86_64-llvm-libs (already gathered with `pacman -S mingw-w64-clang-x86_64-clang`)
+pacman -S mingw-w64-clang-x86_64-clang-analyzer (non required, but nice to have)
+pacman -S mingw-w64-clang-x86_64-lld (already gathered with `pacman -S mingw-w64-clang-x86_64-clang`)
+pacman -S mingw-w64-clang-x86_64-libc++ (already gathered)
 pacman -S mingw-w64-x86_64-libunwind
 pacman -S mingw-w64-clang-x86_64-clang-tools-extra
-pacman -S pacman -S mingw-w64-clang-x86_64-compiler-rt
+pacman -S pacman -S mingw-w64-clang-x86_64-compiler-rt (already gathered with `pacman -S mingw-w64-clang-x86_64-clang`)
 pacman -S mingw-w64-clang-x86_64-gcc-compat
 ```
 
 > Feel free to merge them in just one command.
+
+### Optimizing your development workflow with `Make` (recommended)
+
+If you want to take advantage of working with the `Makefiles` configured for the project, you'll need the following one:
+
+```bash
+pacman -S mingw-w64-clang-x86_64-make
+```
+
+#### Renaming the `Make` binary (optional)
+
+The downloaded binary comes named as `ming32-make.exe`.
+
+For convenience, you can go to the `clang64` **bin** folder of your **MSYS2** installation, and just rename the binary by strip
+the prefix before the hyphen (and the hyphen itself) so you end up having a `make.exe` binary.
+
+From this:
+
+![Alt text](/docs/assets/mingw32-make.png)
+
+To this:
+
+![Alt text](/docs/assets/make.png)
+
+> We'll assume that you did this optional step when explain *make* commands. If not, you'll must use original binary name.
 
 You have a more in-depth description of the tools in a toy project used as example
 on how to integrate this setup with OpenCV on Windows [here](https://github.com/Pyzyryab/OpenCV-Clang-Windows)
@@ -101,7 +126,7 @@ cd build
 cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake
 ```
 
-and then:
+3. Finally:
 
 ```bash
 cmake --build .
@@ -109,6 +134,34 @@ cmake --build .
 
 > **IMPORTANT:* The first time that you configure and build the project, you must be patient. It took a bit
 > to download and configure `OpenCV`, and the first time also takes a long time to build it.
+
+### Do it in one line
+
+Those steps above are the classical way of configure and build a `CMake` based project. But you can create the `build` directory
+and run `CMake` configure and build process from the project's root in a nice one-liner with the following command:
+
+```bash
+cmake -S . -B ./build -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake && cmake --build ./build
+```
+
+> By default, the project is build in *Debug* mode. If you want to test a **release** version, just add to
+> the command line `-DCMAKE_BUILD_TYPE=Release`, or use the `make build_release`
+> *NOTE:* Project's dependencies are built in **release** mode always.
+
+### Make support
+
+We've recently added support for `Make` via Makefiles. This allows us to have a nice and better workflow while we're
+working on the project. Available `Make` commands are:
+
+- `make configure` or `make configure_r` for work targeting release builds
+- `make build`
+- `make run`
+
+#### Cleaning the project
+
+Sometimes comes in handy to have a fresh clean. You can just delete the `build` and `install` folders, or just
+
+- `make clean`
 
 ## Running the project
 
@@ -193,7 +246,7 @@ import rlp
 # Rest of your Python code...
 ```
 
-## Technical specification overview
+## Technical specifications overview
 
 ### Project layout
 
