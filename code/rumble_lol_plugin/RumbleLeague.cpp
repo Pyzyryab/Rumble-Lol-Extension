@@ -217,9 +217,12 @@ cv::Point RumbleLeague::click_event(const cv::Mat& needle_image)
 		std::cout << "MATCH LOCATION (Windowed) -> " << m_loc << std::endl;
 		std::cout << "MATCH LOCATION -> [" << coords.x << " , " << coords.y << "]" << std::endl;
 
-		RumbleMotion* rumble_motion = new RumbleMotion();
-		rumble_motion->move_mouse_and_left_click(coords.x, coords.y);
-		delete rumble_motion;
+
+		RumbleMotion::move_mouse_and_left_click(coords.x, coords.y);
+	}
+	else 
+	{
+		std::cout << "Coordinates set to zero" << std::endl;
 	}
 
 	return m_loc;
