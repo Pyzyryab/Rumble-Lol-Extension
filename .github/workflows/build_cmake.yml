@@ -1,0 +1,52 @@
+name: build Rumble LoL Plugin
+
+on:
+    pull_request:
+    push:
+
+jobs:
+    build:
+        runs-on: windows-latest
+        strategy:
+          fail-fast: false
+          matrix:
+            include:
+            #   - { icon: '⬛', sys: mingw32 }
+            #   - { icon: '🟦', sys: mingw64 }
+            #   - { icon: '🟨', sys: ucrt64  }
+              - { icon: '🟧', sys: clang64 }
+        name: 🚧${{ matrix.icon }} ${{ matrix.sys }}
+        defaults:
+          run:
+            shell: msys2 {0}
+        steps:
+    
+        - name: '🧰 Checkout'
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+    
+        - name: '${{ matrix.icon }} Setup MSYS2'
+          uses: msys2/setup-msys2@v2
+          with:
+            msystem: ${{matrix.sys}}
+            update: true
+            install: >-
+              git
+              make
+              mingw-w64-clang-x86_64-cmake
+              mingw-w64-clang-x86_64-ninja
+              mingw-w64-clang-x86_64-clang
+              mingw-w64-clang-x86_64-clang-analyzer
+              mingw-w64-x86_64-libunwind
+              mingw-w64-clang-x86_64-clang-tools-extra
+              mingw-w64-clang-x86_64-gcc-compat
+            pacboy: >-
+              toolchain:p
+              cmake:p
+              ninja:p
+    
+        - name: '🚧 Build TOOL'
+          run: |
+            make configure
+            make build
