@@ -11,3 +11,6 @@ configure_r:
 
 compile:
 	cmake --build ./build
+
+run: # Care. This assumes that you followed the documentation instructions and configured MSYS2 as discussed
+	/c/msys64/clang64/bin/python ./python/run_rlp.py

@@ -1,4 +1,8 @@
 
+if(NOT EXISTS ${OpenCV_INSTALL_DIR})
+    execute_process(COMMAND mkdir ${OpenCV_INSTALL_DIR})
+endif()
+
 # Download and extract OpenCV sources
 message(STATUS "Downloading OpenCV from GitHub")
 # TODO check if dir exists, so we can skip everything
@@ -40,7 +44,7 @@ execute_process(
     WORKING_DIRECTORY ${OpenCV_BUILD_DIR}
 )
 
-set(OpenCV_DIR ${OpenCV_INSTALL_DIR})
+set(OpenCV_DIR ${OpenCV_CMake_DIR})
 message(INFO " OpenCV configured, built and installed.")
 
 # A little bit of debug information about the OpenCV installation 
