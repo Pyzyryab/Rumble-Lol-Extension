@@ -31,9 +31,6 @@ WindowCapture::WindowCapture(std::string window_name)
         NULL,
         desired_window
     );
-
-    std::cout << "Current window name: " << this->window_name << std::endl;
-    std::cout << "this->hwnd: " << this->hwnd << std::endl;
 }
 
 

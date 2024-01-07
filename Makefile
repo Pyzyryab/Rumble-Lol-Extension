@@ -9,5 +9,5 @@ configure:
 configure_r:
 	cmake -S . -B ./build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake
 
-build:
+compile:
 	cmake --build ./build

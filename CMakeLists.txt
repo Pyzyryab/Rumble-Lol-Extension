@@ -14,7 +14,11 @@
 #   - You can also use a fancy one-line for build and configure, and also you can do it from
 #     the project's root, like this:
 #     `cmake -S . -B ./build -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake && cmake --build ./build`
-#  
+#
+#   - Anyway, instead of manually be launching the commands, you should be using `make`, which
+#     is ready to work out-of-the-box. Read the `Makefile` located at the root of the project
+#     to acknowledge what targets are available
+#
 #  Contributors:
 #   - Alex Vergara (@Pyzyrab)
 #   - Pylyv        (@Pylyv)
@@ -40,7 +44,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # TODO add the project's CXX flags, like -Wall...
-# TODO split this into multiple CMakeLists.txt files (in progress)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
@@ -61,26 +64,26 @@ set(PROJECT_BUILD_DIRECTORY     ${RLP_ROOT}/build)
 set(PROJECT_INSTALL_DIRECTORY   ${RLP_ROOT}/install)
 set(PROJECT_BINARIES_DIRECTORY  ${RLP_ROOT}/bin)
 
-# add the project's configuration header
-add_subdirectory(configuration)
-
-# Changing where CMake will performn the installations
+# Changing where CMake will perform the installations
 set(CMAKE_INSTALL_PREFIX ${PROJECT_INSTALL_DIRECTORY})
 
 # The toolchain file that will be used later to pass our project configuration also to the OpenCV build
 set(CMAKE_TOOLCHAIN_FILE ${RLP_ROOT}/clang-x86_64_windows_gnu.cmake)
 
+# Adding the cmake helpers files
+list(APPEND CMAKE_MODULE_PATH ${RLP_ROOT}/cmake)
+
 # ------- 3rd party set ups -------
 # Set the installation directory
 set(OpenCV_INSTALL_DIR      ${PROJECT_INSTALL_DIRECTORY}/opencv)
 set(pybind11_INSTALL_DIR    ${PROJECT_INSTALL_DIRECTORY}/pybind11)
+set(OpenCV_DIR              ${OpenCV_INSTALL_DIR})
 # Set the build dirs
 set(OpenCV_BUILD_DIR        ${PROJECT_BUILD_DIRECTORY}/opencv/build)
 set(pybind11_BUILD_DIR      ${PROJECT_BUILD_DIRECTORY}/pybind11/build)
 
-# Attempt to find OpenCV in quiet mode. This will allow us to skip CMake code 
-# in the consecutive iterations of the build process
-find_package(OpenCV QUIET)
+# add the project's configuration header
+add_subdirectory(configuration)
 
 # Autogenerating the installation directories
 if(NOT EXISTS ${PROJECT_INSTALL_DIRECTORY})
@@ -95,13 +98,21 @@ if(NOT EXISTS ${pybind11_INSTALL_DIR})
     execute_process(COMMAND mkdir ${pybind11_INSTALL_DIR})
 endif()
 
+find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
-# Check if OpenCV was found
+# Attempt to find OpenCV in quiet mode. This will allow us to skip CMake code 
+# in the consecutive iterations of the build process
+find_package(OpenCV QUIET)
 if(OpenCV_FOUND)
-    message(STATUS "OpenCV found. Version: ${OpenCV_VERSION}")
+    message(STATUS "OpenCV found before include. Version: ${OpenCV_VERSION}")
 else()
-    message(WARNING "OpenCV not found. Cloning the project, building it and installing it")
+    message (STATUS "OpenCV NOT found. Getting it")
+    include(AddOpenCV)
 endif()
+
+# Find the OpenCV build/installation, so their own variables for the include/link are correctly set up
+find_package(OpenCV REQUIRED)
+
 # Check if pybind11 was found
 if(pybind11_FOUND)
     message(STATUS "pybind11 found. Version: ${pybind11_VERSION}")
@@ -109,54 +120,6 @@ else()
     message(WARNING "pybind11 not found. Cloning the project, building it and installing it")
 endif()
 
-if(NOT OpenCV_FOUND)
-    # Download and extract OpenCV sources
-    message(STATUS "Downloading from GitHub OpenCV")
-    execute_process(
-        COMMAND git clone --branch 4.6.0 --single-branch https://github.com/opencv/opencv.git
-        WORKING_DIRECTORY ${PROJECT_BUILD_DIRECTORY}
-    )
-    execute_process(COMMAND mkdir ${OpenCV_BUILD_DIR})
-
-    # Configure the later build of OpenCV
-    message(STATUS "Configuring the build and installation of OpenCV")
-    execute_process(
-        COMMAND ${CMAKE_COMMAND} 
-                -G "Ninja"
-                -DCMAKE_INSTALL_PREFIX=${OpenCV_INSTALL_DIR}
-                -DCMAKE_BUILD_TYPE=Release
-                -DBUILD_TESTS=OFF
-                -DBUILD_PERF_TESTS=OFF
-                -DBUILD_EXAMPLES=OFF
-                -DBUILD_opencv_apps=OFF
-                -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-                # TODO add the conf opts for reduce the number of OpenCV modules built
-                -DWITH_ADE=OFF
-                -Wno-dev
-                -S ${CMAKE_CURRENT_SOURCE_DIR}/build/opencv
-                -B ${OpenCV_BUILD_DIR}
-                WORKING_DIRECTORY ${RLP_ROOT}
-    )
-
-    # Build and install OpenCV
-    message(STATUS "Building and installing OpenCV")
-    execute_process(
-        COMMAND cmake --build . --target install
-        WORKING_DIRECTORY ${OpenCV_BUILD_DIR}
-    )
-
-    set(OpenCV_DIR ${OpenCV_INSTALL_DIR})
-    message(INFO " OpenCV configured, built and installed.")
-else()
-    message (STATUS "OpenCV installation found. Version: ${OpenCV_VERSION}. Path: ${OpenCV_DIR}")
-endif()
-
-# Find the OpenCV build/installation, so their own variables for the include/link are correctly set up
-find_package(OpenCV REQUIRED)
-
-# A little bit of debug information about the OpenCV installation 
-message(STATUS "OpenCV_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS}")
-message(STATUS "OpenCV_LIBS ${OpenCV_LIBS}")
 
 # Download and include pybind11
 if(NOT pybind11_FOUND)
@@ -197,8 +160,6 @@ if(NOT pybind11_FOUND)
 else()
     message(INFO " Pybind11 is already configured, built and installed.")
 endif()
-
-find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
 # Brings the configuration of our main target, the C++ library that will
 # be built as a Python module extension

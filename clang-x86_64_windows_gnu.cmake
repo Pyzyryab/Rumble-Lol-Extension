@@ -16,6 +16,9 @@ set(CMAKE_CXX_COMPILER "clang++.exe")
 # Set the triple-target
 set(TRIPLE_TARGET x86_64-windows-gnu)
 set(CMAKE_CXX_COMPILER_TARGET ${TRIPLE_TARGET})
+set(CMAKE_CXX_STANDARD 23) # TODO After moving the build and install process of
+# OpenCV to the CMake modules, we can't get OpenCV built with C++23 without
+# specifying the C++ standard here (takes 11 by default)
 
 # CXX flags
 set(LIBCPP          -stdlib=libc++)

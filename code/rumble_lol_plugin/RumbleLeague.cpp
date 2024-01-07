@@ -1,7 +1,5 @@
 #include <rumble_lol_plugin/RumbleLeague.hpp>
 
-using namespace std;
-
 // Initializacion of static non const members of the class
 int RumbleLeague::instances_counter{ 0 };
 
@@ -41,7 +39,7 @@ RumbleLeague::RumbleLeague(const int language_id, const bool autoaccept_behaviou
 
 	// Increment the number of instances created
 	++RumbleLeague::instances_counter;
-	cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << endl;
+	std::cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << std::endl;
 	
 }
 
@@ -53,9 +51,10 @@ RumbleLeague::RumbleLeague() : RumbleLeague{ 1, true, false } {}
 // Destructor
 RumbleLeague::~RumbleLeague()
 {
+	// delete this->window_capture;
 	--RumbleLeague::instances_counter;
-	cout << "Destructor for the class RumbleLeague has been called. ";
-	cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << endl;
+	std::cout << "Destructor for the class RumbleLeague has been called. ";
+	std::cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << std::endl;
 }
 
 
@@ -70,21 +69,21 @@ RumbleLeague::~RumbleLeague()
 */
 const char* RumbleLeague::play(const std::string& user_input)
 {
-	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etccout << "\n Current league client screen: " << this->current_league_client_screen->get_identifier() << endl;
+	// TODO Very first -> Create the decision tree, to find by action, by button identifier... etcstd::cout << "\n Current league client screen: " << this->current_league_client_screen->get_identifier() << std::endl;
 	// 1�st -> Get a list with the posible client buttons that could possible be the desired user action
 	auto matched_client_buttons = this->current_league_client_screen->find_client_button(user_input);
-	cout << "\n *************************" << endl;
+	std::cout << "\n *************************" << std::endl;
 
 	if (matched_client_buttons.size() > 0)
 	{
-		cout << "\n *************************" << endl;
+		std::cout << "\n *************************" << std::endl;
 		for (auto button : matched_client_buttons) {
-			cout << "Found a button candidate: " << button.identifier << endl;
+			std::cout << "Found a button candidate: " << button.identifier << std::endl;
 		}
 
 		const ClientButton button = matched_client_buttons[0];
-		cout << "[WARNING] Taking -> " << button.identifier << " <- as the first element matched. "
-			"This is because there is not NLP implemented yet." << endl;
+		std::cout << "[WARNING] Taking -> " << button.identifier << " <- as the first element matched. "
+			"This is because there is not NLP implemented yet." << std::endl;
 
 		// Calls the member method to perform a desired action based on the matched button.
 		this->league_client_action(button);
@@ -108,8 +107,8 @@ void RumbleLeague::league_client_action(const ClientButton& client_button)
 
 	// Tracks the lastest screen seen before the current one
 	this->previous_league_client_screen = this->current_league_client_screen;
-	cout << "[INFO] Previous screen -> " <<
-		this->previous_league_client_screen->get_identifier() << " <- " << endl;
+	std::cout << "[INFO] Previous screen -> " <<
+		this->previous_league_client_screen->get_identifier() << " <- " << std::endl;
 
 	/** Updates the pointer to the LeagueClientScreen with the enum value that identifies what screen comes
 	* next after pressing any button
@@ -130,7 +129,7 @@ void RumbleLeague::league_client_action(const ClientButton& client_button)
 			if (client_button.lobby != LeagueClientScreenIdentifier::NoLobby)
 			{
 				this->game_lobby_candidate = client_button.lobby;
-				cout << "[INFO] Game lobby candidate -> " << this->game_lobby_candidate << " <- " << endl;
+				std::cout << "[INFO] Game lobby candidate -> " << this->game_lobby_candidate << " <- " << std::endl;
 			}
 
 			this->current_league_client_screen->set_identifier(
@@ -159,13 +158,13 @@ void RumbleLeague::league_client_action(const ClientButton& client_button)
 			this->current_league_client_screen->set_identifier(client_button.next_screen);
 	}
 
-	cout << "[INFO] Current screen -> " <<
-		this->current_league_client_screen->get_identifier() << " <- " << endl;
+	std::cout << "[INFO] Current screen -> " <<
+		this->current_league_client_screen->get_identifier() << " <- " << std::endl;
 
 
 	// Sets the needle image for what we are looking for
 	cv::Mat needle_image;
-	cout << "Setting the OpenCV needle image: " << client_button.image_path << endl;
+	std::cout << "Setting the OpenCV needle image: " << client_button.image_path << std::endl;
 	this->set_needle_image(client_button.image_path, needle_image);
 
 	// Change this for a fn pointer or callback inside the button
@@ -180,7 +179,7 @@ void RumbleLeague::league_client_action(const ClientButton& client_button)
 	if (this->autoaccept_behaviour && this->current_league_client_screen->get_identifier()
 		== LeagueClientScreenIdentifier::AcceptDecline)
 	{
-		cout << "Generating a recursive call for the autoaccept behaviour " << endl;
+		std::cout << "Generating a recursive call for the autoaccept behaviour " << std::endl;
 		// Recursive call for generate the autoaccept match when the screen spawns
 		this->play("accept"); // TODO the value should be passed by language
 	}

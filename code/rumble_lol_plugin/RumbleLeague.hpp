@@ -13,6 +13,7 @@
 #include <rumble_lol_plugin/helpers/string.hpp>
 #include <rumble_lol_plugin/config/rlp_config.hpp>
 
+#include <iostream>
 
 class RumbleLeague
 {
