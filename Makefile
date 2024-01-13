@@ -5,6 +5,7 @@ clean:
 
 configure:
 	cmake -S . -B ./build -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake
+	rm -rf ./build/opencv
 
 configure_r:
 	cmake -S . -B ./build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_gnu.cmake

@@ -13,7 +13,7 @@ execute_process(COMMAND mkdir ${pybind11_BUILD_DIR})
 message(STATUS "Configuring the installation of pybind11")
 execute_process(
     COMMAND ${CMAKE_COMMAND}
-            -G "Ninja"
+            -G ${CMAKE_GENERATOR}
             -DCMAKE_INSTALL_PREFIX=${pybind11_INSTALL_DIR}
             -DCMAKE_POLICY_DEFAULT_CMP0148=OLD
             -DCMAKE_BUILD_TYPE=Release
@@ -34,4 +34,4 @@ execute_process(
 
 set(pybind11_DIR ${pybind11_CMake_DIR})
 
-message(INFO " Pybind11 configured, built and installed.")
+message(STATUS "Pybind11 configured, built and installed.")

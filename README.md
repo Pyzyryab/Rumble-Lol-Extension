@@ -3,12 +3,7 @@
 Welcome to the Rumble LoL Plugin, or **RLP** for short.
 This is the documentation (developer oriented) for the project.
 
-#### TODO
-
-- Add CI status badges (when actions are configured)
-- An index summary with hyperlinks
-
-## TODO make a deep explanation of the project
+[![Build Rumble LoL Plugin](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/build_cmake.yml/badge.svg)](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/build_cmake.yml)
 
 ## Building the project
 
@@ -28,14 +23,13 @@ Microsoft compiler, their `STD library` implementation, so on and so forth...
 ## CMake and LLVM tools on Windows
 
 This is our main way of build and compile the project. Here, in `Zero Day Code`, we are big fans of the `LLVM` project.
-For that reason, we set up an intricate way of building the project, but, in exchange, we are building it with zero proprietary
-dependencies.
+For that reason, we set up an intricate way of building the project, but, in exchange, we are building it with zero proprietary dependencies.
 
-After a long time with the project unmaintained, we decided to came back. And this time we bring with us other approach.
-And we managed to base our build process in the following components:
+The most notorious ones:
 
+- Make
 - CMake
-- LLVM tools
+- The LLVM project, for getting the clang compiler frontend and its **C++** marvelous tools, like code formatters, static analyzers, address sanitizers...
 - Python
 
 > *Note*: This approach will require a **MSYS2** installation, and get all the components through the `Clang64` environment.
@@ -154,7 +148,7 @@ We've recently added support for `Make` via Makefiles. This allows us to have a 
 working on the project. Available `Make` commands are:
 
 - `make configure` or `make configure_r` for work targeting release builds
-- `make build`
+- `make compile`
 - `make run`
 
 #### Cleaning the project
@@ -183,6 +177,12 @@ For this, from the root of the project, just run:
 
 ```bash
 python ./python/run_rlp.py
+```
+
+or with `Make`:
+
+```bash
+make run
 ```
 
 And you should see the application running directly in your terminal.

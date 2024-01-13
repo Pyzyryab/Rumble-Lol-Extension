@@ -26,7 +26,7 @@ int RumbleLeague::instances_counter{ 0 };
 * We still have to assign the data of the "current_league_client_screen" member in the constructor body, 'cause until this
 * point we don't have available what language (as an Enum variant) it's currently setted.
 */
-RumbleLeague::RumbleLeague(const int language_id, const bool autoaccept_behaviour, const bool debug_mode)
+RumbleLeague::RumbleLeague(int language_id, bool autoaccept_behaviour, bool debug_mode)
 	: window_capture{ new WindowCapture( "League of Legends" ) },
 	rumble_vision{ new RumbleLeagueVision },
 	autoaccept_behaviour{ autoaccept_behaviour },
@@ -40,7 +40,7 @@ RumbleLeague::RumbleLeague(const int language_id, const bool autoaccept_behaviou
 	// Increment the number of instances created
 	++RumbleLeague::instances_counter;
 	std::cout << "Number of active RumbleLeague instances = " << RumbleLeague::instances_counter << std::endl;
-	
+	std::cout << "Autoaccept behaviour: " << std::boolalpha << autoaccept_behaviour << std::endl;
 }
 
 // No params constructor. Constructor delegation applied here.

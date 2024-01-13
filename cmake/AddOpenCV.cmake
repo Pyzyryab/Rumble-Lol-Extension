@@ -17,7 +17,7 @@ execute_process(COMMAND mkdir ${OpenCV_BUILD_DIR})
 message(STATUS "Configuring the build and installation of OpenCV")
 execute_process(
     COMMAND ${CMAKE_COMMAND} 
-        -G "Ninja"
+        -G ${CMAKE_GENERATOR}
         -DCMAKE_INSTALL_PREFIX=${OpenCV_INSTALL_DIR}
         -DCMAKE_BUILD_TYPE=Release
         -DBUILD_TESTS=OFF
@@ -45,7 +45,7 @@ execute_process(
 )
 
 set(OpenCV_DIR ${OpenCV_CMake_DIR})
-message(INFO " OpenCV configured, built and installed.")
+message(STATUS "OpenCV configured, built and installed.")
 
 # A little bit of debug information about the OpenCV installation 
 message(STATUS "OpenCV_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS}")

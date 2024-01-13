@@ -29,7 +29,7 @@ class RumbleLeague
 		* Due to the match method used on the OpenCV library for this project, the lower the number, the higher precision should
 		* be required to a cv::Mat result to be considered as a match comparing images.
 		*/ 
-		static constexpr double threshold_rate = 0.15;
+		static constexpr double threshold_rate = 0.05;
 
 		// Control flag to allow the Python's side determine when it's desired to see some useful logs
 		// or even the OpenCV window showing how it's performing a match on the image
@@ -102,7 +102,7 @@ class RumbleLeague
 	public:
 		// Constructors
 		RumbleLeague();
-		RumbleLeague(const int language_id, bool autoaccept_behaviour, const bool debug_mode);
+		RumbleLeague(int language_id, bool autoaccept_behaviour, bool debug_mode);
 
 		// Copy constructor
 		RumbleLeague(const RumbleLeague &source);
