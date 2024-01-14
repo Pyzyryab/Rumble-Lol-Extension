@@ -1,7 +1,6 @@
 name: Build Rumble LoL Plugin
 
 on:
-    pull_request:
     push:
 
 jobs:
