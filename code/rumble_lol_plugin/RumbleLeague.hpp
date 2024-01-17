@@ -11,7 +11,9 @@
 #include <rumble_lol_plugin/league_client/screen.hpp>
 #include <rumble_lol_plugin/league_client/screen_identifier.hpp>
 #include <rumble_lol_plugin/helpers/string.hpp>
+#include <rumble_lol_plugin/config/rlp_config.hpp>
 
+#include <iostream>
 
 class RumbleLeague
 {
@@ -100,7 +102,7 @@ class RumbleLeague
 	public:
 		// Constructors
 		RumbleLeague();
-		RumbleLeague(const int language_id, bool autoaccept_behaviour, const bool debug_mode);
+		RumbleLeague(int language_id, bool autoaccept_behaviour, bool debug_mode);
 
 		// Copy constructor
 		RumbleLeague(const RumbleLeague &source);

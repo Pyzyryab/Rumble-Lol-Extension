@@ -17,7 +17,6 @@ void RumbleMotion::move_mouse_and_left_click(int x, int y)
     y = y + 25;*/
 
     SetCursorPos(x, y);
-    // TODO Three of match decision 
 
     //PostMessage(hwndDesktop, WM_LBUTTONDBLCLK, 0, MAKELPARAM(x + 100, y + 25)); <--- For the client transformer coordinates window to screen
     mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);

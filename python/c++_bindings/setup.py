@@ -42,6 +42,10 @@ rle_code_root = os.path.join(rle_code_dir, 'code', 'rumble_lol_plugin')
 
 print(f'RLE root directory: {rle_root}\n RLE SRC root dir: {rle_code_root}')
 
+# Keep in mind that this method of building the project relies on you having a valid installation
+# of OpenCV and pybind11, with your installations set up according to the paths described below,
+# or that you'll adjust them to better suit your local setup.
+
 sfc_module = Extension(
     name='rlp',  # The name of the generated Python module
     language='c++',
@@ -80,7 +84,7 @@ sfc_module = Extension(
 
 setup(
     name='Rumble LoL Plugin',
-    version='1.0.0',
+    version='0.1.0',
     author='Alex Vergara',
     author_email='alex.vergara.dev@gmail.com',
     description='Python package that extends the Rumble-AI project with this module',

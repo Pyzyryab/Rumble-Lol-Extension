@@ -1,0 +1,23 @@
+/**
+ * @brief Header file for define the project's configuration variables procedurally, so they
+ *        can be included and used later in the source code.
+ * 
+ *        The data that initializes the constant evaluated expresions are just placeholders that
+ *        will be parsed and filled by CMake at build time. This configuration file later will be
+ *        copied to a concrete location in the build folder, and converted into a real CPP header 
+ * @file config.hpp.in
+ * @author Alex Vergara (alex.vergara.dev@gmail.com)
+ * @version 0.1.0
+ * @date 2024-01-03
+ */
+
+#pragma once
+
+#include <string_view>
+
+static constexpr std::string_view project_name {"@PROJECT_NAME@"};
+static constexpr std::string_view project_version {"@PROJECT_VERSION@"};
+
+static constexpr std::string_view project_version_major {"@PROJECT_VERSION_MAJOR@"};
+static constexpr std::string_view project_version_minor {"@PROJECT_VERSION_MINOR@"};
+static constexpr std::string_view project_version_patch {"@PROJECT_VERSION_PATCH@"};
