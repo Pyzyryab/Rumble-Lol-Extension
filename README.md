@@ -7,15 +7,19 @@ This is the documentation (developer oriented) for the project.
 
 <div align="center">
 
-[![Code Quality](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/code-quality.yml/badge.svg?branch=main)](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/code-quality.yml)
-[![Windows Installer](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/release.yml/badge.svg)](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/release.yml)
-[![Coverage CD/CI](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/code-coverage.yml/badge.svg)](https://zerodaycode.github.io/Rumble-LoL-Plugin/index.html)
+![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?style=for-the-badge&logo=cmake&logoColor=white)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-[![GitHub Issues](https://img.shields.io/github/issues/zerodaycode/Rumble-LoL-Plugin.svg)](https://github.com/zerodaycode/Rumble-LoL-Plugin/issues)</br>
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/zerodaycode/Rumble-LoL-Plugin.svg)](https://github.com/zerodaycode/Rumble-LoL-Plugin/pulls)
+[![Build Rumble LoL Plugin](https://img.shields.io/github/actions/workflow/status/zerodaycode/Rumble-Lol-Plugin/build_cmake.yml?style=for-the-badge)](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/build_cmake.yml)
+[![Windows Installer](https://img.shields.io/github/release/zerodaycode/Rumble-LoL-Plugin.svg?style=for-the-badge)](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/release.yml)
+[![Code Quality](https://img.shields.io/github/code-quality/zerodaycode/Rumble-LoL-Plugin.svg?style=for-the-badge)](https://github.com/zerodaycode/Rumble-LoL-Plugin/actions/workflows/code-quality.yml)
+[![Coverage CD/CI](https://img.shields.io/github/index/zerodaycode/Rumble-LoL-Plugin.svg?style=for-the-badge)](https://zerodaycode.github.io/Rumble-LoL-Plugin/index.html)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-[![Coverage CD/CI](https://zerodaycode.github.io/Rumble-LoL-Plugin/badges/flat.svg)](https://zerodaycode.github.io/Rumble-LoL-Plugin)
+[![GitHub Issues](https://img.shields.io/github/issues/zerodaycode/Rumble-LoL-Plugin?style=for-the-badge)](https://github.com/zerodaycode/Rumble-LoL-Plugin/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/zerodaycode/Rumble-LoL-Plugin?style=for-the-badge)](https://github.com/zerodaycode/Rumble-LoL-Plugin/pulls)
+[![License](https://img.shields.io/github/license/zerodaycode/Rumble-LoL-Plugin?style=for-the-badge)](/LICENSE)
+
 </div>
 
 # 📝 Table of Contents
@@ -57,7 +61,9 @@ We managed to base our build process in the following components:
 - The LLVM project, for getting the clang compiler frontend and its **C++** marvelous tools, like code formatters, static analyzers, address sanitizers...
 - Python
 
-> *Note*: This approach will require a **MSYS2** installation, and get all the components through the `Clang64` environment.
+>[!NOTE]
+>
+> This approach will require a **MSYS2** installation, and get all the components through the `Clang64` environment.
 > It's technically possible to make the same job that we will explain below with other type of installations,
 > tools or environments besides the ones that we share on the documentation steps and that we will support.
 > Nonetheless, feel free to play as much as you want with other tools, and propose any if yopu find them better and increase the project by cointributing to it.
@@ -168,7 +174,9 @@ cmake -S . -B ./build -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=./clang-x86_64_windows_g
 
 > By default, the project is build in *Debug* mode. If you want to test a **release** version, just add to
 > the command line `-DCMAKE_BUILD_TYPE=Release`, or use the `make build_release`
-> *NOTE:* Project's dependencies are built in **release** mode always.
+>[!NOTE]
+>
+> Project's dependencies are built in **release** mode always.
 
 ### Make support
 
