@@ -1,0 +1,67 @@
+feature:
+  - head-branch: ['^feature', 'feature']
+
+bugfix:
+  - head-branch: ['^bugfix', 'bugfix']
+
+refactor:
+  - head-branch: ['^refactor', 'refactor']
+
+release:
+  - base-branch: 'main'
+
+code:
+- changed-files:
+  - any-glob-to-any-file:
+    - code/rumble_lol_plugin/**
+
+rumble-league:
+- changed-files:
+  - any-glob-to-any-file:
+    - code/rumble_lol_plugin/*.cpp
+
+rumble-league-client:
+- changed-files:
+  - any-glob-to-any-file:
+    - code/rumble_lol_plugin/league_client/*.cpp
+    - code/rumble_lol_plugin/league_client/*.hpp
+
+static-config:
+- changed-files:
+  - any-glob-to-any-file:
+    - code/rumble_lol_plugin/configuration/*.cpp
+
+ffi:
+- changed-files:
+  - any-glob-to-any-file:
+    - code/rumble_lol_plugin/ffi/*
+
+documentation:
+- changed-files:
+  - any-glob-to-any-file:
+    - docs/*
+    - guides/*
+
+ci:
+- changed-files:
+  - any-glob-to-any-file:
+    - .github/*
+
+rumble-standalone:
+- changed-files:
+  - any-glob-to-any-file:
+    - python/run_rlp.py
+
+cmake:
+- changed-files:
+  - any-glob-to-any-file:
+    - **/CMakeLists.txt
+    - **/*.cmake
+    - cmake/*
+
+build-system:
+- changed-files:
+  - any-glob-to-any-file:
+    - **/CMakeLists.txt
+    - **/*.cmake
+    - cmake/*
